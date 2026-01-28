@@ -1,7 +1,7 @@
 # 课灵 - 游戏化学习助手
 
 <p align="center">
-  <img src="docs/logo.png" alt="课灵 Logo" width="120"/>
+  
 </p>
 
 <p align="center">
