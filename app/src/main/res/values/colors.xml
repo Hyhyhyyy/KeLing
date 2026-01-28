@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 主色调 - 霓虹蓝 -->
+    <color name="neon_blue">#00D4FF</color>
+    <color name="neon_blue_dark">#0099CC</color>
+    <color name="neon_blue_light">#66E5FF</color>
+
+    <!-- 强调色 - 霓虹紫 -->
+    <color name="neon_purple">#BF00FF</color>
+    <color name="neon_purple_dark">#8A00B8</color>
+    <color name="neon_purple_light">#D966FF</color>
+
+    <!-- 辅助色 - 霓虹粉 -->
+    <color name="neon_pink">#FF0080</color>
+    <color name="neon_pink_dark">#CC0066</color>
+    <color name="neon_pink_light">#FF66B3</color>
+
+    <!-- 成功 - 霓虹绿 -->
+    <color name="neon_green">#00FF88</color>
+    <color name="neon_green_dark">#00CC6A</color>
+    <color name="neon_green_light">#66FFAA</color>
+
+    <!-- 警告 - 霓虹橙 -->
+    <color name="neon_orange">#FF6600</color>
+    <color name="neon_orange_dark">#CC5200</color>
+    <color name="neon_orange_light">#FF9966</color>
+
+    <!-- 错误 - 霓虹红 -->
+    <color name="neon_red">#FF0040</color>
+    <color name="neon_red_dark">#CC0033</color>
+    <color name="neon_red_light">#FF6680</color>
+
+    <!-- 金色 - 成就/奖励 -->
+    <color name="neon_gold">#FFD700</color>
+    <color name="neon_gold_dark">#CCAA00</color>
+    <color name="neon_gold_light">#FFE566</color>
+
+    <!-- 深色背景 -->
+    <color name="dark_background">#0A0E17</color>
+    <color name="dark_surface">#121824</color>
+    <color name="dark_surface_variant">#1A2332</color>
+    <color name="dark_card">#1E2838</color>
+    <color name="dark_border">#2A3648</color>
+
+    <!-- 文字颜色 -->
+    <color name="text_primary">#E8ECF4</color>
+    <color name="text_secondary">#B0B8C8</color>
+    <color name="text_tertiary">#6B7280</color>
+    <color name="text_disabled">#4B5563</color>
+
+    <!-- 系统颜色 -->
+    <color name="ic_launcher_background">#0A0E17</color>
+</resources>
