@@ -1,13 +1,24 @@
 plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
-    id("com.google.dagger.hilt.android")
-    id("com.google.devtools.ksp")
+    id("com.android.application") version "8.2.0"
+    id("org.jetbrains.kotlin.android") version "1.9.20"
+    id("com.google.dagger.hilt.android") version "2.48"
+    id("com.google.devtools.ksp") version "1.9.20-1.0.14"
 }
+
+import java.util.Properties
+import java.io.FileInputStream
 
 android {
     namespace = "com.keling.app"
     compileSdk = 34
+
+    // Read local.properties for Qwen credentials
+    val localProps = Properties().apply {
+        val lpFile = rootProject.file("local.properties")
+        if (lpFile.exists()) {
+            FileInputStream(lpFile).use { load(it) }
+        }
+    }
 
     defaultConfig {
         applicationId = "com.keling.app"
@@ -15,6 +26,12 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0.0"
+
+        // Qwen API config from local.properties
+        val qwenApiKey = (localProps.getProperty("QWEN_API_KEY") ?: "").trim()
+        val qwenBaseUrl = (localProps.getProperty("QWEN_BASE_URL") ?: "https://dashscope.aliyuncs.com/").trim()
+        buildConfigField("String", "QWEN_API_KEY", "\"$qwenApiKey\"")
+        buildConfigField("String", "QWEN_BASE_URL", "\"$qwenBaseUrl\"")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -37,12 +54,9 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
 
-    kotlinOptions {
-        jvmTarget = "17"
-    }
-
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 
     composeOptions {
@@ -131,4 +145,14 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+}
+
+tasks.withType<Wrapper>().configureEach {
+    gradleVersion = "8.5"
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+    kotlinOptions {
+        jvmTarget = "17"
+    }
 }

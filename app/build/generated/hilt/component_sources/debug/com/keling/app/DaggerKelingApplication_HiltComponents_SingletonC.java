@@ -568,7 +568,7 @@ public final class DaggerKelingApplication_HiltComponents_SingletonC {
       public T get() {
         switch (id) {
           case 0: // com.keling.app.ui.screens.ai.AIAssistantViewModel 
-          return (T) new AIAssistantViewModel(singletonCImpl.bindTaskRepositoryProvider.get(), singletonCImpl.bindUserRepositoryProvider.get(), singletonCImpl.provideKelingApiServiceProvider.get());
+          return (T) new AIAssistantViewModel(singletonCImpl.bindTaskRepositoryProvider.get(), singletonCImpl.bindUserRepositoryProvider.get());
 
           case 1: // com.keling.app.ui.screens.settings.AccessibilityViewModel 
           return (T) new AccessibilityViewModel(singletonCImpl.accessibilityPreferencesRepositoryProvider.get());
@@ -709,17 +709,17 @@ public final class DaggerKelingApplication_HiltComponents_SingletonC {
 
     private Provider<TaskRepository> bindTaskRepositoryProvider;
 
-    private Provider<OkHttpClient> provideOkHttpClientProvider;
-
-    private Provider<Retrofit> provideKelingRetrofitProvider;
-
-    private Provider<KelingApiService> provideKelingApiServiceProvider;
-
     private Provider<AccessibilityPreferencesRepository> accessibilityPreferencesRepositoryProvider;
 
     private Provider<CourseRepositoryImpl> courseRepositoryImplProvider;
 
     private Provider<CourseRepository> bindCourseRepositoryProvider;
+
+    private Provider<OkHttpClient> provideOkHttpClientProvider;
+
+    private Provider<Retrofit> provideKelingRetrofitProvider;
+
+    private Provider<KelingApiService> provideKelingApiServiceProvider;
 
     private SingletonCImpl(ApplicationContextModule applicationContextModuleParam) {
       this.applicationContextModule = applicationContextModuleParam;
@@ -758,12 +758,12 @@ public final class DaggerKelingApplication_HiltComponents_SingletonC {
       this.bindUserRepositoryProvider = DoubleCheck.provider((Provider) userRepositoryImplProvider);
       this.taskRepositoryImplProvider = new SwitchingProvider<>(singletonCImpl, 0);
       this.bindTaskRepositoryProvider = DoubleCheck.provider((Provider) taskRepositoryImplProvider);
-      this.provideOkHttpClientProvider = DoubleCheck.provider(new SwitchingProvider<OkHttpClient>(singletonCImpl, 8));
-      this.provideKelingRetrofitProvider = DoubleCheck.provider(new SwitchingProvider<Retrofit>(singletonCImpl, 7));
-      this.provideKelingApiServiceProvider = DoubleCheck.provider(new SwitchingProvider<KelingApiService>(singletonCImpl, 6));
-      this.accessibilityPreferencesRepositoryProvider = DoubleCheck.provider(new SwitchingProvider<AccessibilityPreferencesRepository>(singletonCImpl, 9));
-      this.courseRepositoryImplProvider = new SwitchingProvider<>(singletonCImpl, 10);
+      this.accessibilityPreferencesRepositoryProvider = DoubleCheck.provider(new SwitchingProvider<AccessibilityPreferencesRepository>(singletonCImpl, 6));
+      this.courseRepositoryImplProvider = new SwitchingProvider<>(singletonCImpl, 7);
       this.bindCourseRepositoryProvider = DoubleCheck.provider((Provider) courseRepositoryImplProvider);
+      this.provideOkHttpClientProvider = DoubleCheck.provider(new SwitchingProvider<OkHttpClient>(singletonCImpl, 10));
+      this.provideKelingRetrofitProvider = DoubleCheck.provider(new SwitchingProvider<Retrofit>(singletonCImpl, 9));
+      this.provideKelingApiServiceProvider = DoubleCheck.provider(new SwitchingProvider<KelingApiService>(singletonCImpl, 8));
     }
 
     @Override
@@ -817,20 +817,20 @@ public final class DaggerKelingApplication_HiltComponents_SingletonC {
           case 5: // com.keling.app.data.repository.UserRepositoryImpl 
           return (T) new UserRepositoryImpl(singletonCImpl.userDao());
 
-          case 6: // com.keling.app.data.remote.KelingApiService 
-          return (T) NetworkModule_ProvideKelingApiServiceFactory.provideKelingApiService(singletonCImpl.provideKelingRetrofitProvider.get());
-
-          case 7: // @javax.inject.Named("keling") retrofit2.Retrofit 
-          return (T) NetworkModule_ProvideKelingRetrofitFactory.provideKelingRetrofit(singletonCImpl.provideOkHttpClientProvider.get());
-
-          case 8: // okhttp3.OkHttpClient 
-          return (T) NetworkModule_ProvideOkHttpClientFactory.provideOkHttpClient();
-
-          case 9: // com.keling.app.data.preferences.AccessibilityPreferencesRepository 
+          case 6: // com.keling.app.data.preferences.AccessibilityPreferencesRepository 
           return (T) new AccessibilityPreferencesRepository(ApplicationContextModule_ProvideContextFactory.provideContext(singletonCImpl.applicationContextModule));
 
-          case 10: // com.keling.app.data.repository.CourseRepositoryImpl 
+          case 7: // com.keling.app.data.repository.CourseRepositoryImpl 
           return (T) new CourseRepositoryImpl(singletonCImpl.courseDao());
+
+          case 8: // com.keling.app.data.remote.KelingApiService 
+          return (T) NetworkModule_ProvideKelingApiServiceFactory.provideKelingApiService(singletonCImpl.provideKelingRetrofitProvider.get());
+
+          case 9: // @javax.inject.Named("keling") retrofit2.Retrofit 
+          return (T) NetworkModule_ProvideKelingRetrofitFactory.provideKelingRetrofit(singletonCImpl.provideOkHttpClientProvider.get());
+
+          case 10: // okhttp3.OkHttpClient 
+          return (T) NetworkModule_ProvideOkHttpClientFactory.provideOkHttpClient();
 
           default: throw new AssertionError(id);
         }

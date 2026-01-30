@@ -1,6 +1,5 @@
 package com.keling.app.ui.screens.ai;
 
-import com.keling.app.data.remote.KelingApiService;
 import com.keling.app.data.repository.TaskRepository;
 import com.keling.app.data.repository.UserRepository;
 import dagger.internal.DaggerGenerated;
@@ -28,29 +27,24 @@ public final class AIAssistantViewModel_Factory implements Factory<AIAssistantVi
 
   private final Provider<UserRepository> userRepositoryProvider;
 
-  private final Provider<KelingApiService> kelingApiServiceProvider;
-
   public AIAssistantViewModel_Factory(Provider<TaskRepository> taskRepositoryProvider,
-      Provider<UserRepository> userRepositoryProvider,
-      Provider<KelingApiService> kelingApiServiceProvider) {
+      Provider<UserRepository> userRepositoryProvider) {
     this.taskRepositoryProvider = taskRepositoryProvider;
     this.userRepositoryProvider = userRepositoryProvider;
-    this.kelingApiServiceProvider = kelingApiServiceProvider;
   }
 
   @Override
   public AIAssistantViewModel get() {
-    return newInstance(taskRepositoryProvider.get(), userRepositoryProvider.get(), kelingApiServiceProvider.get());
+    return newInstance(taskRepositoryProvider.get(), userRepositoryProvider.get());
   }
 
   public static AIAssistantViewModel_Factory create(Provider<TaskRepository> taskRepositoryProvider,
-      Provider<UserRepository> userRepositoryProvider,
-      Provider<KelingApiService> kelingApiServiceProvider) {
-    return new AIAssistantViewModel_Factory(taskRepositoryProvider, userRepositoryProvider, kelingApiServiceProvider);
+      Provider<UserRepository> userRepositoryProvider) {
+    return new AIAssistantViewModel_Factory(taskRepositoryProvider, userRepositoryProvider);
   }
 
   public static AIAssistantViewModel newInstance(TaskRepository taskRepository,
-      UserRepository userRepository, KelingApiService kelingApiService) {
-    return new AIAssistantViewModel(taskRepository, userRepository, kelingApiService);
+      UserRepository userRepository) {
+    return new AIAssistantViewModel(taskRepository, userRepository);
   }
 }

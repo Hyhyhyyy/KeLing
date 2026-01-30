@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.keling.app.data.model.TaskStatus
 import com.keling.app.data.model.TaskType
-import com.keling.app.data.remote.ChatRequest
-import com.keling.app.data.remote.KelingApiService
+import com.keling.app.data.network.QwenRequest
+import com.keling.app.data.repository.QwenRepository
 import com.keling.app.data.repository.TaskRepository
 import com.keling.app.data.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -26,9 +26,10 @@ data class AIAssistantUiState(
 @HiltViewModel
 class AIAssistantViewModel @Inject constructor(
     private val taskRepository: TaskRepository,
-    private val userRepository: UserRepository,
-    private val kelingApiService: KelingApiService
+    private val userRepository: UserRepository
 ) : ViewModel() {
+
+    private val qwenRepository = QwenRepository()
 
     private val _uiState = MutableStateFlow(
         AIAssistantUiState(
@@ -115,29 +116,28 @@ class AIAssistantViewModel @Inject constructor(
         }
 
         val systemPrompt = buildString {
-            appendLine("你是「课灵」——面向大学生的学习助手，背后使用了中文能力很强的大规模语言模型（类似 GPT-4 一类的大模型）。")
+            appendLine("你是「课灵」——面向大学生的学习助手。")
             appendLine("请用简体中文回答，结构清晰、有条理，注重具体、可操作的建议。")
+            appendLine("请用 Markdown 输出：标题用 #，列表用 -，重点用 **加粗**，代码用 `行内代码`。")
             appendLine("当用户询问今日任务或学习计划时，请优先结合我提供的【今日任务列表】做出合理安排和优先级建议。")
             appendLine("当用户提学科问题（如数学、物理、编程等），请像优秀家教一样分步骤讲解关键概念、推导过程和例题，必要时给出练习建议。")
-            appendLine()
             if (sb.isNotEmpty()) {
+                appendLine()
                 appendLine("以下是用户的当前学习上下文信息，请在回答时充分利用：")
                 appendLine(sb.toString())
             }
-            appendLine("用户问题：$query")
         }
 
+        val messages = listOf(
+            QwenRequest.Message(role = "system", content = systemPrompt),
+            QwenRequest.Message(role = "user", content = query)
+        )
+
         return try {
-            val resp = kelingApiService.sendChatMessage(
-                token = "",
-                request = ChatRequest(
-                    message = systemPrompt,
-                    context = if (needTasksContext) "assistant_today_tasks" else "assistant_qa"
-                )
-            )
-            resp.body()?.reply?.takeIf { it.isNotBlank() } ?: fallbackAnswer(query)
+            qwenRepository.chat(messages).ifBlank { "AI 返回空结果，请检查 Key/配额/网络。" }
         } catch (e: Exception) {
-            fallbackAnswer(query)
+            val errorMsg = e.message ?: "未知错误"
+            "AI 调用失败：$errorMsg\n请检查 Key 是否有效、网络是否可用，以及控制台配额。"
         }
     }
 
@@ -173,4 +173,3 @@ class AIAssistantViewModel @Inject constructor(
         return start to end
     }
 }
-

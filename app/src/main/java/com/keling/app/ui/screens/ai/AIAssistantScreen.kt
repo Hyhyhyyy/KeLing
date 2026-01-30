@@ -18,6 +18,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -137,10 +143,11 @@ fun AIAssistantScreen(
             value = inputText,
             onValueChange = { inputText = it },
             onSend = {
-                if (inputText.isNotBlank()) {
+                val toSend = inputText.trim()
+                if (toSend.isNotBlank()) {
                     inputText = ""
                     coroutineScope.launch {
-                        viewModel.sendMessage(inputText)
+                        viewModel.sendMessage(toSend)
                         listState.animateScrollToItem(uiState.messages.size.coerceAtLeast(0))
                     }
                 }
@@ -202,11 +209,122 @@ private fun ChatBubble(message: ChatMessage) {
                 )
                 .padding(12.dp)
         ) {
-            Text(
-                text = message.content,
-                style = MaterialTheme.typography.bodyMedium,
-                color = TextPrimary
-            )
+            if (message.isFromUser) {
+                Text(
+                    text = message.content,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = TextPrimary
+                )
+            } else {
+                MarkdownText(
+                    text = message.content,
+                    textStyle = MaterialTheme.typography.bodyMedium
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun MarkdownText(
+    text: String,
+    textStyle: androidx.compose.ui.text.TextStyle
+) {
+    val annotated = remember(text) { buildMarkdownAnnotatedString(text) }
+    Text(
+        text = annotated,
+        style = textStyle,
+        color = TextPrimary
+    )
+}
+
+private fun buildMarkdownAnnotatedString(raw: String): AnnotatedString {
+    return buildAnnotatedString {
+        val lines = raw.split('\n')
+        var inCodeBlock = false
+        lines.forEachIndexed { index, line ->
+            val trimmed = line.trimStart()
+            if (trimmed.startsWith("```")) {
+                inCodeBlock = !inCodeBlock
+            } else if (inCodeBlock) {
+                pushStyle(
+                    SpanStyle(
+                        fontFamily = FontFamily.Monospace,
+                        background = DarkBorder.copy(alpha = 0.4f)
+                    )
+                )
+                append(line)
+                pop()
+            } else {
+                val isBullet = trimmed.startsWith("- ") || trimmed.startsWith("* ")
+                val orderedMatch = Regex("^\\d+\\.\\s+").find(trimmed)
+                if (isBullet) {
+                    append("• ")
+                    appendInlineMarkdown(this, trimmed.drop(2))
+                } else if (orderedMatch != null) {
+                    val prefix = orderedMatch.value
+                    append(prefix)
+                    appendInlineMarkdown(this, trimmed.drop(prefix.length))
+                } else {
+                    appendInlineMarkdown(this, line)
+                }
+            }
+            if (index < lines.lastIndex) {
+                append("\n")
+            }
+        }
+    }
+}
+
+private fun appendInlineMarkdown(builder: AnnotatedString.Builder, text: String) {
+    var i = 0
+    while (i < text.length) {
+        when {
+            text.startsWith("**", i) -> {
+                val end = text.indexOf("**", i + 2)
+                if (end != -1) {
+                    builder.pushStyle(SpanStyle(fontWeight = FontWeight.Bold))
+                    builder.append(text.substring(i + 2, end))
+                    builder.pop()
+                    i = end + 2
+                } else {
+                    builder.append("**")
+                    i += 2
+                }
+            }
+            text[i] == '`' -> {
+                val end = text.indexOf('`', i + 1)
+                if (end != -1) {
+                    builder.pushStyle(
+                        SpanStyle(
+                            fontFamily = FontFamily.Monospace,
+                            background = DarkBorder.copy(alpha = 0.4f)
+                        )
+                    )
+                    builder.append(text.substring(i + 1, end))
+                    builder.pop()
+                    i = end + 1
+                } else {
+                    builder.append("`")
+                    i += 1
+                }
+            }
+            text[i] == '*' -> {
+                val end = text.indexOf('*', i + 1)
+                if (end != -1) {
+                    builder.pushStyle(SpanStyle(fontStyle = FontStyle.Italic))
+                    builder.append(text.substring(i + 1, end))
+                    builder.pop()
+                    i = end + 1
+                } else {
+                    builder.append("*")
+                    i += 1
+                }
+            }
+            else -> {
+                builder.append(text[i])
+                i += 1
+            }
         }
     }
 }
