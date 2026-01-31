@@ -14,6 +14,8 @@ import javax.inject.Inject
 
 data class AiSettingsUiState(
     val apiKey: String = "",
+    val providerId: String = "qwen",
+    val modelId: String = "qwen-turbo",
     val saveSuccess: Boolean = false
 )
 
@@ -26,11 +28,22 @@ class AiSettingsViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            preferencesRepository.apiKey
-                .catch { }
-                .collect { key ->
-                    _uiState.update { it.copy(apiKey = key, saveSuccess = false) }
+            // Combine flows would be better but simple launch is fine
+            launch {
+                preferencesRepository.apiKey.collect { key ->
+                    _uiState.update { it.copy(apiKey = key) }
                 }
+            }
+            launch {
+                preferencesRepository.selectedProviderId.collect { pid ->
+                    _uiState.update { it.copy(providerId = pid) }
+                }
+            }
+            launch {
+                preferencesRepository.selectedModelId.collect { mid ->
+                    _uiState.update { it.copy(modelId = mid) }
+                }
+            }
         }
     }
 
@@ -38,6 +51,13 @@ class AiSettingsViewModel @Inject constructor(
         viewModelScope.launch {
             preferencesRepository.setApiKey(value.trim())
             _uiState.update { it.copy(saveSuccess = true) }
+        }
+    }
+
+    fun updateConfig(providerId: String, modelId: String) {
+        viewModelScope.launch {
+            preferencesRepository.setAiConfig(providerId, modelId)
+            // No saveSuccess toast needed for dropdown change usually, but can add if needed
         }
     }
 

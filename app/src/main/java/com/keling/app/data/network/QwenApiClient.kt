@@ -16,4 +16,5 @@ class QwenApiClient @Inject constructor() {
         .build()
 
     val api: QwenApi = retrofit.create(QwenApi::class.java)
+    val openAiApi: OpenAiApi = retrofit.create(OpenAiApi::class.java)
 }

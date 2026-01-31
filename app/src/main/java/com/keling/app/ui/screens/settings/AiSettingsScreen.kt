@@ -6,6 +6,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.*
@@ -16,6 +17,8 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.keling.app.data.model.AiConfig
+import com.keling.app.data.model.AiProvider
 import com.keling.app.ui.components.NeonButton
 import com.keling.app.ui.components.NeonCard
 import com.keling.app.ui.theme.DarkBackground
@@ -86,8 +89,112 @@ fun AiSettingsScreen(
                     .padding(16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
+                // 模型选择区域
                 Text(
-                    text = "API Key",
+                    text = "模型配置",
+                    style = MaterialTheme.typography.titleMedium,
+                    color = TextPrimary
+                )
+
+                NeonCard(glowColor = DarkBorder) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        var providerExpanded by remember { mutableStateOf(false) }
+                        var modelExpanded by remember { mutableStateOf(false) }
+
+                        val currentProvider = remember(uiState.providerId) {
+                            AiProvider.fromId(uiState.providerId) ?: AiProvider.QWEN
+                        }
+                        val availableModels = remember(currentProvider) {
+                            AiConfig.getModelsForProvider(currentProvider)
+                        }
+                        val currentModel = remember(uiState.modelId, availableModels) {
+                            availableModels.find { it.id == uiState.modelId } ?: availableModels.firstOrNull()
+                        }
+
+                        // 厂商选择
+                        Text("选择 AI 厂商", color = TextSecondary, style = MaterialTheme.typography.bodyMedium)
+                        ExposedDropdownMenuBox(
+                            expanded = providerExpanded,
+                            onExpandedChange = { providerExpanded = !providerExpanded }
+                        ) {
+                            OutlinedTextField(
+                                value = currentProvider.displayName,
+                                onValueChange = {},
+                                readOnly = true,
+                                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = providerExpanded) },
+                                modifier = Modifier.menuAnchor().fillMaxWidth(),
+                                colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors()
+                            )
+                            ExposedDropdownMenu(
+                                expanded = providerExpanded,
+                                onDismissRequest = { providerExpanded = false }
+                            ) {
+                                AiConfig.providers.forEach { provider ->
+                                    DropdownMenuItem(
+                                        text = { Text(provider.displayName) },
+                                        onClick = {
+                                            viewModel.updateConfig(provider.id, AiConfig.getModelsForProvider(provider).first().id)
+                                            providerExpanded = false
+                                        }
+                                    )
+                                }
+                            }
+                        }
+
+                        // 模型选择
+                        Text("选择或输入模型 ID", color = TextSecondary, style = MaterialTheme.typography.bodyMedium)
+                        ExposedDropdownMenuBox(
+                            expanded = modelExpanded,
+                            onExpandedChange = { modelExpanded = !modelExpanded }
+                        ) {
+                            OutlinedTextField(
+                                value = uiState.modelId, // 直接显示 ID，方便手动编辑
+                                onValueChange = { newId ->
+                                    viewModel.updateConfig(currentProvider.id, newId)
+                                },
+                                readOnly = false, // 允许手动输入
+                                label = { Text("模型 ID (如 qwen-flash)") },
+                                placeholder = { Text("输入模型 ID") },
+                                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = modelExpanded) },
+                                modifier = Modifier.menuAnchor().fillMaxWidth(),
+                                colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors()
+                            )
+                            ExposedDropdownMenu(
+                                expanded = modelExpanded,
+                                onDismissRequest = { modelExpanded = false }
+                            ) {
+                                availableModels.forEach { model ->
+                                    DropdownMenuItem(
+                                        text = {
+                                            Column {
+                                                // 优化下拉显示：主标题显示 ID，副标题显示名称和描述
+                                                Text(model.id, style = MaterialTheme.typography.bodyLarge)
+                                                val subText = if (model.description.isNotEmpty()) {
+                                                    "${model.displayName} · ${model.description}"
+                                                } else {
+                                                    model.displayName
+                                                }
+                                                Text(subText, style = MaterialTheme.typography.bodySmall, color = TextSecondary)
+                                            }
+                                        },
+                                        onClick = {
+                                            viewModel.updateConfig(currentProvider.id, model.id)
+                                            modelExpanded = false
+                                        }
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
+
+                Text(
+                    text = "自定义 API Key (可选)",
                     style = MaterialTheme.typography.titleMedium,
                     color = TextPrimary
                 )
