@@ -148,7 +148,7 @@ dependencies {
 // Restore wrapper task for :app module, matching root version to satisfy tooling requests
 tasks.register<Wrapper>("wrapper") {
     gradleVersion = "8.5"
-    distributionUrl = "https://services.gradle.org/distributions/gradle-8.5-bin.zip"
+    distributionUrl = "https://mirrors.cloud.tencent.com/gradle/gradle-8.5-bin.zip"
     validateDistributionUrl = false
 }
 

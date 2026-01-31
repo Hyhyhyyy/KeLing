@@ -27,6 +27,7 @@ fun SettingsScreen(
     onNavigateToAccessibility: () -> Unit,
     onNavigateToNotification: () -> Unit,
     onNavigateToStorage: () -> Unit,
+    onNavigateToAiSettings: () -> Unit,
     onNavigateToAbout: () -> Unit,
     onNavigateToHelp: () -> Unit,
     onLogout: () -> Unit
@@ -116,6 +117,12 @@ fun SettingsScreen(
                     title = "存储管理",
                     subtitle = "清除缓存、下载管理",
                     onClick = onNavigateToStorage
+                )
+                SettingsItem(
+                    icon = Icons.Default.SmartToy,
+                    title = "AI 设置",
+                    subtitle = "配置 API Key",
+                    onClick = onNavigateToAiSettings
                 )
                 SettingsItem(
                     icon = Icons.Default.Info,

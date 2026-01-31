@@ -36,6 +36,7 @@ import com.keling.app.ui.screens.settings.PersonalProfileScreen
 import com.keling.app.ui.screens.settings.PrivacySettingsScreen
 import com.keling.app.ui.screens.settings.SettingsScreen
 import com.keling.app.ui.screens.settings.StorageManagementScreen
+import com.keling.app.ui.screens.settings.AiSettingsScreen
 import com.keling.app.ui.screens.splash.SplashScreen
 import com.keling.app.ui.screens.tasks.TaskDetailScreen
 import com.keling.app.ui.screens.tasks.TaskExecutionScreen
@@ -289,6 +290,7 @@ fun KelingNavHost() {
                     onNavigateToAccessibility = { navController.navigate(Screen.AccessibilitySettings.route) },
                     onNavigateToNotification = { navController.navigate(Screen.NotificationSettings.route) },
                     onNavigateToStorage = { navController.navigate(Screen.StorageManagement.route) },
+                    onNavigateToAiSettings = { navController.navigate(Screen.AiSettings.route) },
                     onNavigateToAbout = { navController.navigate(Screen.About.route) },
                     onNavigateToHelp = { navController.navigate(Screen.HelpFeedback.route) },
                     onLogout = {
@@ -329,6 +331,11 @@ fun KelingNavHost() {
             // 存储管理
             composable(Screen.StorageManagement.route) {
                 StorageManagementScreen(onBack = { navController.popBackStack() })
+            }
+
+            // AI 设置
+            composable(Screen.AiSettings.route) {
+                AiSettingsScreen(onBack = { navController.popBackStack() })
             }
 
             // 关于课灵

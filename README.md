@@ -1,7 +1,7 @@
 # 课灵 - 游戏化学习助手
 
 <p align="center">
-  
+
 </p>
 
 <p align="center">

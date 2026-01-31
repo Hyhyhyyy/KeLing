@@ -17,6 +17,7 @@ import com.keling.app.data.local.dao.TaskDao;
 import com.keling.app.data.local.dao.UserDao;
 import com.keling.app.data.network.QwenApiClient;
 import com.keling.app.data.preferences.AccessibilityPreferencesRepository;
+import com.keling.app.data.preferences.AiPreferencesRepository;
 import com.keling.app.data.remote.KelingApiService;
 import com.keling.app.data.repository.AchievementRepository;
 import com.keling.app.data.repository.AchievementRepositoryImpl;
@@ -62,6 +63,8 @@ import com.keling.app.ui.screens.login.LoginViewModel;
 import com.keling.app.ui.screens.login.LoginViewModel_HiltModules_KeyModule_ProvideFactory;
 import com.keling.app.ui.screens.settings.AccessibilityViewModel;
 import com.keling.app.ui.screens.settings.AccessibilityViewModel_HiltModules_KeyModule_ProvideFactory;
+import com.keling.app.ui.screens.settings.AiSettingsViewModel;
+import com.keling.app.ui.screens.settings.AiSettingsViewModel_HiltModules_KeyModule_ProvideFactory;
 import com.keling.app.ui.screens.settings.PersonalProfileViewModel;
 import com.keling.app.ui.screens.settings.PersonalProfileViewModel_HiltModules_KeyModule_ProvideFactory;
 import com.keling.app.ui.screens.settings.PrivacySettingsViewModel;
@@ -455,7 +458,7 @@ public final class DaggerKelingApplication_HiltComponents_SingletonC {
 
     @Override
     public Set<String> getViewModelKeys() {
-      return ImmutableSet.<String>of(AIAssistantViewModel_HiltModules_KeyModule_ProvideFactory.provide(), AccessibilityViewModel_HiltModules_KeyModule_ProvideFactory.provide(), CampusTasksViewModel_HiltModules_KeyModule_ProvideFactory.provide(), CourseDetailViewModel_HiltModules_KeyModule_ProvideFactory.provide(), CoursesViewModel_HiltModules_KeyModule_ProvideFactory.provide(), FocusViewModel_HiltModules_KeyModule_ProvideFactory.provide(), HomeViewModel_HiltModules_KeyModule_ProvideFactory.provide(), KnowledgeGraphViewModel_HiltModules_KeyModule_ProvideFactory.provide(), KnowledgePracticeViewModel_HiltModules_KeyModule_ProvideFactory.provide(), LoginViewModel_HiltModules_KeyModule_ProvideFactory.provide(), PersonalProfileViewModel_HiltModules_KeyModule_ProvideFactory.provide(), PrivacySettingsViewModel_HiltModules_KeyModule_ProvideFactory.provide(), TaskDetailViewModel_HiltModules_KeyModule_ProvideFactory.provide(), TaskExecutionViewModel_HiltModules_KeyModule_ProvideFactory.provide(), TasksViewModel_HiltModules_KeyModule_ProvideFactory.provide());
+      return ImmutableSet.<String>of(AIAssistantViewModel_HiltModules_KeyModule_ProvideFactory.provide(), AccessibilityViewModel_HiltModules_KeyModule_ProvideFactory.provide(), AiSettingsViewModel_HiltModules_KeyModule_ProvideFactory.provide(), CampusTasksViewModel_HiltModules_KeyModule_ProvideFactory.provide(), CourseDetailViewModel_HiltModules_KeyModule_ProvideFactory.provide(), CoursesViewModel_HiltModules_KeyModule_ProvideFactory.provide(), FocusViewModel_HiltModules_KeyModule_ProvideFactory.provide(), HomeViewModel_HiltModules_KeyModule_ProvideFactory.provide(), KnowledgeGraphViewModel_HiltModules_KeyModule_ProvideFactory.provide(), KnowledgePracticeViewModel_HiltModules_KeyModule_ProvideFactory.provide(), LoginViewModel_HiltModules_KeyModule_ProvideFactory.provide(), PersonalProfileViewModel_HiltModules_KeyModule_ProvideFactory.provide(), PrivacySettingsViewModel_HiltModules_KeyModule_ProvideFactory.provide(), TaskDetailViewModel_HiltModules_KeyModule_ProvideFactory.provide(), TaskExecutionViewModel_HiltModules_KeyModule_ProvideFactory.provide(), TasksViewModel_HiltModules_KeyModule_ProvideFactory.provide());
     }
 
     @Override
@@ -486,6 +489,8 @@ public final class DaggerKelingApplication_HiltComponents_SingletonC {
     private Provider<AIAssistantViewModel> aIAssistantViewModelProvider;
 
     private Provider<AccessibilityViewModel> accessibilityViewModelProvider;
+
+    private Provider<AiSettingsViewModel> aiSettingsViewModelProvider;
 
     private Provider<CampusTasksViewModel> campusTasksViewModelProvider;
 
@@ -528,24 +533,25 @@ public final class DaggerKelingApplication_HiltComponents_SingletonC {
         final ViewModelLifecycle viewModelLifecycleParam) {
       this.aIAssistantViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 0);
       this.accessibilityViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 1);
-      this.campusTasksViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 2);
-      this.courseDetailViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 3);
-      this.coursesViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 4);
-      this.focusViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 5);
-      this.homeViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 6);
-      this.knowledgeGraphViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 7);
-      this.knowledgePracticeViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 8);
-      this.loginViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 9);
-      this.personalProfileViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 10);
-      this.privacySettingsViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 11);
-      this.taskDetailViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 12);
-      this.taskExecutionViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 13);
-      this.tasksViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 14);
+      this.aiSettingsViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 2);
+      this.campusTasksViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 3);
+      this.courseDetailViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 4);
+      this.coursesViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 5);
+      this.focusViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 6);
+      this.homeViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 7);
+      this.knowledgeGraphViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 8);
+      this.knowledgePracticeViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 9);
+      this.loginViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 10);
+      this.personalProfileViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 11);
+      this.privacySettingsViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 12);
+      this.taskDetailViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 13);
+      this.taskExecutionViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 14);
+      this.tasksViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 15);
     }
 
     @Override
     public Map<String, Provider<ViewModel>> getHiltViewModelMap() {
-      return ImmutableMap.<String, Provider<ViewModel>>builderWithExpectedSize(15).put("com.keling.app.ui.screens.ai.AIAssistantViewModel", ((Provider) aIAssistantViewModelProvider)).put("com.keling.app.ui.screens.settings.AccessibilityViewModel", ((Provider) accessibilityViewModelProvider)).put("com.keling.app.ui.screens.campus.CampusTasksViewModel", ((Provider) campusTasksViewModelProvider)).put("com.keling.app.ui.screens.courses.CourseDetailViewModel", ((Provider) courseDetailViewModelProvider)).put("com.keling.app.ui.screens.courses.CoursesViewModel", ((Provider) coursesViewModelProvider)).put("com.keling.app.ui.screens.focus.FocusViewModel", ((Provider) focusViewModelProvider)).put("com.keling.app.ui.screens.home.HomeViewModel", ((Provider) homeViewModelProvider)).put("com.keling.app.ui.screens.knowledge.KnowledgeGraphViewModel", ((Provider) knowledgeGraphViewModelProvider)).put("com.keling.app.ui.screens.knowledge.KnowledgePracticeViewModel", ((Provider) knowledgePracticeViewModelProvider)).put("com.keling.app.ui.screens.login.LoginViewModel", ((Provider) loginViewModelProvider)).put("com.keling.app.ui.screens.settings.PersonalProfileViewModel", ((Provider) personalProfileViewModelProvider)).put("com.keling.app.ui.screens.settings.PrivacySettingsViewModel", ((Provider) privacySettingsViewModelProvider)).put("com.keling.app.ui.screens.tasks.TaskDetailViewModel", ((Provider) taskDetailViewModelProvider)).put("com.keling.app.ui.screens.tasks.TaskExecutionViewModel", ((Provider) taskExecutionViewModelProvider)).put("com.keling.app.ui.screens.tasks.TasksViewModel", ((Provider) tasksViewModelProvider)).build();
+      return ImmutableMap.<String, Provider<ViewModel>>builderWithExpectedSize(16).put("com.keling.app.ui.screens.ai.AIAssistantViewModel", ((Provider) aIAssistantViewModelProvider)).put("com.keling.app.ui.screens.settings.AccessibilityViewModel", ((Provider) accessibilityViewModelProvider)).put("com.keling.app.ui.screens.settings.AiSettingsViewModel", ((Provider) aiSettingsViewModelProvider)).put("com.keling.app.ui.screens.campus.CampusTasksViewModel", ((Provider) campusTasksViewModelProvider)).put("com.keling.app.ui.screens.courses.CourseDetailViewModel", ((Provider) courseDetailViewModelProvider)).put("com.keling.app.ui.screens.courses.CoursesViewModel", ((Provider) coursesViewModelProvider)).put("com.keling.app.ui.screens.focus.FocusViewModel", ((Provider) focusViewModelProvider)).put("com.keling.app.ui.screens.home.HomeViewModel", ((Provider) homeViewModelProvider)).put("com.keling.app.ui.screens.knowledge.KnowledgeGraphViewModel", ((Provider) knowledgeGraphViewModelProvider)).put("com.keling.app.ui.screens.knowledge.KnowledgePracticeViewModel", ((Provider) knowledgePracticeViewModelProvider)).put("com.keling.app.ui.screens.login.LoginViewModel", ((Provider) loginViewModelProvider)).put("com.keling.app.ui.screens.settings.PersonalProfileViewModel", ((Provider) personalProfileViewModelProvider)).put("com.keling.app.ui.screens.settings.PrivacySettingsViewModel", ((Provider) privacySettingsViewModelProvider)).put("com.keling.app.ui.screens.tasks.TaskDetailViewModel", ((Provider) taskDetailViewModelProvider)).put("com.keling.app.ui.screens.tasks.TaskExecutionViewModel", ((Provider) taskExecutionViewModelProvider)).put("com.keling.app.ui.screens.tasks.TasksViewModel", ((Provider) tasksViewModelProvider)).build();
     }
 
     private static final class SwitchingProvider<T> implements Provider<T> {
@@ -575,43 +581,46 @@ public final class DaggerKelingApplication_HiltComponents_SingletonC {
           case 1: // com.keling.app.ui.screens.settings.AccessibilityViewModel 
           return (T) new AccessibilityViewModel(singletonCImpl.accessibilityPreferencesRepositoryProvider.get());
 
-          case 2: // com.keling.app.ui.screens.campus.CampusTasksViewModel 
+          case 2: // com.keling.app.ui.screens.settings.AiSettingsViewModel 
+          return (T) new AiSettingsViewModel(singletonCImpl.aiPreferencesRepositoryProvider.get());
+
+          case 3: // com.keling.app.ui.screens.campus.CampusTasksViewModel 
           return (T) new CampusTasksViewModel(singletonCImpl.bindTaskRepositoryProvider.get(), singletonCImpl.bindUserRepositoryProvider.get());
 
-          case 3: // com.keling.app.ui.screens.courses.CourseDetailViewModel 
+          case 4: // com.keling.app.ui.screens.courses.CourseDetailViewModel 
           return (T) new CourseDetailViewModel(singletonCImpl.bindCourseRepositoryProvider.get(), singletonCImpl.provideKelingApiServiceProvider.get(), singletonCImpl.bindTaskRepositoryProvider.get(), viewModelCImpl.savedStateHandle);
 
-          case 4: // com.keling.app.ui.screens.courses.CoursesViewModel 
+          case 5: // com.keling.app.ui.screens.courses.CoursesViewModel 
           return (T) new CoursesViewModel(singletonCImpl.bindCourseRepositoryProvider.get());
 
-          case 5: // com.keling.app.ui.screens.focus.FocusViewModel 
+          case 6: // com.keling.app.ui.screens.focus.FocusViewModel 
           return (T) new FocusViewModel(singletonCImpl.bindTaskRepositoryProvider.get());
 
-          case 6: // com.keling.app.ui.screens.home.HomeViewModel 
+          case 7: // com.keling.app.ui.screens.home.HomeViewModel 
           return (T) new HomeViewModel(singletonCImpl.bindUserRepositoryProvider.get(), singletonCImpl.bindTaskRepositoryProvider.get(), singletonCImpl.bindCourseRepositoryProvider.get(), singletonCImpl.provideKelingApiServiceProvider.get());
 
-          case 7: // com.keling.app.ui.screens.knowledge.KnowledgeGraphViewModel 
+          case 8: // com.keling.app.ui.screens.knowledge.KnowledgeGraphViewModel 
           return (T) new KnowledgeGraphViewModel(singletonCImpl.knowledgeDao(), singletonCImpl.provideKelingApiServiceProvider.get(), singletonCImpl.bindCourseRepositoryProvider.get(), viewModelCImpl.savedStateHandle);
 
-          case 8: // com.keling.app.ui.screens.knowledge.KnowledgePracticeViewModel 
+          case 9: // com.keling.app.ui.screens.knowledge.KnowledgePracticeViewModel 
           return (T) new KnowledgePracticeViewModel(singletonCImpl.knowledgeDao(), singletonCImpl.provideKelingApiServiceProvider.get(), singletonCImpl.bindUserRepositoryProvider.get(), viewModelCImpl.savedStateHandle);
 
-          case 9: // com.keling.app.ui.screens.login.LoginViewModel 
+          case 10: // com.keling.app.ui.screens.login.LoginViewModel 
           return (T) new LoginViewModel(singletonCImpl.bindUserRepositoryProvider.get());
 
-          case 10: // com.keling.app.ui.screens.settings.PersonalProfileViewModel 
+          case 11: // com.keling.app.ui.screens.settings.PersonalProfileViewModel 
           return (T) new PersonalProfileViewModel(singletonCImpl.bindUserRepositoryProvider.get());
 
-          case 11: // com.keling.app.ui.screens.settings.PrivacySettingsViewModel 
+          case 12: // com.keling.app.ui.screens.settings.PrivacySettingsViewModel 
           return (T) new PrivacySettingsViewModel(singletonCImpl.bindUserRepositoryProvider.get());
 
-          case 12: // com.keling.app.ui.screens.tasks.TaskDetailViewModel 
+          case 13: // com.keling.app.ui.screens.tasks.TaskDetailViewModel 
           return (T) new TaskDetailViewModel(singletonCImpl.bindTaskRepositoryProvider.get());
 
-          case 13: // com.keling.app.ui.screens.tasks.TaskExecutionViewModel 
+          case 14: // com.keling.app.ui.screens.tasks.TaskExecutionViewModel 
           return (T) new TaskExecutionViewModel(singletonCImpl.bindTaskRepositoryProvider.get());
 
-          case 14: // com.keling.app.ui.screens.tasks.TasksViewModel 
+          case 15: // com.keling.app.ui.screens.tasks.TasksViewModel 
           return (T) new TasksViewModel(singletonCImpl.bindTaskRepositoryProvider.get(), singletonCImpl.bindUserRepositoryProvider.get());
 
           default: throw new AssertionError(id);
@@ -713,6 +722,8 @@ public final class DaggerKelingApplication_HiltComponents_SingletonC {
 
     private Provider<QwenApiClient> qwenApiClientProvider;
 
+    private Provider<AiPreferencesRepository> aiPreferencesRepositoryProvider;
+
     private Provider<QwenRepository> qwenRepositoryProvider;
 
     private Provider<AccessibilityPreferencesRepository> accessibilityPreferencesRepositoryProvider;
@@ -765,13 +776,14 @@ public final class DaggerKelingApplication_HiltComponents_SingletonC {
       this.taskRepositoryImplProvider = new SwitchingProvider<>(singletonCImpl, 0);
       this.bindTaskRepositoryProvider = DoubleCheck.provider((Provider) taskRepositoryImplProvider);
       this.qwenApiClientProvider = DoubleCheck.provider(new SwitchingProvider<QwenApiClient>(singletonCImpl, 7));
+      this.aiPreferencesRepositoryProvider = DoubleCheck.provider(new SwitchingProvider<AiPreferencesRepository>(singletonCImpl, 8));
       this.qwenRepositoryProvider = DoubleCheck.provider(new SwitchingProvider<QwenRepository>(singletonCImpl, 6));
-      this.accessibilityPreferencesRepositoryProvider = DoubleCheck.provider(new SwitchingProvider<AccessibilityPreferencesRepository>(singletonCImpl, 8));
-      this.courseRepositoryImplProvider = new SwitchingProvider<>(singletonCImpl, 9);
+      this.accessibilityPreferencesRepositoryProvider = DoubleCheck.provider(new SwitchingProvider<AccessibilityPreferencesRepository>(singletonCImpl, 9));
+      this.courseRepositoryImplProvider = new SwitchingProvider<>(singletonCImpl, 10);
       this.bindCourseRepositoryProvider = DoubleCheck.provider((Provider) courseRepositoryImplProvider);
-      this.provideOkHttpClientProvider = DoubleCheck.provider(new SwitchingProvider<OkHttpClient>(singletonCImpl, 12));
-      this.provideKelingRetrofitProvider = DoubleCheck.provider(new SwitchingProvider<Retrofit>(singletonCImpl, 11));
-      this.provideKelingApiServiceProvider = DoubleCheck.provider(new SwitchingProvider<KelingApiService>(singletonCImpl, 10));
+      this.provideOkHttpClientProvider = DoubleCheck.provider(new SwitchingProvider<OkHttpClient>(singletonCImpl, 13));
+      this.provideKelingRetrofitProvider = DoubleCheck.provider(new SwitchingProvider<Retrofit>(singletonCImpl, 12));
+      this.provideKelingApiServiceProvider = DoubleCheck.provider(new SwitchingProvider<KelingApiService>(singletonCImpl, 11));
     }
 
     @Override
@@ -826,24 +838,27 @@ public final class DaggerKelingApplication_HiltComponents_SingletonC {
           return (T) new UserRepositoryImpl(singletonCImpl.userDao());
 
           case 6: // com.keling.app.data.repository.QwenRepository 
-          return (T) new QwenRepository(singletonCImpl.qwenApiClientProvider.get());
+          return (T) new QwenRepository(singletonCImpl.qwenApiClientProvider.get(), singletonCImpl.aiPreferencesRepositoryProvider.get());
 
           case 7: // com.keling.app.data.network.QwenApiClient 
           return (T) new QwenApiClient();
 
-          case 8: // com.keling.app.data.preferences.AccessibilityPreferencesRepository 
+          case 8: // com.keling.app.data.preferences.AiPreferencesRepository 
+          return (T) new AiPreferencesRepository(ApplicationContextModule_ProvideContextFactory.provideContext(singletonCImpl.applicationContextModule));
+
+          case 9: // com.keling.app.data.preferences.AccessibilityPreferencesRepository 
           return (T) new AccessibilityPreferencesRepository(ApplicationContextModule_ProvideContextFactory.provideContext(singletonCImpl.applicationContextModule));
 
-          case 9: // com.keling.app.data.repository.CourseRepositoryImpl 
+          case 10: // com.keling.app.data.repository.CourseRepositoryImpl 
           return (T) new CourseRepositoryImpl(singletonCImpl.courseDao());
 
-          case 10: // com.keling.app.data.remote.KelingApiService 
+          case 11: // com.keling.app.data.remote.KelingApiService 
           return (T) NetworkModule_ProvideKelingApiServiceFactory.provideKelingApiService(singletonCImpl.provideKelingRetrofitProvider.get());
 
-          case 11: // @javax.inject.Named("keling") retrofit2.Retrofit 
+          case 12: // @javax.inject.Named("keling") retrofit2.Retrofit 
           return (T) NetworkModule_ProvideKelingRetrofitFactory.provideKelingRetrofit(singletonCImpl.provideOkHttpClientProvider.get());
 
-          case 12: // okhttp3.OkHttpClient 
+          case 13: // okhttp3.OkHttpClient 
           return (T) NetworkModule_ProvideOkHttpClientFactory.provideOkHttpClient();
 
           default: throw new AssertionError(id);

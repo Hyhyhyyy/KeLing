@@ -14,6 +14,7 @@ import com.keling.app.ui.screens.knowledge.KnowledgeGraphViewModel_HiltModules;
 import com.keling.app.ui.screens.knowledge.KnowledgePracticeViewModel_HiltModules;
 import com.keling.app.ui.screens.login.LoginViewModel_HiltModules;
 import com.keling.app.ui.screens.settings.AccessibilityViewModel_HiltModules;
+import com.keling.app.ui.screens.settings.AiSettingsViewModel_HiltModules;
 import com.keling.app.ui.screens.settings.PersonalProfileViewModel_HiltModules;
 import com.keling.app.ui.screens.settings.PrivacySettingsViewModel_HiltModules;
 import com.keling.app.ui.screens.tasks.TaskDetailViewModel_HiltModules;
@@ -174,6 +175,7 @@ public final class KelingApplication_HiltComponents {
       modules = {
           AIAssistantViewModel_HiltModules.KeyModule.class,
           AccessibilityViewModel_HiltModules.KeyModule.class,
+          AiSettingsViewModel_HiltModules.KeyModule.class,
           CampusTasksViewModel_HiltModules.KeyModule.class,
           CourseDetailViewModel_HiltModules.KeyModule.class,
           CoursesViewModel_HiltModules.KeyModule.class,
@@ -227,6 +229,7 @@ public final class KelingApplication_HiltComponents {
       modules = {
           AIAssistantViewModel_HiltModules.BindsModule.class,
           AccessibilityViewModel_HiltModules.BindsModule.class,
+          AiSettingsViewModel_HiltModules.BindsModule.class,
           CampusTasksViewModel_HiltModules.BindsModule.class,
           CourseDetailViewModel_HiltModules.BindsModule.class,
           CoursesViewModel_HiltModules.BindsModule.class,

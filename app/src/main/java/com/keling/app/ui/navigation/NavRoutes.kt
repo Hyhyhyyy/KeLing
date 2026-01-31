@@ -75,6 +75,7 @@ sealed class Screen(
     object AccessibilitySettings : Screen("settings/accessibility", "无障碍设置")
     object NotificationSettings : Screen("settings/notification", "通知设置")
     object StorageManagement : Screen("settings/storage", "存储管理")
+    object AiSettings : Screen("settings/ai", "AI 设置")
     object About : Screen("settings/about", "关于课灵")
     object HelpFeedback : Screen("settings/help", "帮助与反馈")
     
