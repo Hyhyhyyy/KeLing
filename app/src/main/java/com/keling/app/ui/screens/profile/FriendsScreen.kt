@@ -161,6 +161,7 @@ private fun FriendCard(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun FriendDetailSheet(
     friend: FriendItem,

@@ -413,12 +413,18 @@ fun KelingBottomBar(
                 label = { Text(screen.title) },
                 selected = selected,
                 onClick = {
-                    navController.navigate(screen.route) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
+                    try {
+                        val homeEntry = navController.getBackStackEntry(Screen.Home.route)
+                        navController.navigate(screen.route) {
+                            popUpTo(homeEntry.destination.id) { saveState = true }
+                            launchSingleTop = true
+                            restoreState = true
                         }
-                        launchSingleTop = true
-                        restoreState = true
+                    } catch (_: IllegalArgumentException) {
+                        navController.navigate(screen.route) {
+                            launchSingleTop = true
+                            restoreState = true
+                        }
                     }
                 },
                 colors = NavigationBarItemDefaults.colors(
