@@ -57,10 +57,10 @@ public final class KelingDatabase_Impl extends KelingDatabase {
         db.execSQL("CREATE TABLE IF NOT EXISTS `schedule_items` (`id` TEXT NOT NULL, `courseId` TEXT NOT NULL, `courseName` TEXT NOT NULL, `teacherName` TEXT NOT NULL, `dayOfWeek` INTEGER NOT NULL, `startTime` TEXT NOT NULL, `endTime` TEXT NOT NULL, `location` TEXT NOT NULL, `weekStart` INTEGER NOT NULL, `weekEnd` INTEGER NOT NULL, `weekType` TEXT NOT NULL, PRIMARY KEY(`id`))");
         db.execSQL("CREATE TABLE IF NOT EXISTS `chapters` (`id` TEXT NOT NULL, `courseId` TEXT NOT NULL, `title` TEXT NOT NULL, `orderIndex` INTEGER NOT NULL, `description` TEXT, `contentUrl` TEXT, `duration` INTEGER NOT NULL, `isCompleted` INTEGER NOT NULL, `progress` REAL NOT NULL, PRIMARY KEY(`id`))");
         db.execSQL("CREATE TABLE IF NOT EXISTS `materials` (`id` TEXT NOT NULL, `courseId` TEXT NOT NULL, `chapterId` TEXT, `title` TEXT NOT NULL, `type` TEXT NOT NULL, `url` TEXT NOT NULL, `size` INTEGER NOT NULL, `downloadedPath` TEXT, `createdAt` INTEGER NOT NULL, PRIMARY KEY(`id`))");
-        db.execSQL("CREATE TABLE IF NOT EXISTS `tasks` (`id` TEXT NOT NULL, `title` TEXT NOT NULL, `description` TEXT NOT NULL, `type` TEXT NOT NULL, `difficulty` TEXT NOT NULL, `status` TEXT NOT NULL, `courseId` TEXT, `chapterId` TEXT, `experienceReward` INTEGER NOT NULL, `coinReward` INTEGER NOT NULL, `deadline` INTEGER, `estimatedMinutes` INTEGER NOT NULL, `progress` REAL NOT NULL, `createdAt` INTEGER NOT NULL, `completedAt` INTEGER, `parentTaskId` TEXT, `order` INTEGER NOT NULL, `targetGrade` TEXT, `actionType` TEXT, `actionPayload` TEXT, PRIMARY KEY(`id`))");
-        db.execSQL("CREATE TABLE IF NOT EXISTS `team_tasks` (`id` TEXT NOT NULL, `taskId` TEXT NOT NULL, `teamId` TEXT NOT NULL, `memberIds` TEXT NOT NULL, `leaderUserId` TEXT NOT NULL, `status` TEXT NOT NULL, `createdAt` INTEGER NOT NULL, PRIMARY KEY(`id`))");
-        db.execSQL("CREATE TABLE IF NOT EXISTS `task_progress` (`id` TEXT NOT NULL, `taskId` TEXT NOT NULL, `userId` TEXT NOT NULL, `progress` REAL NOT NULL, `timeSpentMinutes` INTEGER NOT NULL, `lastUpdatedAt` INTEGER NOT NULL, PRIMARY KEY(`id`))");
-        db.execSQL("CREATE TABLE IF NOT EXISTS `study_sessions` (`id` TEXT NOT NULL, `dayKey` TEXT NOT NULL, `source` TEXT NOT NULL, `taskId` TEXT, `durationMinutes` INTEGER NOT NULL, `createdAt` INTEGER NOT NULL, PRIMARY KEY(`id`))");
+        db.execSQL("CREATE TABLE IF NOT EXISTS `tasks` (`id` TEXT NOT NULL, `title` TEXT NOT NULL, `description` TEXT, `courseId` TEXT, `chapterId` TEXT, `order` INTEGER, `type` TEXT, `difficulty` TEXT, `status` TEXT NOT NULL, `experienceReward` INTEGER, `coinReward` INTEGER, `estimatedMinutes` INTEGER, `estimatedDuration` INTEGER, `progress` REAL NOT NULL, `actionType` TEXT, `actionPayload` TEXT, `targetGrade` TEXT, `source` TEXT, `createdAt` INTEGER, `deadline` INTEGER, `completedAt` INTEGER, `isCompleted` INTEGER NOT NULL, PRIMARY KEY(`id`))");
+        db.execSQL("CREATE TABLE IF NOT EXISTS `team_tasks` (`id` TEXT NOT NULL, `teamId` TEXT NOT NULL, `title` TEXT NOT NULL, `description` TEXT, PRIMARY KEY(`id`))");
+        db.execSQL("CREATE TABLE IF NOT EXISTS `task_progress` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `taskId` TEXT NOT NULL, `userId` TEXT NOT NULL, `progress` INTEGER NOT NULL)");
+        db.execSQL("CREATE TABLE IF NOT EXISTS `study_sessions` (`id` TEXT NOT NULL, `dayKey` TEXT NOT NULL, `source` TEXT NOT NULL, `taskId` TEXT, `durationMinutes` INTEGER NOT NULL, PRIMARY KEY(`id`))");
         db.execSQL("CREATE TABLE IF NOT EXISTS `achievements` (`id` TEXT NOT NULL, `name` TEXT NOT NULL, `description` TEXT NOT NULL, `category` TEXT NOT NULL, `rarity` TEXT NOT NULL, `iconName` TEXT NOT NULL, `experienceReward` INTEGER NOT NULL, `coinReward` INTEGER NOT NULL, `conditionType` TEXT NOT NULL, `conditionValue` INTEGER NOT NULL, `order` INTEGER NOT NULL, PRIMARY KEY(`id`))");
         db.execSQL("CREATE TABLE IF NOT EXISTS `user_achievements` (`id` TEXT NOT NULL, `achievementId` TEXT NOT NULL, `userId` TEXT NOT NULL, `unlockedAt` INTEGER NOT NULL, `progress` REAL NOT NULL, `isUnlocked` INTEGER NOT NULL, PRIMARY KEY(`id`))");
         db.execSQL("CREATE TABLE IF NOT EXISTS `badges` (`id` TEXT NOT NULL, `name` TEXT NOT NULL, `description` TEXT NOT NULL, `iconName` TEXT NOT NULL, `color` TEXT NOT NULL, `tier` INTEGER NOT NULL, `category` TEXT NOT NULL, PRIMARY KEY(`id`))");
@@ -69,7 +69,7 @@ public final class KelingDatabase_Impl extends KelingDatabase {
         db.execSQL("CREATE TABLE IF NOT EXISTS `knowledge_relations` (`id` TEXT NOT NULL, `fromPointId` TEXT NOT NULL, `toPointId` TEXT NOT NULL, `relationType` TEXT NOT NULL, `weight` REAL NOT NULL, PRIMARY KEY(`id`))");
         db.execSQL("CREATE TABLE IF NOT EXISTS `learning_records` (`id` TEXT NOT NULL, `userId` TEXT NOT NULL, `knowledgePointId` TEXT NOT NULL, `questionId` TEXT, `isCorrect` INTEGER NOT NULL, `timeSpentSeconds` INTEGER NOT NULL, `attemptCount` INTEGER NOT NULL, `recordedAt` INTEGER NOT NULL, PRIMARY KEY(`id`))");
         db.execSQL("CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)");
-        db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '6544fa4500ac7f955886db999e8ce389')");
+        db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'bea98894f299d19005373968081e8855')");
       }
 
       @Override
@@ -237,27 +237,29 @@ public final class KelingDatabase_Impl extends KelingDatabase {
                   + " Expected:\n" + _infoMaterials + "\n"
                   + " Found:\n" + _existingMaterials);
         }
-        final HashMap<String, TableInfo.Column> _columnsTasks = new HashMap<String, TableInfo.Column>(20);
+        final HashMap<String, TableInfo.Column> _columnsTasks = new HashMap<String, TableInfo.Column>(22);
         _columnsTasks.put("id", new TableInfo.Column("id", "TEXT", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsTasks.put("title", new TableInfo.Column("title", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsTasks.put("description", new TableInfo.Column("description", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsTasks.put("type", new TableInfo.Column("type", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsTasks.put("difficulty", new TableInfo.Column("difficulty", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsTasks.put("status", new TableInfo.Column("status", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsTasks.put("description", new TableInfo.Column("description", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsTasks.put("courseId", new TableInfo.Column("courseId", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsTasks.put("chapterId", new TableInfo.Column("chapterId", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsTasks.put("experienceReward", new TableInfo.Column("experienceReward", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsTasks.put("coinReward", new TableInfo.Column("coinReward", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsTasks.put("deadline", new TableInfo.Column("deadline", "INTEGER", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsTasks.put("estimatedMinutes", new TableInfo.Column("estimatedMinutes", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsTasks.put("order", new TableInfo.Column("order", "INTEGER", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsTasks.put("type", new TableInfo.Column("type", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsTasks.put("difficulty", new TableInfo.Column("difficulty", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsTasks.put("status", new TableInfo.Column("status", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsTasks.put("experienceReward", new TableInfo.Column("experienceReward", "INTEGER", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsTasks.put("coinReward", new TableInfo.Column("coinReward", "INTEGER", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsTasks.put("estimatedMinutes", new TableInfo.Column("estimatedMinutes", "INTEGER", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsTasks.put("estimatedDuration", new TableInfo.Column("estimatedDuration", "INTEGER", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsTasks.put("progress", new TableInfo.Column("progress", "REAL", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsTasks.put("createdAt", new TableInfo.Column("createdAt", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsTasks.put("completedAt", new TableInfo.Column("completedAt", "INTEGER", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsTasks.put("parentTaskId", new TableInfo.Column("parentTaskId", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsTasks.put("order", new TableInfo.Column("order", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsTasks.put("targetGrade", new TableInfo.Column("targetGrade", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsTasks.put("actionType", new TableInfo.Column("actionType", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsTasks.put("actionPayload", new TableInfo.Column("actionPayload", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsTasks.put("targetGrade", new TableInfo.Column("targetGrade", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsTasks.put("source", new TableInfo.Column("source", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsTasks.put("createdAt", new TableInfo.Column("createdAt", "INTEGER", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsTasks.put("deadline", new TableInfo.Column("deadline", "INTEGER", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsTasks.put("completedAt", new TableInfo.Column("completedAt", "INTEGER", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsTasks.put("isCompleted", new TableInfo.Column("isCompleted", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         final HashSet<TableInfo.ForeignKey> _foreignKeysTasks = new HashSet<TableInfo.ForeignKey>(0);
         final HashSet<TableInfo.Index> _indicesTasks = new HashSet<TableInfo.Index>(0);
         final TableInfo _infoTasks = new TableInfo("tasks", _columnsTasks, _foreignKeysTasks, _indicesTasks);
@@ -267,14 +269,11 @@ public final class KelingDatabase_Impl extends KelingDatabase {
                   + " Expected:\n" + _infoTasks + "\n"
                   + " Found:\n" + _existingTasks);
         }
-        final HashMap<String, TableInfo.Column> _columnsTeamTasks = new HashMap<String, TableInfo.Column>(7);
+        final HashMap<String, TableInfo.Column> _columnsTeamTasks = new HashMap<String, TableInfo.Column>(4);
         _columnsTeamTasks.put("id", new TableInfo.Column("id", "TEXT", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsTeamTasks.put("taskId", new TableInfo.Column("taskId", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsTeamTasks.put("teamId", new TableInfo.Column("teamId", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsTeamTasks.put("memberIds", new TableInfo.Column("memberIds", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsTeamTasks.put("leaderUserId", new TableInfo.Column("leaderUserId", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsTeamTasks.put("status", new TableInfo.Column("status", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsTeamTasks.put("createdAt", new TableInfo.Column("createdAt", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsTeamTasks.put("title", new TableInfo.Column("title", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsTeamTasks.put("description", new TableInfo.Column("description", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
         final HashSet<TableInfo.ForeignKey> _foreignKeysTeamTasks = new HashSet<TableInfo.ForeignKey>(0);
         final HashSet<TableInfo.Index> _indicesTeamTasks = new HashSet<TableInfo.Index>(0);
         final TableInfo _infoTeamTasks = new TableInfo("team_tasks", _columnsTeamTasks, _foreignKeysTeamTasks, _indicesTeamTasks);
@@ -284,13 +283,11 @@ public final class KelingDatabase_Impl extends KelingDatabase {
                   + " Expected:\n" + _infoTeamTasks + "\n"
                   + " Found:\n" + _existingTeamTasks);
         }
-        final HashMap<String, TableInfo.Column> _columnsTaskProgress = new HashMap<String, TableInfo.Column>(6);
-        _columnsTaskProgress.put("id", new TableInfo.Column("id", "TEXT", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
+        final HashMap<String, TableInfo.Column> _columnsTaskProgress = new HashMap<String, TableInfo.Column>(4);
+        _columnsTaskProgress.put("id", new TableInfo.Column("id", "INTEGER", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsTaskProgress.put("taskId", new TableInfo.Column("taskId", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsTaskProgress.put("userId", new TableInfo.Column("userId", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsTaskProgress.put("progress", new TableInfo.Column("progress", "REAL", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsTaskProgress.put("timeSpentMinutes", new TableInfo.Column("timeSpentMinutes", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsTaskProgress.put("lastUpdatedAt", new TableInfo.Column("lastUpdatedAt", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsTaskProgress.put("progress", new TableInfo.Column("progress", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         final HashSet<TableInfo.ForeignKey> _foreignKeysTaskProgress = new HashSet<TableInfo.ForeignKey>(0);
         final HashSet<TableInfo.Index> _indicesTaskProgress = new HashSet<TableInfo.Index>(0);
         final TableInfo _infoTaskProgress = new TableInfo("task_progress", _columnsTaskProgress, _foreignKeysTaskProgress, _indicesTaskProgress);
@@ -300,13 +297,12 @@ public final class KelingDatabase_Impl extends KelingDatabase {
                   + " Expected:\n" + _infoTaskProgress + "\n"
                   + " Found:\n" + _existingTaskProgress);
         }
-        final HashMap<String, TableInfo.Column> _columnsStudySessions = new HashMap<String, TableInfo.Column>(6);
+        final HashMap<String, TableInfo.Column> _columnsStudySessions = new HashMap<String, TableInfo.Column>(5);
         _columnsStudySessions.put("id", new TableInfo.Column("id", "TEXT", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsStudySessions.put("dayKey", new TableInfo.Column("dayKey", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsStudySessions.put("source", new TableInfo.Column("source", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsStudySessions.put("taskId", new TableInfo.Column("taskId", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsStudySessions.put("durationMinutes", new TableInfo.Column("durationMinutes", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsStudySessions.put("createdAt", new TableInfo.Column("createdAt", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         final HashSet<TableInfo.ForeignKey> _foreignKeysStudySessions = new HashSet<TableInfo.ForeignKey>(0);
         final HashSet<TableInfo.Index> _indicesStudySessions = new HashSet<TableInfo.Index>(0);
         final TableInfo _infoStudySessions = new TableInfo("study_sessions", _columnsStudySessions, _foreignKeysStudySessions, _indicesStudySessions);
@@ -438,7 +434,7 @@ public final class KelingDatabase_Impl extends KelingDatabase {
         }
         return new RoomOpenHelper.ValidationResult(true, null);
       }
-    }, "6544fa4500ac7f955886db999e8ce389", "e670210acdf152abb91d8baafec2e1e0");
+    }, "bea98894f299d19005373968081e8855", "3728e533ca37881509e965b9cce81f55");
     final SupportSQLiteOpenHelper.Configuration _sqliteConfig = SupportSQLiteOpenHelper.Configuration.builder(config.context).name(config.name).callback(_openCallback).build();
     final SupportSQLiteOpenHelper _helper = config.sqliteOpenHelperFactory.create(_sqliteConfig);
     return _helper;

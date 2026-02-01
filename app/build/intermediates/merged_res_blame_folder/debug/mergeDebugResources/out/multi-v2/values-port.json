@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.keling.app-mergeDebugResources-73:/values-port/values-port.xml",
+            "outputFile": "com.keling.app-mergeDebugResources-2:/values-port/values-port.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\13581\\.gradle\\caches\\8.13\\transforms\\3aa6064787682b48baa7c80ba75afb2b\\transformed\\appcompat-1.6.1\\res\\values-port\\values-port.xml",
+                    "source": "D:\\Android-gradle\\caches\\8.13\\transforms\\3aa6064787682b48baa7c80ba75afb2b\\transformed\\appcompat-1.6.1\\res\\values-port\\values-port.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

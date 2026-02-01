@@ -21,6 +21,7 @@ import com.keling.app.data.model.RelationType;
 import java.lang.Class;
 import java.lang.Exception;
 import java.lang.Float;
+import java.lang.IllegalStateException;
 import java.lang.Object;
 import java.lang.Override;
 import java.lang.String;
@@ -42,8 +43,6 @@ public final class KnowledgeDao_Impl implements KnowledgeDao {
   private final EntityInsertionAdapter<KnowledgePoint> __insertionAdapterOfKnowledgePoint;
 
   private final EntityInsertionAdapter<KnowledgeRelation> __insertionAdapterOfKnowledgeRelation;
-
-  private final Converters __converters = new Converters();
 
   private final EntityInsertionAdapter<LearningRecord> __insertionAdapterOfLearningRecord;
 
@@ -94,8 +93,12 @@ public final class KnowledgeDao_Impl implements KnowledgeDao {
         statement.bindString(1, entity.getId());
         statement.bindString(2, entity.getFromPointId());
         statement.bindString(3, entity.getToPointId());
-        final String _tmp = __converters.fromRelationType(entity.getRelationType());
-        statement.bindString(4, _tmp);
+        final String _tmp = Converters.INSTANCE.fromRelationType(entity.getRelationType());
+        if (_tmp == null) {
+          statement.bindNull(4);
+        } else {
+          statement.bindString(4, _tmp);
+        }
         statement.bindDouble(5, entity.getWeight());
       }
     };
@@ -602,8 +605,17 @@ public final class KnowledgeDao_Impl implements KnowledgeDao {
             _tmpToPointId = _cursor.getString(_cursorIndexOfToPointId);
             final RelationType _tmpRelationType;
             final String _tmp;
-            _tmp = _cursor.getString(_cursorIndexOfRelationType);
-            _tmpRelationType = __converters.toRelationType(_tmp);
+            if (_cursor.isNull(_cursorIndexOfRelationType)) {
+              _tmp = null;
+            } else {
+              _tmp = _cursor.getString(_cursorIndexOfRelationType);
+            }
+            final RelationType _tmp_1 = Converters.INSTANCE.toRelationType(_tmp);
+            if (_tmp_1 == null) {
+              throw new IllegalStateException("Expected NON-NULL 'com.keling.app.data.model.RelationType', but it was NULL.");
+            } else {
+              _tmpRelationType = _tmp_1;
+            }
             final float _tmpWeight;
             _tmpWeight = _cursor.getFloat(_cursorIndexOfWeight);
             _item = new KnowledgeRelation(_tmpId,_tmpFromPointId,_tmpToPointId,_tmpRelationType,_tmpWeight);
@@ -650,8 +662,17 @@ public final class KnowledgeDao_Impl implements KnowledgeDao {
             _tmpToPointId = _cursor.getString(_cursorIndexOfToPointId);
             final RelationType _tmpRelationType;
             final String _tmp;
-            _tmp = _cursor.getString(_cursorIndexOfRelationType);
-            _tmpRelationType = __converters.toRelationType(_tmp);
+            if (_cursor.isNull(_cursorIndexOfRelationType)) {
+              _tmp = null;
+            } else {
+              _tmp = _cursor.getString(_cursorIndexOfRelationType);
+            }
+            final RelationType _tmp_1 = Converters.INSTANCE.toRelationType(_tmp);
+            if (_tmp_1 == null) {
+              throw new IllegalStateException("Expected NON-NULL 'com.keling.app.data.model.RelationType', but it was NULL.");
+            } else {
+              _tmpRelationType = _tmp_1;
+            }
             final float _tmpWeight;
             _tmpWeight = _cursor.getFloat(_cursorIndexOfWeight);
             _item = new KnowledgeRelation(_tmpId,_tmpFromPointId,_tmpToPointId,_tmpRelationType,_tmpWeight);

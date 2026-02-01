@@ -22,6 +22,7 @@ import com.keling.app.data.model.UserAchievement;
 import com.keling.app.data.model.UserBadge;
 import java.lang.Class;
 import java.lang.Exception;
+import java.lang.IllegalStateException;
 import java.lang.Integer;
 import java.lang.Object;
 import java.lang.Override;
@@ -42,8 +43,6 @@ public final class AchievementDao_Impl implements AchievementDao {
   private final RoomDatabase __db;
 
   private final EntityInsertionAdapter<Achievement> __insertionAdapterOfAchievement;
-
-  private final Converters __converters = new Converters();
 
   private final EntityInsertionAdapter<UserAchievement> __insertionAdapterOfUserAchievement;
 
@@ -70,10 +69,18 @@ public final class AchievementDao_Impl implements AchievementDao {
         statement.bindString(1, entity.getId());
         statement.bindString(2, entity.getName());
         statement.bindString(3, entity.getDescription());
-        final String _tmp = __converters.fromAchievementCategory(entity.getCategory());
-        statement.bindString(4, _tmp);
-        final String _tmp_1 = __converters.fromAchievementRarity(entity.getRarity());
-        statement.bindString(5, _tmp_1);
+        final String _tmp = Converters.INSTANCE.fromAchievementCategory(entity.getCategory());
+        if (_tmp == null) {
+          statement.bindNull(4);
+        } else {
+          statement.bindString(4, _tmp);
+        }
+        final String _tmp_1 = Converters.INSTANCE.fromAchievementRarity(entity.getRarity());
+        if (_tmp_1 == null) {
+          statement.bindNull(5);
+        } else {
+          statement.bindString(5, _tmp_1);
+        }
         statement.bindString(6, entity.getIconName());
         statement.bindLong(7, entity.getExperienceReward());
         statement.bindLong(8, entity.getCoinReward());
@@ -343,12 +350,30 @@ public final class AchievementDao_Impl implements AchievementDao {
             _tmpDescription = _cursor.getString(_cursorIndexOfDescription);
             final AchievementCategory _tmpCategory;
             final String _tmp;
-            _tmp = _cursor.getString(_cursorIndexOfCategory);
-            _tmpCategory = __converters.toAchievementCategory(_tmp);
+            if (_cursor.isNull(_cursorIndexOfCategory)) {
+              _tmp = null;
+            } else {
+              _tmp = _cursor.getString(_cursorIndexOfCategory);
+            }
+            final AchievementCategory _tmp_1 = Converters.INSTANCE.toAchievementCategory(_tmp);
+            if (_tmp_1 == null) {
+              throw new IllegalStateException("Expected NON-NULL 'com.keling.app.data.model.AchievementCategory', but it was NULL.");
+            } else {
+              _tmpCategory = _tmp_1;
+            }
             final AchievementRarity _tmpRarity;
-            final String _tmp_1;
-            _tmp_1 = _cursor.getString(_cursorIndexOfRarity);
-            _tmpRarity = __converters.toAchievementRarity(_tmp_1);
+            final String _tmp_2;
+            if (_cursor.isNull(_cursorIndexOfRarity)) {
+              _tmp_2 = null;
+            } else {
+              _tmp_2 = _cursor.getString(_cursorIndexOfRarity);
+            }
+            final AchievementRarity _tmp_3 = Converters.INSTANCE.toAchievementRarity(_tmp_2);
+            if (_tmp_3 == null) {
+              throw new IllegalStateException("Expected NON-NULL 'com.keling.app.data.model.AchievementRarity', but it was NULL.");
+            } else {
+              _tmpRarity = _tmp_3;
+            }
             final String _tmpIconName;
             _tmpIconName = _cursor.getString(_cursorIndexOfIconName);
             final int _tmpExperienceReward;
@@ -382,8 +407,12 @@ public final class AchievementDao_Impl implements AchievementDao {
     final String _sql = "SELECT * FROM achievements WHERE category = ? ORDER BY `order`";
     final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 1);
     int _argIndex = 1;
-    final String _tmp = __converters.fromAchievementCategory(category);
-    _statement.bindString(_argIndex, _tmp);
+    final String _tmp = Converters.INSTANCE.fromAchievementCategory(category);
+    if (_tmp == null) {
+      _statement.bindNull(_argIndex);
+    } else {
+      _statement.bindString(_argIndex, _tmp);
+    }
     return CoroutinesRoom.createFlow(__db, false, new String[] {"achievements"}, new Callable<List<Achievement>>() {
       @Override
       @NonNull
@@ -412,12 +441,30 @@ public final class AchievementDao_Impl implements AchievementDao {
             _tmpDescription = _cursor.getString(_cursorIndexOfDescription);
             final AchievementCategory _tmpCategory;
             final String _tmp_1;
-            _tmp_1 = _cursor.getString(_cursorIndexOfCategory);
-            _tmpCategory = __converters.toAchievementCategory(_tmp_1);
+            if (_cursor.isNull(_cursorIndexOfCategory)) {
+              _tmp_1 = null;
+            } else {
+              _tmp_1 = _cursor.getString(_cursorIndexOfCategory);
+            }
+            final AchievementCategory _tmp_2 = Converters.INSTANCE.toAchievementCategory(_tmp_1);
+            if (_tmp_2 == null) {
+              throw new IllegalStateException("Expected NON-NULL 'com.keling.app.data.model.AchievementCategory', but it was NULL.");
+            } else {
+              _tmpCategory = _tmp_2;
+            }
             final AchievementRarity _tmpRarity;
-            final String _tmp_2;
-            _tmp_2 = _cursor.getString(_cursorIndexOfRarity);
-            _tmpRarity = __converters.toAchievementRarity(_tmp_2);
+            final String _tmp_3;
+            if (_cursor.isNull(_cursorIndexOfRarity)) {
+              _tmp_3 = null;
+            } else {
+              _tmp_3 = _cursor.getString(_cursorIndexOfRarity);
+            }
+            final AchievementRarity _tmp_4 = Converters.INSTANCE.toAchievementRarity(_tmp_3);
+            if (_tmp_4 == null) {
+              throw new IllegalStateException("Expected NON-NULL 'com.keling.app.data.model.AchievementRarity', but it was NULL.");
+            } else {
+              _tmpRarity = _tmp_4;
+            }
             final String _tmpIconName;
             _tmpIconName = _cursor.getString(_cursorIndexOfIconName);
             final int _tmpExperienceReward;
@@ -481,12 +528,30 @@ public final class AchievementDao_Impl implements AchievementDao {
             _tmpDescription = _cursor.getString(_cursorIndexOfDescription);
             final AchievementCategory _tmpCategory;
             final String _tmp;
-            _tmp = _cursor.getString(_cursorIndexOfCategory);
-            _tmpCategory = __converters.toAchievementCategory(_tmp);
+            if (_cursor.isNull(_cursorIndexOfCategory)) {
+              _tmp = null;
+            } else {
+              _tmp = _cursor.getString(_cursorIndexOfCategory);
+            }
+            final AchievementCategory _tmp_1 = Converters.INSTANCE.toAchievementCategory(_tmp);
+            if (_tmp_1 == null) {
+              throw new IllegalStateException("Expected NON-NULL 'com.keling.app.data.model.AchievementCategory', but it was NULL.");
+            } else {
+              _tmpCategory = _tmp_1;
+            }
             final AchievementRarity _tmpRarity;
-            final String _tmp_1;
-            _tmp_1 = _cursor.getString(_cursorIndexOfRarity);
-            _tmpRarity = __converters.toAchievementRarity(_tmp_1);
+            final String _tmp_2;
+            if (_cursor.isNull(_cursorIndexOfRarity)) {
+              _tmp_2 = null;
+            } else {
+              _tmp_2 = _cursor.getString(_cursorIndexOfRarity);
+            }
+            final AchievementRarity _tmp_3 = Converters.INSTANCE.toAchievementRarity(_tmp_2);
+            if (_tmp_3 == null) {
+              throw new IllegalStateException("Expected NON-NULL 'com.keling.app.data.model.AchievementRarity', but it was NULL.");
+            } else {
+              _tmpRarity = _tmp_3;
+            }
             final String _tmpIconName;
             _tmpIconName = _cursor.getString(_cursorIndexOfIconName);
             final int _tmpExperienceReward;

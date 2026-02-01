@@ -19,6 +19,7 @@ import com.keling.app.data.model.User;
 import com.keling.app.data.model.UserRole;
 import java.lang.Class;
 import java.lang.Exception;
+import java.lang.IllegalStateException;
 import java.lang.Object;
 import java.lang.Override;
 import java.lang.String;
@@ -38,8 +39,6 @@ public final class UserDao_Impl implements UserDao {
   private final RoomDatabase __db;
 
   private final EntityInsertionAdapter<User> __insertionAdapterOfUser;
-
-  private final Converters __converters = new Converters();
 
   private final EntityDeletionOrUpdateAdapter<User> __deletionAdapterOfUser;
 
@@ -64,8 +63,12 @@ public final class UserDao_Impl implements UserDao {
         statement.bindString(1, entity.getId());
         statement.bindString(2, entity.getUsername());
         statement.bindString(3, entity.getRealName());
-        final String _tmp = __converters.fromUserRole(entity.getRole());
-        statement.bindString(4, _tmp);
+        final String _tmp = Converters.INSTANCE.fromUserRole(entity.getRole());
+        if (_tmp == null) {
+          statement.bindNull(4);
+        } else {
+          statement.bindString(4, _tmp);
+        }
         if (entity.getAvatarUrl() == null) {
           statement.bindNull(5);
         } else {
@@ -96,8 +99,12 @@ public final class UserDao_Impl implements UserDao {
         } else {
           statement.bindString(10, entity.getPhone());
         }
-        final String _tmp_1 = __converters.fromPrivacyLevel(entity.getPrivacyLevel());
-        statement.bindString(11, _tmp_1);
+        final String _tmp_1 = Converters.INSTANCE.fromPrivacyLevel(entity.getPrivacyLevel());
+        if (_tmp_1 == null) {
+          statement.bindNull(11);
+        } else {
+          statement.bindString(11, _tmp_1);
+        }
         statement.bindLong(12, entity.getCreatedAt());
         statement.bindLong(13, entity.getLastLoginAt());
       }
@@ -128,8 +135,12 @@ public final class UserDao_Impl implements UserDao {
         statement.bindString(1, entity.getId());
         statement.bindString(2, entity.getUsername());
         statement.bindString(3, entity.getRealName());
-        final String _tmp = __converters.fromUserRole(entity.getRole());
-        statement.bindString(4, _tmp);
+        final String _tmp = Converters.INSTANCE.fromUserRole(entity.getRole());
+        if (_tmp == null) {
+          statement.bindNull(4);
+        } else {
+          statement.bindString(4, _tmp);
+        }
         if (entity.getAvatarUrl() == null) {
           statement.bindNull(5);
         } else {
@@ -160,8 +171,12 @@ public final class UserDao_Impl implements UserDao {
         } else {
           statement.bindString(10, entity.getPhone());
         }
-        final String _tmp_1 = __converters.fromPrivacyLevel(entity.getPrivacyLevel());
-        statement.bindString(11, _tmp_1);
+        final String _tmp_1 = Converters.INSTANCE.fromPrivacyLevel(entity.getPrivacyLevel());
+        if (_tmp_1 == null) {
+          statement.bindNull(11);
+        } else {
+          statement.bindString(11, _tmp_1);
+        }
         statement.bindLong(12, entity.getCreatedAt());
         statement.bindLong(13, entity.getLastLoginAt());
         statement.bindString(14, entity.getId());
@@ -344,8 +359,17 @@ public final class UserDao_Impl implements UserDao {
             _tmpRealName = _cursor.getString(_cursorIndexOfRealName);
             final UserRole _tmpRole;
             final String _tmp;
-            _tmp = _cursor.getString(_cursorIndexOfRole);
-            _tmpRole = __converters.toUserRole(_tmp);
+            if (_cursor.isNull(_cursorIndexOfRole)) {
+              _tmp = null;
+            } else {
+              _tmp = _cursor.getString(_cursorIndexOfRole);
+            }
+            final UserRole _tmp_1 = Converters.INSTANCE.toUserRole(_tmp);
+            if (_tmp_1 == null) {
+              throw new IllegalStateException("Expected NON-NULL 'com.keling.app.data.model.UserRole', but it was NULL.");
+            } else {
+              _tmpRole = _tmp_1;
+            }
             final String _tmpAvatarUrl;
             if (_cursor.isNull(_cursorIndexOfAvatarUrl)) {
               _tmpAvatarUrl = null;
@@ -383,9 +407,18 @@ public final class UserDao_Impl implements UserDao {
               _tmpPhone = _cursor.getString(_cursorIndexOfPhone);
             }
             final PrivacyLevel _tmpPrivacyLevel;
-            final String _tmp_1;
-            _tmp_1 = _cursor.getString(_cursorIndexOfPrivacyLevel);
-            _tmpPrivacyLevel = __converters.toPrivacyLevel(_tmp_1);
+            final String _tmp_2;
+            if (_cursor.isNull(_cursorIndexOfPrivacyLevel)) {
+              _tmp_2 = null;
+            } else {
+              _tmp_2 = _cursor.getString(_cursorIndexOfPrivacyLevel);
+            }
+            final PrivacyLevel _tmp_3 = Converters.INSTANCE.toPrivacyLevel(_tmp_2);
+            if (_tmp_3 == null) {
+              throw new IllegalStateException("Expected NON-NULL 'com.keling.app.data.model.PrivacyLevel', but it was NULL.");
+            } else {
+              _tmpPrivacyLevel = _tmp_3;
+            }
             final long _tmpCreatedAt;
             _tmpCreatedAt = _cursor.getLong(_cursorIndexOfCreatedAt);
             final long _tmpLastLoginAt;
@@ -438,8 +471,17 @@ public final class UserDao_Impl implements UserDao {
             _tmpRealName = _cursor.getString(_cursorIndexOfRealName);
             final UserRole _tmpRole;
             final String _tmp;
-            _tmp = _cursor.getString(_cursorIndexOfRole);
-            _tmpRole = __converters.toUserRole(_tmp);
+            if (_cursor.isNull(_cursorIndexOfRole)) {
+              _tmp = null;
+            } else {
+              _tmp = _cursor.getString(_cursorIndexOfRole);
+            }
+            final UserRole _tmp_1 = Converters.INSTANCE.toUserRole(_tmp);
+            if (_tmp_1 == null) {
+              throw new IllegalStateException("Expected NON-NULL 'com.keling.app.data.model.UserRole', but it was NULL.");
+            } else {
+              _tmpRole = _tmp_1;
+            }
             final String _tmpAvatarUrl;
             if (_cursor.isNull(_cursorIndexOfAvatarUrl)) {
               _tmpAvatarUrl = null;
@@ -477,9 +519,18 @@ public final class UserDao_Impl implements UserDao {
               _tmpPhone = _cursor.getString(_cursorIndexOfPhone);
             }
             final PrivacyLevel _tmpPrivacyLevel;
-            final String _tmp_1;
-            _tmp_1 = _cursor.getString(_cursorIndexOfPrivacyLevel);
-            _tmpPrivacyLevel = __converters.toPrivacyLevel(_tmp_1);
+            final String _tmp_2;
+            if (_cursor.isNull(_cursorIndexOfPrivacyLevel)) {
+              _tmp_2 = null;
+            } else {
+              _tmp_2 = _cursor.getString(_cursorIndexOfPrivacyLevel);
+            }
+            final PrivacyLevel _tmp_3 = Converters.INSTANCE.toPrivacyLevel(_tmp_2);
+            if (_tmp_3 == null) {
+              throw new IllegalStateException("Expected NON-NULL 'com.keling.app.data.model.PrivacyLevel', but it was NULL.");
+            } else {
+              _tmpPrivacyLevel = _tmp_3;
+            }
             final long _tmpCreatedAt;
             _tmpCreatedAt = _cursor.getLong(_cursorIndexOfCreatedAt);
             final long _tmpLastLoginAt;
@@ -538,8 +589,17 @@ public final class UserDao_Impl implements UserDao {
             _tmpRealName = _cursor.getString(_cursorIndexOfRealName);
             final UserRole _tmpRole;
             final String _tmp;
-            _tmp = _cursor.getString(_cursorIndexOfRole);
-            _tmpRole = __converters.toUserRole(_tmp);
+            if (_cursor.isNull(_cursorIndexOfRole)) {
+              _tmp = null;
+            } else {
+              _tmp = _cursor.getString(_cursorIndexOfRole);
+            }
+            final UserRole _tmp_1 = Converters.INSTANCE.toUserRole(_tmp);
+            if (_tmp_1 == null) {
+              throw new IllegalStateException("Expected NON-NULL 'com.keling.app.data.model.UserRole', but it was NULL.");
+            } else {
+              _tmpRole = _tmp_1;
+            }
             final String _tmpAvatarUrl;
             if (_cursor.isNull(_cursorIndexOfAvatarUrl)) {
               _tmpAvatarUrl = null;
@@ -577,9 +637,18 @@ public final class UserDao_Impl implements UserDao {
               _tmpPhone = _cursor.getString(_cursorIndexOfPhone);
             }
             final PrivacyLevel _tmpPrivacyLevel;
-            final String _tmp_1;
-            _tmp_1 = _cursor.getString(_cursorIndexOfPrivacyLevel);
-            _tmpPrivacyLevel = __converters.toPrivacyLevel(_tmp_1);
+            final String _tmp_2;
+            if (_cursor.isNull(_cursorIndexOfPrivacyLevel)) {
+              _tmp_2 = null;
+            } else {
+              _tmp_2 = _cursor.getString(_cursorIndexOfPrivacyLevel);
+            }
+            final PrivacyLevel _tmp_3 = Converters.INSTANCE.toPrivacyLevel(_tmp_2);
+            if (_tmp_3 == null) {
+              throw new IllegalStateException("Expected NON-NULL 'com.keling.app.data.model.PrivacyLevel', but it was NULL.");
+            } else {
+              _tmpPrivacyLevel = _tmp_3;
+            }
             final long _tmpCreatedAt;
             _tmpCreatedAt = _cursor.getLong(_cursorIndexOfCreatedAt);
             final long _tmpLastLoginAt;
@@ -631,8 +700,17 @@ public final class UserDao_Impl implements UserDao {
             _tmpRealName = _cursor.getString(_cursorIndexOfRealName);
             final UserRole _tmpRole;
             final String _tmp;
-            _tmp = _cursor.getString(_cursorIndexOfRole);
-            _tmpRole = __converters.toUserRole(_tmp);
+            if (_cursor.isNull(_cursorIndexOfRole)) {
+              _tmp = null;
+            } else {
+              _tmp = _cursor.getString(_cursorIndexOfRole);
+            }
+            final UserRole _tmp_1 = Converters.INSTANCE.toUserRole(_tmp);
+            if (_tmp_1 == null) {
+              throw new IllegalStateException("Expected NON-NULL 'com.keling.app.data.model.UserRole', but it was NULL.");
+            } else {
+              _tmpRole = _tmp_1;
+            }
             final String _tmpAvatarUrl;
             if (_cursor.isNull(_cursorIndexOfAvatarUrl)) {
               _tmpAvatarUrl = null;
@@ -670,9 +748,18 @@ public final class UserDao_Impl implements UserDao {
               _tmpPhone = _cursor.getString(_cursorIndexOfPhone);
             }
             final PrivacyLevel _tmpPrivacyLevel;
-            final String _tmp_1;
-            _tmp_1 = _cursor.getString(_cursorIndexOfPrivacyLevel);
-            _tmpPrivacyLevel = __converters.toPrivacyLevel(_tmp_1);
+            final String _tmp_2;
+            if (_cursor.isNull(_cursorIndexOfPrivacyLevel)) {
+              _tmp_2 = null;
+            } else {
+              _tmp_2 = _cursor.getString(_cursorIndexOfPrivacyLevel);
+            }
+            final PrivacyLevel _tmp_3 = Converters.INSTANCE.toPrivacyLevel(_tmp_2);
+            if (_tmp_3 == null) {
+              throw new IllegalStateException("Expected NON-NULL 'com.keling.app.data.model.PrivacyLevel', but it was NULL.");
+            } else {
+              _tmpPrivacyLevel = _tmp_3;
+            }
             final long _tmpCreatedAt;
             _tmpCreatedAt = _cursor.getLong(_cursorIndexOfCreatedAt);
             final long _tmpLastLoginAt;

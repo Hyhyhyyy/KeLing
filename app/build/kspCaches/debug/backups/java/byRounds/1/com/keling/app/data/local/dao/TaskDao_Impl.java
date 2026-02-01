@@ -13,7 +13,6 @@ import androidx.room.SharedSQLiteStatement;
 import androidx.room.util.CursorUtil;
 import androidx.room.util.DBUtil;
 import androidx.sqlite.db.SupportSQLiteStatement;
-import com.keling.app.data.local.Converters;
 import com.keling.app.data.model.StudySession;
 import com.keling.app.data.model.Task;
 import com.keling.app.data.model.TaskDifficulty;
@@ -23,6 +22,7 @@ import com.keling.app.data.model.TaskType;
 import com.keling.app.data.model.TeamTask;
 import java.lang.Class;
 import java.lang.Exception;
+import java.lang.IllegalArgumentException;
 import java.lang.Integer;
 import java.lang.Long;
 import java.lang.Object;
@@ -44,8 +44,6 @@ public final class TaskDao_Impl implements TaskDao {
   private final RoomDatabase __db;
 
   private final EntityInsertionAdapter<Task> __insertionAdapterOfTask;
-
-  private final Converters __converters = new Converters();
 
   private final EntityInsertionAdapter<TaskProgress> __insertionAdapterOfTaskProgress;
 
@@ -69,7 +67,7 @@ public final class TaskDao_Impl implements TaskDao {
       @Override
       @NonNull
       protected String createQuery() {
-        return "INSERT OR REPLACE INTO `tasks` (`id`,`title`,`description`,`type`,`difficulty`,`status`,`courseId`,`chapterId`,`experienceReward`,`coinReward`,`deadline`,`estimatedMinutes`,`progress`,`createdAt`,`completedAt`,`parentTaskId`,`order`,`targetGrade`,`actionType`,`actionPayload`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        return "INSERT OR REPLACE INTO `tasks` (`id`,`title`,`description`,`courseId`,`chapterId`,`order`,`type`,`difficulty`,`status`,`experienceReward`,`coinReward`,`estimatedMinutes`,`estimatedDuration`,`progress`,`actionType`,`actionPayload`,`targetGrade`,`source`,`createdAt`,`deadline`,`completedAt`,`isCompleted`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
       }
 
       @Override
@@ -77,105 +75,138 @@ public final class TaskDao_Impl implements TaskDao {
           @NonNull final Task entity) {
         statement.bindString(1, entity.getId());
         statement.bindString(2, entity.getTitle());
-        statement.bindString(3, entity.getDescription());
-        final String _tmp = __converters.fromTaskType(entity.getType());
-        statement.bindString(4, _tmp);
-        final String _tmp_1 = __converters.fromTaskDifficulty(entity.getDifficulty());
-        statement.bindString(5, _tmp_1);
-        final String _tmp_2 = __converters.fromTaskStatus(entity.getStatus());
-        statement.bindString(6, _tmp_2);
-        if (entity.getCourseId() == null) {
-          statement.bindNull(7);
+        if (entity.getDescription() == null) {
+          statement.bindNull(3);
         } else {
-          statement.bindString(7, entity.getCourseId());
+          statement.bindString(3, entity.getDescription());
+        }
+        if (entity.getCourseId() == null) {
+          statement.bindNull(4);
+        } else {
+          statement.bindString(4, entity.getCourseId());
         }
         if (entity.getChapterId() == null) {
+          statement.bindNull(5);
+        } else {
+          statement.bindString(5, entity.getChapterId());
+        }
+        if (entity.getOrder() == null) {
+          statement.bindNull(6);
+        } else {
+          statement.bindLong(6, entity.getOrder());
+        }
+        if (entity.getType() == null) {
+          statement.bindNull(7);
+        } else {
+          statement.bindString(7, __TaskType_enumToString(entity.getType()));
+        }
+        if (entity.getDifficulty() == null) {
           statement.bindNull(8);
         } else {
-          statement.bindString(8, entity.getChapterId());
+          statement.bindString(8, __TaskDifficulty_enumToString(entity.getDifficulty()));
         }
-        statement.bindLong(9, entity.getExperienceReward());
-        statement.bindLong(10, entity.getCoinReward());
-        if (entity.getDeadline() == null) {
+        statement.bindString(9, __TaskStatus_enumToString(entity.getStatus()));
+        if (entity.getExperienceReward() == null) {
+          statement.bindNull(10);
+        } else {
+          statement.bindLong(10, entity.getExperienceReward());
+        }
+        if (entity.getCoinReward() == null) {
           statement.bindNull(11);
         } else {
-          statement.bindLong(11, entity.getDeadline());
+          statement.bindLong(11, entity.getCoinReward());
         }
-        statement.bindLong(12, entity.getEstimatedMinutes());
-        statement.bindDouble(13, entity.getProgress());
-        statement.bindLong(14, entity.getCreatedAt());
-        if (entity.getCompletedAt() == null) {
+        if (entity.getEstimatedMinutes() == null) {
+          statement.bindNull(12);
+        } else {
+          statement.bindLong(12, entity.getEstimatedMinutes());
+        }
+        if (entity.getEstimatedDuration() == null) {
+          statement.bindNull(13);
+        } else {
+          statement.bindLong(13, entity.getEstimatedDuration());
+        }
+        statement.bindDouble(14, entity.getProgress());
+        if (entity.getActionType() == null) {
           statement.bindNull(15);
         } else {
-          statement.bindLong(15, entity.getCompletedAt());
-        }
-        if (entity.getParentTaskId() == null) {
-          statement.bindNull(16);
-        } else {
-          statement.bindString(16, entity.getParentTaskId());
-        }
-        statement.bindLong(17, entity.getOrder());
-        if (entity.getTargetGrade() == null) {
-          statement.bindNull(18);
-        } else {
-          statement.bindString(18, entity.getTargetGrade());
-        }
-        if (entity.getActionType() == null) {
-          statement.bindNull(19);
-        } else {
-          statement.bindString(19, entity.getActionType());
+          statement.bindString(15, entity.getActionType());
         }
         if (entity.getActionPayload() == null) {
+          statement.bindNull(16);
+        } else {
+          statement.bindString(16, entity.getActionPayload());
+        }
+        if (entity.getTargetGrade() == null) {
+          statement.bindNull(17);
+        } else {
+          statement.bindString(17, entity.getTargetGrade());
+        }
+        if (entity.getSource() == null) {
+          statement.bindNull(18);
+        } else {
+          statement.bindString(18, entity.getSource());
+        }
+        if (entity.getCreatedAt() == null) {
+          statement.bindNull(19);
+        } else {
+          statement.bindLong(19, entity.getCreatedAt());
+        }
+        if (entity.getDeadline() == null) {
           statement.bindNull(20);
         } else {
-          statement.bindString(20, entity.getActionPayload());
+          statement.bindLong(20, entity.getDeadline());
         }
+        if (entity.getCompletedAt() == null) {
+          statement.bindNull(21);
+        } else {
+          statement.bindLong(21, entity.getCompletedAt());
+        }
+        final int _tmp = entity.isCompleted() ? 1 : 0;
+        statement.bindLong(22, _tmp);
       }
     };
     this.__insertionAdapterOfTaskProgress = new EntityInsertionAdapter<TaskProgress>(__db) {
       @Override
       @NonNull
       protected String createQuery() {
-        return "INSERT OR REPLACE INTO `task_progress` (`id`,`taskId`,`userId`,`progress`,`timeSpentMinutes`,`lastUpdatedAt`) VALUES (?,?,?,?,?,?)";
+        return "INSERT OR REPLACE INTO `task_progress` (`id`,`taskId`,`userId`,`progress`) VALUES (nullif(?, 0),?,?,?)";
       }
 
       @Override
       protected void bind(@NonNull final SupportSQLiteStatement statement,
           @NonNull final TaskProgress entity) {
-        statement.bindString(1, entity.getId());
+        statement.bindLong(1, entity.getId());
         statement.bindString(2, entity.getTaskId());
         statement.bindString(3, entity.getUserId());
-        statement.bindDouble(4, entity.getProgress());
-        statement.bindLong(5, entity.getTimeSpentMinutes());
-        statement.bindLong(6, entity.getLastUpdatedAt());
+        statement.bindLong(4, entity.getProgress());
       }
     };
     this.__insertionAdapterOfTeamTask = new EntityInsertionAdapter<TeamTask>(__db) {
       @Override
       @NonNull
       protected String createQuery() {
-        return "INSERT OR REPLACE INTO `team_tasks` (`id`,`taskId`,`teamId`,`memberIds`,`leaderUserId`,`status`,`createdAt`) VALUES (?,?,?,?,?,?,?)";
+        return "INSERT OR REPLACE INTO `team_tasks` (`id`,`teamId`,`title`,`description`) VALUES (?,?,?,?)";
       }
 
       @Override
       protected void bind(@NonNull final SupportSQLiteStatement statement,
           @NonNull final TeamTask entity) {
         statement.bindString(1, entity.getId());
-        statement.bindString(2, entity.getTaskId());
-        statement.bindString(3, entity.getTeamId());
-        final String _tmp = __converters.fromStringList(entity.getMemberIds());
-        statement.bindString(4, _tmp);
-        statement.bindString(5, entity.getLeaderUserId());
-        final String _tmp_1 = __converters.fromTaskStatus(entity.getStatus());
-        statement.bindString(6, _tmp_1);
-        statement.bindLong(7, entity.getCreatedAt());
+        statement.bindString(2, entity.getTeamId());
+        statement.bindString(3, entity.getTitle());
+        if (entity.getDescription() == null) {
+          statement.bindNull(4);
+        } else {
+          statement.bindString(4, entity.getDescription());
+        }
       }
     };
     this.__insertionAdapterOfStudySession = new EntityInsertionAdapter<StudySession>(__db) {
       @Override
       @NonNull
       protected String createQuery() {
-        return "INSERT OR REPLACE INTO `study_sessions` (`id`,`dayKey`,`source`,`taskId`,`durationMinutes`,`createdAt`) VALUES (?,?,?,?,?,?)";
+        return "INSERT OR REPLACE INTO `study_sessions` (`id`,`dayKey`,`source`,`taskId`,`durationMinutes`) VALUES (?,?,?,?,?)";
       }
 
       @Override
@@ -190,7 +221,6 @@ public final class TaskDao_Impl implements TaskDao {
           statement.bindString(4, entity.getTaskId());
         }
         statement.bindLong(5, entity.getDurationMinutes());
-        statement.bindLong(6, entity.getCreatedAt());
       }
     };
     this.__deletionAdapterOfTask = new EntityDeletionOrUpdateAdapter<Task>(__db) {
@@ -210,7 +240,7 @@ public final class TaskDao_Impl implements TaskDao {
       @Override
       @NonNull
       protected String createQuery() {
-        return "UPDATE OR ABORT `tasks` SET `id` = ?,`title` = ?,`description` = ?,`type` = ?,`difficulty` = ?,`status` = ?,`courseId` = ?,`chapterId` = ?,`experienceReward` = ?,`coinReward` = ?,`deadline` = ?,`estimatedMinutes` = ?,`progress` = ?,`createdAt` = ?,`completedAt` = ?,`parentTaskId` = ?,`order` = ?,`targetGrade` = ?,`actionType` = ?,`actionPayload` = ? WHERE `id` = ?";
+        return "UPDATE OR ABORT `tasks` SET `id` = ?,`title` = ?,`description` = ?,`courseId` = ?,`chapterId` = ?,`order` = ?,`type` = ?,`difficulty` = ?,`status` = ?,`experienceReward` = ?,`coinReward` = ?,`estimatedMinutes` = ?,`estimatedDuration` = ?,`progress` = ?,`actionType` = ?,`actionPayload` = ?,`targetGrade` = ?,`source` = ?,`createdAt` = ?,`deadline` = ?,`completedAt` = ?,`isCompleted` = ? WHERE `id` = ?";
       }
 
       @Override
@@ -218,79 +248,113 @@ public final class TaskDao_Impl implements TaskDao {
           @NonNull final Task entity) {
         statement.bindString(1, entity.getId());
         statement.bindString(2, entity.getTitle());
-        statement.bindString(3, entity.getDescription());
-        final String _tmp = __converters.fromTaskType(entity.getType());
-        statement.bindString(4, _tmp);
-        final String _tmp_1 = __converters.fromTaskDifficulty(entity.getDifficulty());
-        statement.bindString(5, _tmp_1);
-        final String _tmp_2 = __converters.fromTaskStatus(entity.getStatus());
-        statement.bindString(6, _tmp_2);
-        if (entity.getCourseId() == null) {
-          statement.bindNull(7);
+        if (entity.getDescription() == null) {
+          statement.bindNull(3);
         } else {
-          statement.bindString(7, entity.getCourseId());
+          statement.bindString(3, entity.getDescription());
+        }
+        if (entity.getCourseId() == null) {
+          statement.bindNull(4);
+        } else {
+          statement.bindString(4, entity.getCourseId());
         }
         if (entity.getChapterId() == null) {
+          statement.bindNull(5);
+        } else {
+          statement.bindString(5, entity.getChapterId());
+        }
+        if (entity.getOrder() == null) {
+          statement.bindNull(6);
+        } else {
+          statement.bindLong(6, entity.getOrder());
+        }
+        if (entity.getType() == null) {
+          statement.bindNull(7);
+        } else {
+          statement.bindString(7, __TaskType_enumToString(entity.getType()));
+        }
+        if (entity.getDifficulty() == null) {
           statement.bindNull(8);
         } else {
-          statement.bindString(8, entity.getChapterId());
+          statement.bindString(8, __TaskDifficulty_enumToString(entity.getDifficulty()));
         }
-        statement.bindLong(9, entity.getExperienceReward());
-        statement.bindLong(10, entity.getCoinReward());
-        if (entity.getDeadline() == null) {
+        statement.bindString(9, __TaskStatus_enumToString(entity.getStatus()));
+        if (entity.getExperienceReward() == null) {
+          statement.bindNull(10);
+        } else {
+          statement.bindLong(10, entity.getExperienceReward());
+        }
+        if (entity.getCoinReward() == null) {
           statement.bindNull(11);
         } else {
-          statement.bindLong(11, entity.getDeadline());
+          statement.bindLong(11, entity.getCoinReward());
         }
-        statement.bindLong(12, entity.getEstimatedMinutes());
-        statement.bindDouble(13, entity.getProgress());
-        statement.bindLong(14, entity.getCreatedAt());
-        if (entity.getCompletedAt() == null) {
+        if (entity.getEstimatedMinutes() == null) {
+          statement.bindNull(12);
+        } else {
+          statement.bindLong(12, entity.getEstimatedMinutes());
+        }
+        if (entity.getEstimatedDuration() == null) {
+          statement.bindNull(13);
+        } else {
+          statement.bindLong(13, entity.getEstimatedDuration());
+        }
+        statement.bindDouble(14, entity.getProgress());
+        if (entity.getActionType() == null) {
           statement.bindNull(15);
         } else {
-          statement.bindLong(15, entity.getCompletedAt());
-        }
-        if (entity.getParentTaskId() == null) {
-          statement.bindNull(16);
-        } else {
-          statement.bindString(16, entity.getParentTaskId());
-        }
-        statement.bindLong(17, entity.getOrder());
-        if (entity.getTargetGrade() == null) {
-          statement.bindNull(18);
-        } else {
-          statement.bindString(18, entity.getTargetGrade());
-        }
-        if (entity.getActionType() == null) {
-          statement.bindNull(19);
-        } else {
-          statement.bindString(19, entity.getActionType());
+          statement.bindString(15, entity.getActionType());
         }
         if (entity.getActionPayload() == null) {
+          statement.bindNull(16);
+        } else {
+          statement.bindString(16, entity.getActionPayload());
+        }
+        if (entity.getTargetGrade() == null) {
+          statement.bindNull(17);
+        } else {
+          statement.bindString(17, entity.getTargetGrade());
+        }
+        if (entity.getSource() == null) {
+          statement.bindNull(18);
+        } else {
+          statement.bindString(18, entity.getSource());
+        }
+        if (entity.getCreatedAt() == null) {
+          statement.bindNull(19);
+        } else {
+          statement.bindLong(19, entity.getCreatedAt());
+        }
+        if (entity.getDeadline() == null) {
           statement.bindNull(20);
         } else {
-          statement.bindString(20, entity.getActionPayload());
+          statement.bindLong(20, entity.getDeadline());
         }
-        statement.bindString(21, entity.getId());
+        if (entity.getCompletedAt() == null) {
+          statement.bindNull(21);
+        } else {
+          statement.bindLong(21, entity.getCompletedAt());
+        }
+        final int _tmp = entity.isCompleted() ? 1 : 0;
+        statement.bindLong(22, _tmp);
+        statement.bindString(23, entity.getId());
       }
     };
     this.__updateAdapterOfTaskProgress = new EntityDeletionOrUpdateAdapter<TaskProgress>(__db) {
       @Override
       @NonNull
       protected String createQuery() {
-        return "UPDATE OR ABORT `task_progress` SET `id` = ?,`taskId` = ?,`userId` = ?,`progress` = ?,`timeSpentMinutes` = ?,`lastUpdatedAt` = ? WHERE `id` = ?";
+        return "UPDATE OR ABORT `task_progress` SET `id` = ?,`taskId` = ?,`userId` = ?,`progress` = ? WHERE `id` = ?";
       }
 
       @Override
       protected void bind(@NonNull final SupportSQLiteStatement statement,
           @NonNull final TaskProgress entity) {
-        statement.bindString(1, entity.getId());
+        statement.bindLong(1, entity.getId());
         statement.bindString(2, entity.getTaskId());
         statement.bindString(3, entity.getUserId());
-        statement.bindDouble(4, entity.getProgress());
-        statement.bindLong(5, entity.getTimeSpentMinutes());
-        statement.bindLong(6, entity.getLastUpdatedAt());
-        statement.bindString(7, entity.getId());
+        statement.bindLong(4, entity.getProgress());
+        statement.bindLong(5, entity.getId());
       }
     };
     this.__preparedStmtOfUpdateTaskStatus = new SharedSQLiteStatement(__db) {
@@ -468,8 +532,7 @@ public final class TaskDao_Impl implements TaskDao {
       public Unit call() throws Exception {
         final SupportSQLiteStatement _stmt = __preparedStmtOfUpdateTaskStatus.acquire();
         int _argIndex = 1;
-        final String _tmp = __converters.fromTaskStatus(status);
-        _stmt.bindString(_argIndex, _tmp);
+        _stmt.bindString(_argIndex, __TaskStatus_enumToString(status));
         _argIndex = 2;
         _stmt.bindString(_argIndex, taskId);
         try {
@@ -497,8 +560,7 @@ public final class TaskDao_Impl implements TaskDao {
       public Unit call() throws Exception {
         final SupportSQLiteStatement _stmt = __preparedStmtOfCompleteTask.acquire();
         int _argIndex = 1;
-        final String _tmp = __converters.fromTaskStatus(status);
-        _stmt.bindString(_argIndex, _tmp);
+        _stmt.bindString(_argIndex, __TaskStatus_enumToString(status));
         _argIndex = 2;
         _stmt.bindLong(_argIndex, completedAt);
         _argIndex = 3;
@@ -535,23 +597,25 @@ public final class TaskDao_Impl implements TaskDao {
           final int _cursorIndexOfId = CursorUtil.getColumnIndexOrThrow(_cursor, "id");
           final int _cursorIndexOfTitle = CursorUtil.getColumnIndexOrThrow(_cursor, "title");
           final int _cursorIndexOfDescription = CursorUtil.getColumnIndexOrThrow(_cursor, "description");
+          final int _cursorIndexOfCourseId = CursorUtil.getColumnIndexOrThrow(_cursor, "courseId");
+          final int _cursorIndexOfChapterId = CursorUtil.getColumnIndexOrThrow(_cursor, "chapterId");
+          final int _cursorIndexOfOrder = CursorUtil.getColumnIndexOrThrow(_cursor, "order");
           final int _cursorIndexOfType = CursorUtil.getColumnIndexOrThrow(_cursor, "type");
           final int _cursorIndexOfDifficulty = CursorUtil.getColumnIndexOrThrow(_cursor, "difficulty");
           final int _cursorIndexOfStatus = CursorUtil.getColumnIndexOrThrow(_cursor, "status");
-          final int _cursorIndexOfCourseId = CursorUtil.getColumnIndexOrThrow(_cursor, "courseId");
-          final int _cursorIndexOfChapterId = CursorUtil.getColumnIndexOrThrow(_cursor, "chapterId");
           final int _cursorIndexOfExperienceReward = CursorUtil.getColumnIndexOrThrow(_cursor, "experienceReward");
           final int _cursorIndexOfCoinReward = CursorUtil.getColumnIndexOrThrow(_cursor, "coinReward");
-          final int _cursorIndexOfDeadline = CursorUtil.getColumnIndexOrThrow(_cursor, "deadline");
           final int _cursorIndexOfEstimatedMinutes = CursorUtil.getColumnIndexOrThrow(_cursor, "estimatedMinutes");
+          final int _cursorIndexOfEstimatedDuration = CursorUtil.getColumnIndexOrThrow(_cursor, "estimatedDuration");
           final int _cursorIndexOfProgress = CursorUtil.getColumnIndexOrThrow(_cursor, "progress");
-          final int _cursorIndexOfCreatedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "createdAt");
-          final int _cursorIndexOfCompletedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "completedAt");
-          final int _cursorIndexOfParentTaskId = CursorUtil.getColumnIndexOrThrow(_cursor, "parentTaskId");
-          final int _cursorIndexOfOrder = CursorUtil.getColumnIndexOrThrow(_cursor, "order");
-          final int _cursorIndexOfTargetGrade = CursorUtil.getColumnIndexOrThrow(_cursor, "targetGrade");
           final int _cursorIndexOfActionType = CursorUtil.getColumnIndexOrThrow(_cursor, "actionType");
           final int _cursorIndexOfActionPayload = CursorUtil.getColumnIndexOrThrow(_cursor, "actionPayload");
+          final int _cursorIndexOfTargetGrade = CursorUtil.getColumnIndexOrThrow(_cursor, "targetGrade");
+          final int _cursorIndexOfSource = CursorUtil.getColumnIndexOrThrow(_cursor, "source");
+          final int _cursorIndexOfCreatedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "createdAt");
+          final int _cursorIndexOfDeadline = CursorUtil.getColumnIndexOrThrow(_cursor, "deadline");
+          final int _cursorIndexOfCompletedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "completedAt");
+          final int _cursorIndexOfIsCompleted = CursorUtil.getColumnIndexOrThrow(_cursor, "isCompleted");
           final Task _result;
           if (_cursor.moveToFirst()) {
             final String _tmpId;
@@ -559,19 +623,11 @@ public final class TaskDao_Impl implements TaskDao {
             final String _tmpTitle;
             _tmpTitle = _cursor.getString(_cursorIndexOfTitle);
             final String _tmpDescription;
-            _tmpDescription = _cursor.getString(_cursorIndexOfDescription);
-            final TaskType _tmpType;
-            final String _tmp;
-            _tmp = _cursor.getString(_cursorIndexOfType);
-            _tmpType = __converters.toTaskType(_tmp);
-            final TaskDifficulty _tmpDifficulty;
-            final String _tmp_1;
-            _tmp_1 = _cursor.getString(_cursorIndexOfDifficulty);
-            _tmpDifficulty = __converters.toTaskDifficulty(_tmp_1);
-            final TaskStatus _tmpStatus;
-            final String _tmp_2;
-            _tmp_2 = _cursor.getString(_cursorIndexOfStatus);
-            _tmpStatus = __converters.toTaskStatus(_tmp_2);
+            if (_cursor.isNull(_cursorIndexOfDescription)) {
+              _tmpDescription = null;
+            } else {
+              _tmpDescription = _cursor.getString(_cursorIndexOfDescription);
+            }
             final String _tmpCourseId;
             if (_cursor.isNull(_cursorIndexOfCourseId)) {
               _tmpCourseId = null;
@@ -584,42 +640,52 @@ public final class TaskDao_Impl implements TaskDao {
             } else {
               _tmpChapterId = _cursor.getString(_cursorIndexOfChapterId);
             }
-            final int _tmpExperienceReward;
-            _tmpExperienceReward = _cursor.getInt(_cursorIndexOfExperienceReward);
-            final int _tmpCoinReward;
-            _tmpCoinReward = _cursor.getInt(_cursorIndexOfCoinReward);
-            final Long _tmpDeadline;
-            if (_cursor.isNull(_cursorIndexOfDeadline)) {
-              _tmpDeadline = null;
+            final Integer _tmpOrder;
+            if (_cursor.isNull(_cursorIndexOfOrder)) {
+              _tmpOrder = null;
             } else {
-              _tmpDeadline = _cursor.getLong(_cursorIndexOfDeadline);
+              _tmpOrder = _cursor.getInt(_cursorIndexOfOrder);
             }
-            final int _tmpEstimatedMinutes;
-            _tmpEstimatedMinutes = _cursor.getInt(_cursorIndexOfEstimatedMinutes);
+            final TaskType _tmpType;
+            if (_cursor.isNull(_cursorIndexOfType)) {
+              _tmpType = null;
+            } else {
+              _tmpType = __TaskType_stringToEnum(_cursor.getString(_cursorIndexOfType));
+            }
+            final TaskDifficulty _tmpDifficulty;
+            if (_cursor.isNull(_cursorIndexOfDifficulty)) {
+              _tmpDifficulty = null;
+            } else {
+              _tmpDifficulty = __TaskDifficulty_stringToEnum(_cursor.getString(_cursorIndexOfDifficulty));
+            }
+            final TaskStatus _tmpStatus;
+            _tmpStatus = __TaskStatus_stringToEnum(_cursor.getString(_cursorIndexOfStatus));
+            final Integer _tmpExperienceReward;
+            if (_cursor.isNull(_cursorIndexOfExperienceReward)) {
+              _tmpExperienceReward = null;
+            } else {
+              _tmpExperienceReward = _cursor.getInt(_cursorIndexOfExperienceReward);
+            }
+            final Integer _tmpCoinReward;
+            if (_cursor.isNull(_cursorIndexOfCoinReward)) {
+              _tmpCoinReward = null;
+            } else {
+              _tmpCoinReward = _cursor.getInt(_cursorIndexOfCoinReward);
+            }
+            final Integer _tmpEstimatedMinutes;
+            if (_cursor.isNull(_cursorIndexOfEstimatedMinutes)) {
+              _tmpEstimatedMinutes = null;
+            } else {
+              _tmpEstimatedMinutes = _cursor.getInt(_cursorIndexOfEstimatedMinutes);
+            }
+            final Integer _tmpEstimatedDuration;
+            if (_cursor.isNull(_cursorIndexOfEstimatedDuration)) {
+              _tmpEstimatedDuration = null;
+            } else {
+              _tmpEstimatedDuration = _cursor.getInt(_cursorIndexOfEstimatedDuration);
+            }
             final float _tmpProgress;
             _tmpProgress = _cursor.getFloat(_cursorIndexOfProgress);
-            final long _tmpCreatedAt;
-            _tmpCreatedAt = _cursor.getLong(_cursorIndexOfCreatedAt);
-            final Long _tmpCompletedAt;
-            if (_cursor.isNull(_cursorIndexOfCompletedAt)) {
-              _tmpCompletedAt = null;
-            } else {
-              _tmpCompletedAt = _cursor.getLong(_cursorIndexOfCompletedAt);
-            }
-            final String _tmpParentTaskId;
-            if (_cursor.isNull(_cursorIndexOfParentTaskId)) {
-              _tmpParentTaskId = null;
-            } else {
-              _tmpParentTaskId = _cursor.getString(_cursorIndexOfParentTaskId);
-            }
-            final int _tmpOrder;
-            _tmpOrder = _cursor.getInt(_cursorIndexOfOrder);
-            final String _tmpTargetGrade;
-            if (_cursor.isNull(_cursorIndexOfTargetGrade)) {
-              _tmpTargetGrade = null;
-            } else {
-              _tmpTargetGrade = _cursor.getString(_cursorIndexOfTargetGrade);
-            }
             final String _tmpActionType;
             if (_cursor.isNull(_cursorIndexOfActionType)) {
               _tmpActionType = null;
@@ -632,7 +698,41 @@ public final class TaskDao_Impl implements TaskDao {
             } else {
               _tmpActionPayload = _cursor.getString(_cursorIndexOfActionPayload);
             }
-            _result = new Task(_tmpId,_tmpTitle,_tmpDescription,_tmpType,_tmpDifficulty,_tmpStatus,_tmpCourseId,_tmpChapterId,_tmpExperienceReward,_tmpCoinReward,_tmpDeadline,_tmpEstimatedMinutes,_tmpProgress,_tmpCreatedAt,_tmpCompletedAt,_tmpParentTaskId,_tmpOrder,_tmpTargetGrade,_tmpActionType,_tmpActionPayload);
+            final String _tmpTargetGrade;
+            if (_cursor.isNull(_cursorIndexOfTargetGrade)) {
+              _tmpTargetGrade = null;
+            } else {
+              _tmpTargetGrade = _cursor.getString(_cursorIndexOfTargetGrade);
+            }
+            final String _tmpSource;
+            if (_cursor.isNull(_cursorIndexOfSource)) {
+              _tmpSource = null;
+            } else {
+              _tmpSource = _cursor.getString(_cursorIndexOfSource);
+            }
+            final Long _tmpCreatedAt;
+            if (_cursor.isNull(_cursorIndexOfCreatedAt)) {
+              _tmpCreatedAt = null;
+            } else {
+              _tmpCreatedAt = _cursor.getLong(_cursorIndexOfCreatedAt);
+            }
+            final Long _tmpDeadline;
+            if (_cursor.isNull(_cursorIndexOfDeadline)) {
+              _tmpDeadline = null;
+            } else {
+              _tmpDeadline = _cursor.getLong(_cursorIndexOfDeadline);
+            }
+            final Long _tmpCompletedAt;
+            if (_cursor.isNull(_cursorIndexOfCompletedAt)) {
+              _tmpCompletedAt = null;
+            } else {
+              _tmpCompletedAt = _cursor.getLong(_cursorIndexOfCompletedAt);
+            }
+            final boolean _tmpIsCompleted;
+            final int _tmp;
+            _tmp = _cursor.getInt(_cursorIndexOfIsCompleted);
+            _tmpIsCompleted = _tmp != 0;
+            _result = new Task(_tmpId,_tmpTitle,_tmpDescription,_tmpCourseId,_tmpChapterId,_tmpOrder,_tmpType,_tmpDifficulty,_tmpStatus,_tmpExperienceReward,_tmpCoinReward,_tmpEstimatedMinutes,_tmpEstimatedDuration,_tmpProgress,_tmpActionType,_tmpActionPayload,_tmpTargetGrade,_tmpSource,_tmpCreatedAt,_tmpDeadline,_tmpCompletedAt,_tmpIsCompleted);
           } else {
             _result = null;
           }
@@ -660,23 +760,25 @@ public final class TaskDao_Impl implements TaskDao {
           final int _cursorIndexOfId = CursorUtil.getColumnIndexOrThrow(_cursor, "id");
           final int _cursorIndexOfTitle = CursorUtil.getColumnIndexOrThrow(_cursor, "title");
           final int _cursorIndexOfDescription = CursorUtil.getColumnIndexOrThrow(_cursor, "description");
+          final int _cursorIndexOfCourseId = CursorUtil.getColumnIndexOrThrow(_cursor, "courseId");
+          final int _cursorIndexOfChapterId = CursorUtil.getColumnIndexOrThrow(_cursor, "chapterId");
+          final int _cursorIndexOfOrder = CursorUtil.getColumnIndexOrThrow(_cursor, "order");
           final int _cursorIndexOfType = CursorUtil.getColumnIndexOrThrow(_cursor, "type");
           final int _cursorIndexOfDifficulty = CursorUtil.getColumnIndexOrThrow(_cursor, "difficulty");
           final int _cursorIndexOfStatus = CursorUtil.getColumnIndexOrThrow(_cursor, "status");
-          final int _cursorIndexOfCourseId = CursorUtil.getColumnIndexOrThrow(_cursor, "courseId");
-          final int _cursorIndexOfChapterId = CursorUtil.getColumnIndexOrThrow(_cursor, "chapterId");
           final int _cursorIndexOfExperienceReward = CursorUtil.getColumnIndexOrThrow(_cursor, "experienceReward");
           final int _cursorIndexOfCoinReward = CursorUtil.getColumnIndexOrThrow(_cursor, "coinReward");
-          final int _cursorIndexOfDeadline = CursorUtil.getColumnIndexOrThrow(_cursor, "deadline");
           final int _cursorIndexOfEstimatedMinutes = CursorUtil.getColumnIndexOrThrow(_cursor, "estimatedMinutes");
+          final int _cursorIndexOfEstimatedDuration = CursorUtil.getColumnIndexOrThrow(_cursor, "estimatedDuration");
           final int _cursorIndexOfProgress = CursorUtil.getColumnIndexOrThrow(_cursor, "progress");
-          final int _cursorIndexOfCreatedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "createdAt");
-          final int _cursorIndexOfCompletedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "completedAt");
-          final int _cursorIndexOfParentTaskId = CursorUtil.getColumnIndexOrThrow(_cursor, "parentTaskId");
-          final int _cursorIndexOfOrder = CursorUtil.getColumnIndexOrThrow(_cursor, "order");
-          final int _cursorIndexOfTargetGrade = CursorUtil.getColumnIndexOrThrow(_cursor, "targetGrade");
           final int _cursorIndexOfActionType = CursorUtil.getColumnIndexOrThrow(_cursor, "actionType");
           final int _cursorIndexOfActionPayload = CursorUtil.getColumnIndexOrThrow(_cursor, "actionPayload");
+          final int _cursorIndexOfTargetGrade = CursorUtil.getColumnIndexOrThrow(_cursor, "targetGrade");
+          final int _cursorIndexOfSource = CursorUtil.getColumnIndexOrThrow(_cursor, "source");
+          final int _cursorIndexOfCreatedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "createdAt");
+          final int _cursorIndexOfDeadline = CursorUtil.getColumnIndexOrThrow(_cursor, "deadline");
+          final int _cursorIndexOfCompletedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "completedAt");
+          final int _cursorIndexOfIsCompleted = CursorUtil.getColumnIndexOrThrow(_cursor, "isCompleted");
           final Task _result;
           if (_cursor.moveToFirst()) {
             final String _tmpId;
@@ -684,19 +786,11 @@ public final class TaskDao_Impl implements TaskDao {
             final String _tmpTitle;
             _tmpTitle = _cursor.getString(_cursorIndexOfTitle);
             final String _tmpDescription;
-            _tmpDescription = _cursor.getString(_cursorIndexOfDescription);
-            final TaskType _tmpType;
-            final String _tmp;
-            _tmp = _cursor.getString(_cursorIndexOfType);
-            _tmpType = __converters.toTaskType(_tmp);
-            final TaskDifficulty _tmpDifficulty;
-            final String _tmp_1;
-            _tmp_1 = _cursor.getString(_cursorIndexOfDifficulty);
-            _tmpDifficulty = __converters.toTaskDifficulty(_tmp_1);
-            final TaskStatus _tmpStatus;
-            final String _tmp_2;
-            _tmp_2 = _cursor.getString(_cursorIndexOfStatus);
-            _tmpStatus = __converters.toTaskStatus(_tmp_2);
+            if (_cursor.isNull(_cursorIndexOfDescription)) {
+              _tmpDescription = null;
+            } else {
+              _tmpDescription = _cursor.getString(_cursorIndexOfDescription);
+            }
             final String _tmpCourseId;
             if (_cursor.isNull(_cursorIndexOfCourseId)) {
               _tmpCourseId = null;
@@ -709,42 +803,52 @@ public final class TaskDao_Impl implements TaskDao {
             } else {
               _tmpChapterId = _cursor.getString(_cursorIndexOfChapterId);
             }
-            final int _tmpExperienceReward;
-            _tmpExperienceReward = _cursor.getInt(_cursorIndexOfExperienceReward);
-            final int _tmpCoinReward;
-            _tmpCoinReward = _cursor.getInt(_cursorIndexOfCoinReward);
-            final Long _tmpDeadline;
-            if (_cursor.isNull(_cursorIndexOfDeadline)) {
-              _tmpDeadline = null;
+            final Integer _tmpOrder;
+            if (_cursor.isNull(_cursorIndexOfOrder)) {
+              _tmpOrder = null;
             } else {
-              _tmpDeadline = _cursor.getLong(_cursorIndexOfDeadline);
+              _tmpOrder = _cursor.getInt(_cursorIndexOfOrder);
             }
-            final int _tmpEstimatedMinutes;
-            _tmpEstimatedMinutes = _cursor.getInt(_cursorIndexOfEstimatedMinutes);
+            final TaskType _tmpType;
+            if (_cursor.isNull(_cursorIndexOfType)) {
+              _tmpType = null;
+            } else {
+              _tmpType = __TaskType_stringToEnum(_cursor.getString(_cursorIndexOfType));
+            }
+            final TaskDifficulty _tmpDifficulty;
+            if (_cursor.isNull(_cursorIndexOfDifficulty)) {
+              _tmpDifficulty = null;
+            } else {
+              _tmpDifficulty = __TaskDifficulty_stringToEnum(_cursor.getString(_cursorIndexOfDifficulty));
+            }
+            final TaskStatus _tmpStatus;
+            _tmpStatus = __TaskStatus_stringToEnum(_cursor.getString(_cursorIndexOfStatus));
+            final Integer _tmpExperienceReward;
+            if (_cursor.isNull(_cursorIndexOfExperienceReward)) {
+              _tmpExperienceReward = null;
+            } else {
+              _tmpExperienceReward = _cursor.getInt(_cursorIndexOfExperienceReward);
+            }
+            final Integer _tmpCoinReward;
+            if (_cursor.isNull(_cursorIndexOfCoinReward)) {
+              _tmpCoinReward = null;
+            } else {
+              _tmpCoinReward = _cursor.getInt(_cursorIndexOfCoinReward);
+            }
+            final Integer _tmpEstimatedMinutes;
+            if (_cursor.isNull(_cursorIndexOfEstimatedMinutes)) {
+              _tmpEstimatedMinutes = null;
+            } else {
+              _tmpEstimatedMinutes = _cursor.getInt(_cursorIndexOfEstimatedMinutes);
+            }
+            final Integer _tmpEstimatedDuration;
+            if (_cursor.isNull(_cursorIndexOfEstimatedDuration)) {
+              _tmpEstimatedDuration = null;
+            } else {
+              _tmpEstimatedDuration = _cursor.getInt(_cursorIndexOfEstimatedDuration);
+            }
             final float _tmpProgress;
             _tmpProgress = _cursor.getFloat(_cursorIndexOfProgress);
-            final long _tmpCreatedAt;
-            _tmpCreatedAt = _cursor.getLong(_cursorIndexOfCreatedAt);
-            final Long _tmpCompletedAt;
-            if (_cursor.isNull(_cursorIndexOfCompletedAt)) {
-              _tmpCompletedAt = null;
-            } else {
-              _tmpCompletedAt = _cursor.getLong(_cursorIndexOfCompletedAt);
-            }
-            final String _tmpParentTaskId;
-            if (_cursor.isNull(_cursorIndexOfParentTaskId)) {
-              _tmpParentTaskId = null;
-            } else {
-              _tmpParentTaskId = _cursor.getString(_cursorIndexOfParentTaskId);
-            }
-            final int _tmpOrder;
-            _tmpOrder = _cursor.getInt(_cursorIndexOfOrder);
-            final String _tmpTargetGrade;
-            if (_cursor.isNull(_cursorIndexOfTargetGrade)) {
-              _tmpTargetGrade = null;
-            } else {
-              _tmpTargetGrade = _cursor.getString(_cursorIndexOfTargetGrade);
-            }
             final String _tmpActionType;
             if (_cursor.isNull(_cursorIndexOfActionType)) {
               _tmpActionType = null;
@@ -757,7 +861,41 @@ public final class TaskDao_Impl implements TaskDao {
             } else {
               _tmpActionPayload = _cursor.getString(_cursorIndexOfActionPayload);
             }
-            _result = new Task(_tmpId,_tmpTitle,_tmpDescription,_tmpType,_tmpDifficulty,_tmpStatus,_tmpCourseId,_tmpChapterId,_tmpExperienceReward,_tmpCoinReward,_tmpDeadline,_tmpEstimatedMinutes,_tmpProgress,_tmpCreatedAt,_tmpCompletedAt,_tmpParentTaskId,_tmpOrder,_tmpTargetGrade,_tmpActionType,_tmpActionPayload);
+            final String _tmpTargetGrade;
+            if (_cursor.isNull(_cursorIndexOfTargetGrade)) {
+              _tmpTargetGrade = null;
+            } else {
+              _tmpTargetGrade = _cursor.getString(_cursorIndexOfTargetGrade);
+            }
+            final String _tmpSource;
+            if (_cursor.isNull(_cursorIndexOfSource)) {
+              _tmpSource = null;
+            } else {
+              _tmpSource = _cursor.getString(_cursorIndexOfSource);
+            }
+            final Long _tmpCreatedAt;
+            if (_cursor.isNull(_cursorIndexOfCreatedAt)) {
+              _tmpCreatedAt = null;
+            } else {
+              _tmpCreatedAt = _cursor.getLong(_cursorIndexOfCreatedAt);
+            }
+            final Long _tmpDeadline;
+            if (_cursor.isNull(_cursorIndexOfDeadline)) {
+              _tmpDeadline = null;
+            } else {
+              _tmpDeadline = _cursor.getLong(_cursorIndexOfDeadline);
+            }
+            final Long _tmpCompletedAt;
+            if (_cursor.isNull(_cursorIndexOfCompletedAt)) {
+              _tmpCompletedAt = null;
+            } else {
+              _tmpCompletedAt = _cursor.getLong(_cursorIndexOfCompletedAt);
+            }
+            final boolean _tmpIsCompleted;
+            final int _tmp;
+            _tmp = _cursor.getInt(_cursorIndexOfIsCompleted);
+            _tmpIsCompleted = _tmp != 0;
+            _result = new Task(_tmpId,_tmpTitle,_tmpDescription,_tmpCourseId,_tmpChapterId,_tmpOrder,_tmpType,_tmpDifficulty,_tmpStatus,_tmpExperienceReward,_tmpCoinReward,_tmpEstimatedMinutes,_tmpEstimatedDuration,_tmpProgress,_tmpActionType,_tmpActionPayload,_tmpTargetGrade,_tmpSource,_tmpCreatedAt,_tmpDeadline,_tmpCompletedAt,_tmpIsCompleted);
           } else {
             _result = null;
           }
@@ -779,8 +917,7 @@ public final class TaskDao_Impl implements TaskDao {
     final String _sql = "SELECT * FROM tasks WHERE status = ? ORDER BY deadline ASC";
     final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 1);
     int _argIndex = 1;
-    final String _tmp = __converters.fromTaskStatus(status);
-    _statement.bindString(_argIndex, _tmp);
+    _statement.bindString(_argIndex, __TaskStatus_enumToString(status));
     return CoroutinesRoom.createFlow(__db, false, new String[] {"tasks"}, new Callable<List<Task>>() {
       @Override
       @NonNull
@@ -790,23 +927,25 @@ public final class TaskDao_Impl implements TaskDao {
           final int _cursorIndexOfId = CursorUtil.getColumnIndexOrThrow(_cursor, "id");
           final int _cursorIndexOfTitle = CursorUtil.getColumnIndexOrThrow(_cursor, "title");
           final int _cursorIndexOfDescription = CursorUtil.getColumnIndexOrThrow(_cursor, "description");
+          final int _cursorIndexOfCourseId = CursorUtil.getColumnIndexOrThrow(_cursor, "courseId");
+          final int _cursorIndexOfChapterId = CursorUtil.getColumnIndexOrThrow(_cursor, "chapterId");
+          final int _cursorIndexOfOrder = CursorUtil.getColumnIndexOrThrow(_cursor, "order");
           final int _cursorIndexOfType = CursorUtil.getColumnIndexOrThrow(_cursor, "type");
           final int _cursorIndexOfDifficulty = CursorUtil.getColumnIndexOrThrow(_cursor, "difficulty");
           final int _cursorIndexOfStatus = CursorUtil.getColumnIndexOrThrow(_cursor, "status");
-          final int _cursorIndexOfCourseId = CursorUtil.getColumnIndexOrThrow(_cursor, "courseId");
-          final int _cursorIndexOfChapterId = CursorUtil.getColumnIndexOrThrow(_cursor, "chapterId");
           final int _cursorIndexOfExperienceReward = CursorUtil.getColumnIndexOrThrow(_cursor, "experienceReward");
           final int _cursorIndexOfCoinReward = CursorUtil.getColumnIndexOrThrow(_cursor, "coinReward");
-          final int _cursorIndexOfDeadline = CursorUtil.getColumnIndexOrThrow(_cursor, "deadline");
           final int _cursorIndexOfEstimatedMinutes = CursorUtil.getColumnIndexOrThrow(_cursor, "estimatedMinutes");
+          final int _cursorIndexOfEstimatedDuration = CursorUtil.getColumnIndexOrThrow(_cursor, "estimatedDuration");
           final int _cursorIndexOfProgress = CursorUtil.getColumnIndexOrThrow(_cursor, "progress");
-          final int _cursorIndexOfCreatedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "createdAt");
-          final int _cursorIndexOfCompletedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "completedAt");
-          final int _cursorIndexOfParentTaskId = CursorUtil.getColumnIndexOrThrow(_cursor, "parentTaskId");
-          final int _cursorIndexOfOrder = CursorUtil.getColumnIndexOrThrow(_cursor, "order");
-          final int _cursorIndexOfTargetGrade = CursorUtil.getColumnIndexOrThrow(_cursor, "targetGrade");
           final int _cursorIndexOfActionType = CursorUtil.getColumnIndexOrThrow(_cursor, "actionType");
           final int _cursorIndexOfActionPayload = CursorUtil.getColumnIndexOrThrow(_cursor, "actionPayload");
+          final int _cursorIndexOfTargetGrade = CursorUtil.getColumnIndexOrThrow(_cursor, "targetGrade");
+          final int _cursorIndexOfSource = CursorUtil.getColumnIndexOrThrow(_cursor, "source");
+          final int _cursorIndexOfCreatedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "createdAt");
+          final int _cursorIndexOfDeadline = CursorUtil.getColumnIndexOrThrow(_cursor, "deadline");
+          final int _cursorIndexOfCompletedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "completedAt");
+          final int _cursorIndexOfIsCompleted = CursorUtil.getColumnIndexOrThrow(_cursor, "isCompleted");
           final List<Task> _result = new ArrayList<Task>(_cursor.getCount());
           while (_cursor.moveToNext()) {
             final Task _item;
@@ -815,19 +954,11 @@ public final class TaskDao_Impl implements TaskDao {
             final String _tmpTitle;
             _tmpTitle = _cursor.getString(_cursorIndexOfTitle);
             final String _tmpDescription;
-            _tmpDescription = _cursor.getString(_cursorIndexOfDescription);
-            final TaskType _tmpType;
-            final String _tmp_1;
-            _tmp_1 = _cursor.getString(_cursorIndexOfType);
-            _tmpType = __converters.toTaskType(_tmp_1);
-            final TaskDifficulty _tmpDifficulty;
-            final String _tmp_2;
-            _tmp_2 = _cursor.getString(_cursorIndexOfDifficulty);
-            _tmpDifficulty = __converters.toTaskDifficulty(_tmp_2);
-            final TaskStatus _tmpStatus;
-            final String _tmp_3;
-            _tmp_3 = _cursor.getString(_cursorIndexOfStatus);
-            _tmpStatus = __converters.toTaskStatus(_tmp_3);
+            if (_cursor.isNull(_cursorIndexOfDescription)) {
+              _tmpDescription = null;
+            } else {
+              _tmpDescription = _cursor.getString(_cursorIndexOfDescription);
+            }
             final String _tmpCourseId;
             if (_cursor.isNull(_cursorIndexOfCourseId)) {
               _tmpCourseId = null;
@@ -840,42 +971,52 @@ public final class TaskDao_Impl implements TaskDao {
             } else {
               _tmpChapterId = _cursor.getString(_cursorIndexOfChapterId);
             }
-            final int _tmpExperienceReward;
-            _tmpExperienceReward = _cursor.getInt(_cursorIndexOfExperienceReward);
-            final int _tmpCoinReward;
-            _tmpCoinReward = _cursor.getInt(_cursorIndexOfCoinReward);
-            final Long _tmpDeadline;
-            if (_cursor.isNull(_cursorIndexOfDeadline)) {
-              _tmpDeadline = null;
+            final Integer _tmpOrder;
+            if (_cursor.isNull(_cursorIndexOfOrder)) {
+              _tmpOrder = null;
             } else {
-              _tmpDeadline = _cursor.getLong(_cursorIndexOfDeadline);
+              _tmpOrder = _cursor.getInt(_cursorIndexOfOrder);
             }
-            final int _tmpEstimatedMinutes;
-            _tmpEstimatedMinutes = _cursor.getInt(_cursorIndexOfEstimatedMinutes);
+            final TaskType _tmpType;
+            if (_cursor.isNull(_cursorIndexOfType)) {
+              _tmpType = null;
+            } else {
+              _tmpType = __TaskType_stringToEnum(_cursor.getString(_cursorIndexOfType));
+            }
+            final TaskDifficulty _tmpDifficulty;
+            if (_cursor.isNull(_cursorIndexOfDifficulty)) {
+              _tmpDifficulty = null;
+            } else {
+              _tmpDifficulty = __TaskDifficulty_stringToEnum(_cursor.getString(_cursorIndexOfDifficulty));
+            }
+            final TaskStatus _tmpStatus;
+            _tmpStatus = __TaskStatus_stringToEnum(_cursor.getString(_cursorIndexOfStatus));
+            final Integer _tmpExperienceReward;
+            if (_cursor.isNull(_cursorIndexOfExperienceReward)) {
+              _tmpExperienceReward = null;
+            } else {
+              _tmpExperienceReward = _cursor.getInt(_cursorIndexOfExperienceReward);
+            }
+            final Integer _tmpCoinReward;
+            if (_cursor.isNull(_cursorIndexOfCoinReward)) {
+              _tmpCoinReward = null;
+            } else {
+              _tmpCoinReward = _cursor.getInt(_cursorIndexOfCoinReward);
+            }
+            final Integer _tmpEstimatedMinutes;
+            if (_cursor.isNull(_cursorIndexOfEstimatedMinutes)) {
+              _tmpEstimatedMinutes = null;
+            } else {
+              _tmpEstimatedMinutes = _cursor.getInt(_cursorIndexOfEstimatedMinutes);
+            }
+            final Integer _tmpEstimatedDuration;
+            if (_cursor.isNull(_cursorIndexOfEstimatedDuration)) {
+              _tmpEstimatedDuration = null;
+            } else {
+              _tmpEstimatedDuration = _cursor.getInt(_cursorIndexOfEstimatedDuration);
+            }
             final float _tmpProgress;
             _tmpProgress = _cursor.getFloat(_cursorIndexOfProgress);
-            final long _tmpCreatedAt;
-            _tmpCreatedAt = _cursor.getLong(_cursorIndexOfCreatedAt);
-            final Long _tmpCompletedAt;
-            if (_cursor.isNull(_cursorIndexOfCompletedAt)) {
-              _tmpCompletedAt = null;
-            } else {
-              _tmpCompletedAt = _cursor.getLong(_cursorIndexOfCompletedAt);
-            }
-            final String _tmpParentTaskId;
-            if (_cursor.isNull(_cursorIndexOfParentTaskId)) {
-              _tmpParentTaskId = null;
-            } else {
-              _tmpParentTaskId = _cursor.getString(_cursorIndexOfParentTaskId);
-            }
-            final int _tmpOrder;
-            _tmpOrder = _cursor.getInt(_cursorIndexOfOrder);
-            final String _tmpTargetGrade;
-            if (_cursor.isNull(_cursorIndexOfTargetGrade)) {
-              _tmpTargetGrade = null;
-            } else {
-              _tmpTargetGrade = _cursor.getString(_cursorIndexOfTargetGrade);
-            }
             final String _tmpActionType;
             if (_cursor.isNull(_cursorIndexOfActionType)) {
               _tmpActionType = null;
@@ -888,7 +1029,41 @@ public final class TaskDao_Impl implements TaskDao {
             } else {
               _tmpActionPayload = _cursor.getString(_cursorIndexOfActionPayload);
             }
-            _item = new Task(_tmpId,_tmpTitle,_tmpDescription,_tmpType,_tmpDifficulty,_tmpStatus,_tmpCourseId,_tmpChapterId,_tmpExperienceReward,_tmpCoinReward,_tmpDeadline,_tmpEstimatedMinutes,_tmpProgress,_tmpCreatedAt,_tmpCompletedAt,_tmpParentTaskId,_tmpOrder,_tmpTargetGrade,_tmpActionType,_tmpActionPayload);
+            final String _tmpTargetGrade;
+            if (_cursor.isNull(_cursorIndexOfTargetGrade)) {
+              _tmpTargetGrade = null;
+            } else {
+              _tmpTargetGrade = _cursor.getString(_cursorIndexOfTargetGrade);
+            }
+            final String _tmpSource;
+            if (_cursor.isNull(_cursorIndexOfSource)) {
+              _tmpSource = null;
+            } else {
+              _tmpSource = _cursor.getString(_cursorIndexOfSource);
+            }
+            final Long _tmpCreatedAt;
+            if (_cursor.isNull(_cursorIndexOfCreatedAt)) {
+              _tmpCreatedAt = null;
+            } else {
+              _tmpCreatedAt = _cursor.getLong(_cursorIndexOfCreatedAt);
+            }
+            final Long _tmpDeadline;
+            if (_cursor.isNull(_cursorIndexOfDeadline)) {
+              _tmpDeadline = null;
+            } else {
+              _tmpDeadline = _cursor.getLong(_cursorIndexOfDeadline);
+            }
+            final Long _tmpCompletedAt;
+            if (_cursor.isNull(_cursorIndexOfCompletedAt)) {
+              _tmpCompletedAt = null;
+            } else {
+              _tmpCompletedAt = _cursor.getLong(_cursorIndexOfCompletedAt);
+            }
+            final boolean _tmpIsCompleted;
+            final int _tmp;
+            _tmp = _cursor.getInt(_cursorIndexOfIsCompleted);
+            _tmpIsCompleted = _tmp != 0;
+            _item = new Task(_tmpId,_tmpTitle,_tmpDescription,_tmpCourseId,_tmpChapterId,_tmpOrder,_tmpType,_tmpDifficulty,_tmpStatus,_tmpExperienceReward,_tmpCoinReward,_tmpEstimatedMinutes,_tmpEstimatedDuration,_tmpProgress,_tmpActionType,_tmpActionPayload,_tmpTargetGrade,_tmpSource,_tmpCreatedAt,_tmpDeadline,_tmpCompletedAt,_tmpIsCompleted);
             _result.add(_item);
           }
           return _result;
@@ -909,8 +1084,7 @@ public final class TaskDao_Impl implements TaskDao {
     final String _sql = "SELECT * FROM tasks WHERE type = ? ORDER BY deadline ASC";
     final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 1);
     int _argIndex = 1;
-    final String _tmp = __converters.fromTaskType(type);
-    _statement.bindString(_argIndex, _tmp);
+    _statement.bindString(_argIndex, __TaskType_enumToString(type));
     return CoroutinesRoom.createFlow(__db, false, new String[] {"tasks"}, new Callable<List<Task>>() {
       @Override
       @NonNull
@@ -920,23 +1094,25 @@ public final class TaskDao_Impl implements TaskDao {
           final int _cursorIndexOfId = CursorUtil.getColumnIndexOrThrow(_cursor, "id");
           final int _cursorIndexOfTitle = CursorUtil.getColumnIndexOrThrow(_cursor, "title");
           final int _cursorIndexOfDescription = CursorUtil.getColumnIndexOrThrow(_cursor, "description");
+          final int _cursorIndexOfCourseId = CursorUtil.getColumnIndexOrThrow(_cursor, "courseId");
+          final int _cursorIndexOfChapterId = CursorUtil.getColumnIndexOrThrow(_cursor, "chapterId");
+          final int _cursorIndexOfOrder = CursorUtil.getColumnIndexOrThrow(_cursor, "order");
           final int _cursorIndexOfType = CursorUtil.getColumnIndexOrThrow(_cursor, "type");
           final int _cursorIndexOfDifficulty = CursorUtil.getColumnIndexOrThrow(_cursor, "difficulty");
           final int _cursorIndexOfStatus = CursorUtil.getColumnIndexOrThrow(_cursor, "status");
-          final int _cursorIndexOfCourseId = CursorUtil.getColumnIndexOrThrow(_cursor, "courseId");
-          final int _cursorIndexOfChapterId = CursorUtil.getColumnIndexOrThrow(_cursor, "chapterId");
           final int _cursorIndexOfExperienceReward = CursorUtil.getColumnIndexOrThrow(_cursor, "experienceReward");
           final int _cursorIndexOfCoinReward = CursorUtil.getColumnIndexOrThrow(_cursor, "coinReward");
-          final int _cursorIndexOfDeadline = CursorUtil.getColumnIndexOrThrow(_cursor, "deadline");
           final int _cursorIndexOfEstimatedMinutes = CursorUtil.getColumnIndexOrThrow(_cursor, "estimatedMinutes");
+          final int _cursorIndexOfEstimatedDuration = CursorUtil.getColumnIndexOrThrow(_cursor, "estimatedDuration");
           final int _cursorIndexOfProgress = CursorUtil.getColumnIndexOrThrow(_cursor, "progress");
-          final int _cursorIndexOfCreatedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "createdAt");
-          final int _cursorIndexOfCompletedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "completedAt");
-          final int _cursorIndexOfParentTaskId = CursorUtil.getColumnIndexOrThrow(_cursor, "parentTaskId");
-          final int _cursorIndexOfOrder = CursorUtil.getColumnIndexOrThrow(_cursor, "order");
-          final int _cursorIndexOfTargetGrade = CursorUtil.getColumnIndexOrThrow(_cursor, "targetGrade");
           final int _cursorIndexOfActionType = CursorUtil.getColumnIndexOrThrow(_cursor, "actionType");
           final int _cursorIndexOfActionPayload = CursorUtil.getColumnIndexOrThrow(_cursor, "actionPayload");
+          final int _cursorIndexOfTargetGrade = CursorUtil.getColumnIndexOrThrow(_cursor, "targetGrade");
+          final int _cursorIndexOfSource = CursorUtil.getColumnIndexOrThrow(_cursor, "source");
+          final int _cursorIndexOfCreatedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "createdAt");
+          final int _cursorIndexOfDeadline = CursorUtil.getColumnIndexOrThrow(_cursor, "deadline");
+          final int _cursorIndexOfCompletedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "completedAt");
+          final int _cursorIndexOfIsCompleted = CursorUtil.getColumnIndexOrThrow(_cursor, "isCompleted");
           final List<Task> _result = new ArrayList<Task>(_cursor.getCount());
           while (_cursor.moveToNext()) {
             final Task _item;
@@ -945,19 +1121,11 @@ public final class TaskDao_Impl implements TaskDao {
             final String _tmpTitle;
             _tmpTitle = _cursor.getString(_cursorIndexOfTitle);
             final String _tmpDescription;
-            _tmpDescription = _cursor.getString(_cursorIndexOfDescription);
-            final TaskType _tmpType;
-            final String _tmp_1;
-            _tmp_1 = _cursor.getString(_cursorIndexOfType);
-            _tmpType = __converters.toTaskType(_tmp_1);
-            final TaskDifficulty _tmpDifficulty;
-            final String _tmp_2;
-            _tmp_2 = _cursor.getString(_cursorIndexOfDifficulty);
-            _tmpDifficulty = __converters.toTaskDifficulty(_tmp_2);
-            final TaskStatus _tmpStatus;
-            final String _tmp_3;
-            _tmp_3 = _cursor.getString(_cursorIndexOfStatus);
-            _tmpStatus = __converters.toTaskStatus(_tmp_3);
+            if (_cursor.isNull(_cursorIndexOfDescription)) {
+              _tmpDescription = null;
+            } else {
+              _tmpDescription = _cursor.getString(_cursorIndexOfDescription);
+            }
             final String _tmpCourseId;
             if (_cursor.isNull(_cursorIndexOfCourseId)) {
               _tmpCourseId = null;
@@ -970,42 +1138,52 @@ public final class TaskDao_Impl implements TaskDao {
             } else {
               _tmpChapterId = _cursor.getString(_cursorIndexOfChapterId);
             }
-            final int _tmpExperienceReward;
-            _tmpExperienceReward = _cursor.getInt(_cursorIndexOfExperienceReward);
-            final int _tmpCoinReward;
-            _tmpCoinReward = _cursor.getInt(_cursorIndexOfCoinReward);
-            final Long _tmpDeadline;
-            if (_cursor.isNull(_cursorIndexOfDeadline)) {
-              _tmpDeadline = null;
+            final Integer _tmpOrder;
+            if (_cursor.isNull(_cursorIndexOfOrder)) {
+              _tmpOrder = null;
             } else {
-              _tmpDeadline = _cursor.getLong(_cursorIndexOfDeadline);
+              _tmpOrder = _cursor.getInt(_cursorIndexOfOrder);
             }
-            final int _tmpEstimatedMinutes;
-            _tmpEstimatedMinutes = _cursor.getInt(_cursorIndexOfEstimatedMinutes);
+            final TaskType _tmpType;
+            if (_cursor.isNull(_cursorIndexOfType)) {
+              _tmpType = null;
+            } else {
+              _tmpType = __TaskType_stringToEnum(_cursor.getString(_cursorIndexOfType));
+            }
+            final TaskDifficulty _tmpDifficulty;
+            if (_cursor.isNull(_cursorIndexOfDifficulty)) {
+              _tmpDifficulty = null;
+            } else {
+              _tmpDifficulty = __TaskDifficulty_stringToEnum(_cursor.getString(_cursorIndexOfDifficulty));
+            }
+            final TaskStatus _tmpStatus;
+            _tmpStatus = __TaskStatus_stringToEnum(_cursor.getString(_cursorIndexOfStatus));
+            final Integer _tmpExperienceReward;
+            if (_cursor.isNull(_cursorIndexOfExperienceReward)) {
+              _tmpExperienceReward = null;
+            } else {
+              _tmpExperienceReward = _cursor.getInt(_cursorIndexOfExperienceReward);
+            }
+            final Integer _tmpCoinReward;
+            if (_cursor.isNull(_cursorIndexOfCoinReward)) {
+              _tmpCoinReward = null;
+            } else {
+              _tmpCoinReward = _cursor.getInt(_cursorIndexOfCoinReward);
+            }
+            final Integer _tmpEstimatedMinutes;
+            if (_cursor.isNull(_cursorIndexOfEstimatedMinutes)) {
+              _tmpEstimatedMinutes = null;
+            } else {
+              _tmpEstimatedMinutes = _cursor.getInt(_cursorIndexOfEstimatedMinutes);
+            }
+            final Integer _tmpEstimatedDuration;
+            if (_cursor.isNull(_cursorIndexOfEstimatedDuration)) {
+              _tmpEstimatedDuration = null;
+            } else {
+              _tmpEstimatedDuration = _cursor.getInt(_cursorIndexOfEstimatedDuration);
+            }
             final float _tmpProgress;
             _tmpProgress = _cursor.getFloat(_cursorIndexOfProgress);
-            final long _tmpCreatedAt;
-            _tmpCreatedAt = _cursor.getLong(_cursorIndexOfCreatedAt);
-            final Long _tmpCompletedAt;
-            if (_cursor.isNull(_cursorIndexOfCompletedAt)) {
-              _tmpCompletedAt = null;
-            } else {
-              _tmpCompletedAt = _cursor.getLong(_cursorIndexOfCompletedAt);
-            }
-            final String _tmpParentTaskId;
-            if (_cursor.isNull(_cursorIndexOfParentTaskId)) {
-              _tmpParentTaskId = null;
-            } else {
-              _tmpParentTaskId = _cursor.getString(_cursorIndexOfParentTaskId);
-            }
-            final int _tmpOrder;
-            _tmpOrder = _cursor.getInt(_cursorIndexOfOrder);
-            final String _tmpTargetGrade;
-            if (_cursor.isNull(_cursorIndexOfTargetGrade)) {
-              _tmpTargetGrade = null;
-            } else {
-              _tmpTargetGrade = _cursor.getString(_cursorIndexOfTargetGrade);
-            }
             final String _tmpActionType;
             if (_cursor.isNull(_cursorIndexOfActionType)) {
               _tmpActionType = null;
@@ -1018,7 +1196,41 @@ public final class TaskDao_Impl implements TaskDao {
             } else {
               _tmpActionPayload = _cursor.getString(_cursorIndexOfActionPayload);
             }
-            _item = new Task(_tmpId,_tmpTitle,_tmpDescription,_tmpType,_tmpDifficulty,_tmpStatus,_tmpCourseId,_tmpChapterId,_tmpExperienceReward,_tmpCoinReward,_tmpDeadline,_tmpEstimatedMinutes,_tmpProgress,_tmpCreatedAt,_tmpCompletedAt,_tmpParentTaskId,_tmpOrder,_tmpTargetGrade,_tmpActionType,_tmpActionPayload);
+            final String _tmpTargetGrade;
+            if (_cursor.isNull(_cursorIndexOfTargetGrade)) {
+              _tmpTargetGrade = null;
+            } else {
+              _tmpTargetGrade = _cursor.getString(_cursorIndexOfTargetGrade);
+            }
+            final String _tmpSource;
+            if (_cursor.isNull(_cursorIndexOfSource)) {
+              _tmpSource = null;
+            } else {
+              _tmpSource = _cursor.getString(_cursorIndexOfSource);
+            }
+            final Long _tmpCreatedAt;
+            if (_cursor.isNull(_cursorIndexOfCreatedAt)) {
+              _tmpCreatedAt = null;
+            } else {
+              _tmpCreatedAt = _cursor.getLong(_cursorIndexOfCreatedAt);
+            }
+            final Long _tmpDeadline;
+            if (_cursor.isNull(_cursorIndexOfDeadline)) {
+              _tmpDeadline = null;
+            } else {
+              _tmpDeadline = _cursor.getLong(_cursorIndexOfDeadline);
+            }
+            final Long _tmpCompletedAt;
+            if (_cursor.isNull(_cursorIndexOfCompletedAt)) {
+              _tmpCompletedAt = null;
+            } else {
+              _tmpCompletedAt = _cursor.getLong(_cursorIndexOfCompletedAt);
+            }
+            final boolean _tmpIsCompleted;
+            final int _tmp;
+            _tmp = _cursor.getInt(_cursorIndexOfIsCompleted);
+            _tmpIsCompleted = _tmp != 0;
+            _item = new Task(_tmpId,_tmpTitle,_tmpDescription,_tmpCourseId,_tmpChapterId,_tmpOrder,_tmpType,_tmpDifficulty,_tmpStatus,_tmpExperienceReward,_tmpCoinReward,_tmpEstimatedMinutes,_tmpEstimatedDuration,_tmpProgress,_tmpActionType,_tmpActionPayload,_tmpTargetGrade,_tmpSource,_tmpCreatedAt,_tmpDeadline,_tmpCompletedAt,_tmpIsCompleted);
             _result.add(_item);
           }
           return _result;
@@ -1047,23 +1259,25 @@ public final class TaskDao_Impl implements TaskDao {
           final int _cursorIndexOfId = CursorUtil.getColumnIndexOrThrow(_cursor, "id");
           final int _cursorIndexOfTitle = CursorUtil.getColumnIndexOrThrow(_cursor, "title");
           final int _cursorIndexOfDescription = CursorUtil.getColumnIndexOrThrow(_cursor, "description");
+          final int _cursorIndexOfCourseId = CursorUtil.getColumnIndexOrThrow(_cursor, "courseId");
+          final int _cursorIndexOfChapterId = CursorUtil.getColumnIndexOrThrow(_cursor, "chapterId");
+          final int _cursorIndexOfOrder = CursorUtil.getColumnIndexOrThrow(_cursor, "order");
           final int _cursorIndexOfType = CursorUtil.getColumnIndexOrThrow(_cursor, "type");
           final int _cursorIndexOfDifficulty = CursorUtil.getColumnIndexOrThrow(_cursor, "difficulty");
           final int _cursorIndexOfStatus = CursorUtil.getColumnIndexOrThrow(_cursor, "status");
-          final int _cursorIndexOfCourseId = CursorUtil.getColumnIndexOrThrow(_cursor, "courseId");
-          final int _cursorIndexOfChapterId = CursorUtil.getColumnIndexOrThrow(_cursor, "chapterId");
           final int _cursorIndexOfExperienceReward = CursorUtil.getColumnIndexOrThrow(_cursor, "experienceReward");
           final int _cursorIndexOfCoinReward = CursorUtil.getColumnIndexOrThrow(_cursor, "coinReward");
-          final int _cursorIndexOfDeadline = CursorUtil.getColumnIndexOrThrow(_cursor, "deadline");
           final int _cursorIndexOfEstimatedMinutes = CursorUtil.getColumnIndexOrThrow(_cursor, "estimatedMinutes");
+          final int _cursorIndexOfEstimatedDuration = CursorUtil.getColumnIndexOrThrow(_cursor, "estimatedDuration");
           final int _cursorIndexOfProgress = CursorUtil.getColumnIndexOrThrow(_cursor, "progress");
-          final int _cursorIndexOfCreatedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "createdAt");
-          final int _cursorIndexOfCompletedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "completedAt");
-          final int _cursorIndexOfParentTaskId = CursorUtil.getColumnIndexOrThrow(_cursor, "parentTaskId");
-          final int _cursorIndexOfOrder = CursorUtil.getColumnIndexOrThrow(_cursor, "order");
-          final int _cursorIndexOfTargetGrade = CursorUtil.getColumnIndexOrThrow(_cursor, "targetGrade");
           final int _cursorIndexOfActionType = CursorUtil.getColumnIndexOrThrow(_cursor, "actionType");
           final int _cursorIndexOfActionPayload = CursorUtil.getColumnIndexOrThrow(_cursor, "actionPayload");
+          final int _cursorIndexOfTargetGrade = CursorUtil.getColumnIndexOrThrow(_cursor, "targetGrade");
+          final int _cursorIndexOfSource = CursorUtil.getColumnIndexOrThrow(_cursor, "source");
+          final int _cursorIndexOfCreatedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "createdAt");
+          final int _cursorIndexOfDeadline = CursorUtil.getColumnIndexOrThrow(_cursor, "deadline");
+          final int _cursorIndexOfCompletedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "completedAt");
+          final int _cursorIndexOfIsCompleted = CursorUtil.getColumnIndexOrThrow(_cursor, "isCompleted");
           final List<Task> _result = new ArrayList<Task>(_cursor.getCount());
           while (_cursor.moveToNext()) {
             final Task _item;
@@ -1072,19 +1286,11 @@ public final class TaskDao_Impl implements TaskDao {
             final String _tmpTitle;
             _tmpTitle = _cursor.getString(_cursorIndexOfTitle);
             final String _tmpDescription;
-            _tmpDescription = _cursor.getString(_cursorIndexOfDescription);
-            final TaskType _tmpType;
-            final String _tmp;
-            _tmp = _cursor.getString(_cursorIndexOfType);
-            _tmpType = __converters.toTaskType(_tmp);
-            final TaskDifficulty _tmpDifficulty;
-            final String _tmp_1;
-            _tmp_1 = _cursor.getString(_cursorIndexOfDifficulty);
-            _tmpDifficulty = __converters.toTaskDifficulty(_tmp_1);
-            final TaskStatus _tmpStatus;
-            final String _tmp_2;
-            _tmp_2 = _cursor.getString(_cursorIndexOfStatus);
-            _tmpStatus = __converters.toTaskStatus(_tmp_2);
+            if (_cursor.isNull(_cursorIndexOfDescription)) {
+              _tmpDescription = null;
+            } else {
+              _tmpDescription = _cursor.getString(_cursorIndexOfDescription);
+            }
             final String _tmpCourseId;
             if (_cursor.isNull(_cursorIndexOfCourseId)) {
               _tmpCourseId = null;
@@ -1097,42 +1303,52 @@ public final class TaskDao_Impl implements TaskDao {
             } else {
               _tmpChapterId = _cursor.getString(_cursorIndexOfChapterId);
             }
-            final int _tmpExperienceReward;
-            _tmpExperienceReward = _cursor.getInt(_cursorIndexOfExperienceReward);
-            final int _tmpCoinReward;
-            _tmpCoinReward = _cursor.getInt(_cursorIndexOfCoinReward);
-            final Long _tmpDeadline;
-            if (_cursor.isNull(_cursorIndexOfDeadline)) {
-              _tmpDeadline = null;
+            final Integer _tmpOrder;
+            if (_cursor.isNull(_cursorIndexOfOrder)) {
+              _tmpOrder = null;
             } else {
-              _tmpDeadline = _cursor.getLong(_cursorIndexOfDeadline);
+              _tmpOrder = _cursor.getInt(_cursorIndexOfOrder);
             }
-            final int _tmpEstimatedMinutes;
-            _tmpEstimatedMinutes = _cursor.getInt(_cursorIndexOfEstimatedMinutes);
+            final TaskType _tmpType;
+            if (_cursor.isNull(_cursorIndexOfType)) {
+              _tmpType = null;
+            } else {
+              _tmpType = __TaskType_stringToEnum(_cursor.getString(_cursorIndexOfType));
+            }
+            final TaskDifficulty _tmpDifficulty;
+            if (_cursor.isNull(_cursorIndexOfDifficulty)) {
+              _tmpDifficulty = null;
+            } else {
+              _tmpDifficulty = __TaskDifficulty_stringToEnum(_cursor.getString(_cursorIndexOfDifficulty));
+            }
+            final TaskStatus _tmpStatus;
+            _tmpStatus = __TaskStatus_stringToEnum(_cursor.getString(_cursorIndexOfStatus));
+            final Integer _tmpExperienceReward;
+            if (_cursor.isNull(_cursorIndexOfExperienceReward)) {
+              _tmpExperienceReward = null;
+            } else {
+              _tmpExperienceReward = _cursor.getInt(_cursorIndexOfExperienceReward);
+            }
+            final Integer _tmpCoinReward;
+            if (_cursor.isNull(_cursorIndexOfCoinReward)) {
+              _tmpCoinReward = null;
+            } else {
+              _tmpCoinReward = _cursor.getInt(_cursorIndexOfCoinReward);
+            }
+            final Integer _tmpEstimatedMinutes;
+            if (_cursor.isNull(_cursorIndexOfEstimatedMinutes)) {
+              _tmpEstimatedMinutes = null;
+            } else {
+              _tmpEstimatedMinutes = _cursor.getInt(_cursorIndexOfEstimatedMinutes);
+            }
+            final Integer _tmpEstimatedDuration;
+            if (_cursor.isNull(_cursorIndexOfEstimatedDuration)) {
+              _tmpEstimatedDuration = null;
+            } else {
+              _tmpEstimatedDuration = _cursor.getInt(_cursorIndexOfEstimatedDuration);
+            }
             final float _tmpProgress;
             _tmpProgress = _cursor.getFloat(_cursorIndexOfProgress);
-            final long _tmpCreatedAt;
-            _tmpCreatedAt = _cursor.getLong(_cursorIndexOfCreatedAt);
-            final Long _tmpCompletedAt;
-            if (_cursor.isNull(_cursorIndexOfCompletedAt)) {
-              _tmpCompletedAt = null;
-            } else {
-              _tmpCompletedAt = _cursor.getLong(_cursorIndexOfCompletedAt);
-            }
-            final String _tmpParentTaskId;
-            if (_cursor.isNull(_cursorIndexOfParentTaskId)) {
-              _tmpParentTaskId = null;
-            } else {
-              _tmpParentTaskId = _cursor.getString(_cursorIndexOfParentTaskId);
-            }
-            final int _tmpOrder;
-            _tmpOrder = _cursor.getInt(_cursorIndexOfOrder);
-            final String _tmpTargetGrade;
-            if (_cursor.isNull(_cursorIndexOfTargetGrade)) {
-              _tmpTargetGrade = null;
-            } else {
-              _tmpTargetGrade = _cursor.getString(_cursorIndexOfTargetGrade);
-            }
             final String _tmpActionType;
             if (_cursor.isNull(_cursorIndexOfActionType)) {
               _tmpActionType = null;
@@ -1145,7 +1361,41 @@ public final class TaskDao_Impl implements TaskDao {
             } else {
               _tmpActionPayload = _cursor.getString(_cursorIndexOfActionPayload);
             }
-            _item = new Task(_tmpId,_tmpTitle,_tmpDescription,_tmpType,_tmpDifficulty,_tmpStatus,_tmpCourseId,_tmpChapterId,_tmpExperienceReward,_tmpCoinReward,_tmpDeadline,_tmpEstimatedMinutes,_tmpProgress,_tmpCreatedAt,_tmpCompletedAt,_tmpParentTaskId,_tmpOrder,_tmpTargetGrade,_tmpActionType,_tmpActionPayload);
+            final String _tmpTargetGrade;
+            if (_cursor.isNull(_cursorIndexOfTargetGrade)) {
+              _tmpTargetGrade = null;
+            } else {
+              _tmpTargetGrade = _cursor.getString(_cursorIndexOfTargetGrade);
+            }
+            final String _tmpSource;
+            if (_cursor.isNull(_cursorIndexOfSource)) {
+              _tmpSource = null;
+            } else {
+              _tmpSource = _cursor.getString(_cursorIndexOfSource);
+            }
+            final Long _tmpCreatedAt;
+            if (_cursor.isNull(_cursorIndexOfCreatedAt)) {
+              _tmpCreatedAt = null;
+            } else {
+              _tmpCreatedAt = _cursor.getLong(_cursorIndexOfCreatedAt);
+            }
+            final Long _tmpDeadline;
+            if (_cursor.isNull(_cursorIndexOfDeadline)) {
+              _tmpDeadline = null;
+            } else {
+              _tmpDeadline = _cursor.getLong(_cursorIndexOfDeadline);
+            }
+            final Long _tmpCompletedAt;
+            if (_cursor.isNull(_cursorIndexOfCompletedAt)) {
+              _tmpCompletedAt = null;
+            } else {
+              _tmpCompletedAt = _cursor.getLong(_cursorIndexOfCompletedAt);
+            }
+            final boolean _tmpIsCompleted;
+            final int _tmp;
+            _tmp = _cursor.getInt(_cursorIndexOfIsCompleted);
+            _tmpIsCompleted = _tmp != 0;
+            _item = new Task(_tmpId,_tmpTitle,_tmpDescription,_tmpCourseId,_tmpChapterId,_tmpOrder,_tmpType,_tmpDifficulty,_tmpStatus,_tmpExperienceReward,_tmpCoinReward,_tmpEstimatedMinutes,_tmpEstimatedDuration,_tmpProgress,_tmpActionType,_tmpActionPayload,_tmpTargetGrade,_tmpSource,_tmpCreatedAt,_tmpDeadline,_tmpCompletedAt,_tmpIsCompleted);
             _result.add(_item);
           }
           return _result;
@@ -1176,23 +1426,25 @@ public final class TaskDao_Impl implements TaskDao {
           final int _cursorIndexOfId = CursorUtil.getColumnIndexOrThrow(_cursor, "id");
           final int _cursorIndexOfTitle = CursorUtil.getColumnIndexOrThrow(_cursor, "title");
           final int _cursorIndexOfDescription = CursorUtil.getColumnIndexOrThrow(_cursor, "description");
+          final int _cursorIndexOfCourseId = CursorUtil.getColumnIndexOrThrow(_cursor, "courseId");
+          final int _cursorIndexOfChapterId = CursorUtil.getColumnIndexOrThrow(_cursor, "chapterId");
+          final int _cursorIndexOfOrder = CursorUtil.getColumnIndexOrThrow(_cursor, "order");
           final int _cursorIndexOfType = CursorUtil.getColumnIndexOrThrow(_cursor, "type");
           final int _cursorIndexOfDifficulty = CursorUtil.getColumnIndexOrThrow(_cursor, "difficulty");
           final int _cursorIndexOfStatus = CursorUtil.getColumnIndexOrThrow(_cursor, "status");
-          final int _cursorIndexOfCourseId = CursorUtil.getColumnIndexOrThrow(_cursor, "courseId");
-          final int _cursorIndexOfChapterId = CursorUtil.getColumnIndexOrThrow(_cursor, "chapterId");
           final int _cursorIndexOfExperienceReward = CursorUtil.getColumnIndexOrThrow(_cursor, "experienceReward");
           final int _cursorIndexOfCoinReward = CursorUtil.getColumnIndexOrThrow(_cursor, "coinReward");
-          final int _cursorIndexOfDeadline = CursorUtil.getColumnIndexOrThrow(_cursor, "deadline");
           final int _cursorIndexOfEstimatedMinutes = CursorUtil.getColumnIndexOrThrow(_cursor, "estimatedMinutes");
+          final int _cursorIndexOfEstimatedDuration = CursorUtil.getColumnIndexOrThrow(_cursor, "estimatedDuration");
           final int _cursorIndexOfProgress = CursorUtil.getColumnIndexOrThrow(_cursor, "progress");
-          final int _cursorIndexOfCreatedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "createdAt");
-          final int _cursorIndexOfCompletedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "completedAt");
-          final int _cursorIndexOfParentTaskId = CursorUtil.getColumnIndexOrThrow(_cursor, "parentTaskId");
-          final int _cursorIndexOfOrder = CursorUtil.getColumnIndexOrThrow(_cursor, "order");
-          final int _cursorIndexOfTargetGrade = CursorUtil.getColumnIndexOrThrow(_cursor, "targetGrade");
           final int _cursorIndexOfActionType = CursorUtil.getColumnIndexOrThrow(_cursor, "actionType");
           final int _cursorIndexOfActionPayload = CursorUtil.getColumnIndexOrThrow(_cursor, "actionPayload");
+          final int _cursorIndexOfTargetGrade = CursorUtil.getColumnIndexOrThrow(_cursor, "targetGrade");
+          final int _cursorIndexOfSource = CursorUtil.getColumnIndexOrThrow(_cursor, "source");
+          final int _cursorIndexOfCreatedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "createdAt");
+          final int _cursorIndexOfDeadline = CursorUtil.getColumnIndexOrThrow(_cursor, "deadline");
+          final int _cursorIndexOfCompletedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "completedAt");
+          final int _cursorIndexOfIsCompleted = CursorUtil.getColumnIndexOrThrow(_cursor, "isCompleted");
           final List<Task> _result = new ArrayList<Task>(_cursor.getCount());
           while (_cursor.moveToNext()) {
             final Task _item;
@@ -1201,19 +1453,11 @@ public final class TaskDao_Impl implements TaskDao {
             final String _tmpTitle;
             _tmpTitle = _cursor.getString(_cursorIndexOfTitle);
             final String _tmpDescription;
-            _tmpDescription = _cursor.getString(_cursorIndexOfDescription);
-            final TaskType _tmpType;
-            final String _tmp;
-            _tmp = _cursor.getString(_cursorIndexOfType);
-            _tmpType = __converters.toTaskType(_tmp);
-            final TaskDifficulty _tmpDifficulty;
-            final String _tmp_1;
-            _tmp_1 = _cursor.getString(_cursorIndexOfDifficulty);
-            _tmpDifficulty = __converters.toTaskDifficulty(_tmp_1);
-            final TaskStatus _tmpStatus;
-            final String _tmp_2;
-            _tmp_2 = _cursor.getString(_cursorIndexOfStatus);
-            _tmpStatus = __converters.toTaskStatus(_tmp_2);
+            if (_cursor.isNull(_cursorIndexOfDescription)) {
+              _tmpDescription = null;
+            } else {
+              _tmpDescription = _cursor.getString(_cursorIndexOfDescription);
+            }
             final String _tmpCourseId;
             if (_cursor.isNull(_cursorIndexOfCourseId)) {
               _tmpCourseId = null;
@@ -1226,42 +1470,52 @@ public final class TaskDao_Impl implements TaskDao {
             } else {
               _tmpChapterId = _cursor.getString(_cursorIndexOfChapterId);
             }
-            final int _tmpExperienceReward;
-            _tmpExperienceReward = _cursor.getInt(_cursorIndexOfExperienceReward);
-            final int _tmpCoinReward;
-            _tmpCoinReward = _cursor.getInt(_cursorIndexOfCoinReward);
-            final Long _tmpDeadline;
-            if (_cursor.isNull(_cursorIndexOfDeadline)) {
-              _tmpDeadline = null;
+            final Integer _tmpOrder;
+            if (_cursor.isNull(_cursorIndexOfOrder)) {
+              _tmpOrder = null;
             } else {
-              _tmpDeadline = _cursor.getLong(_cursorIndexOfDeadline);
+              _tmpOrder = _cursor.getInt(_cursorIndexOfOrder);
             }
-            final int _tmpEstimatedMinutes;
-            _tmpEstimatedMinutes = _cursor.getInt(_cursorIndexOfEstimatedMinutes);
+            final TaskType _tmpType;
+            if (_cursor.isNull(_cursorIndexOfType)) {
+              _tmpType = null;
+            } else {
+              _tmpType = __TaskType_stringToEnum(_cursor.getString(_cursorIndexOfType));
+            }
+            final TaskDifficulty _tmpDifficulty;
+            if (_cursor.isNull(_cursorIndexOfDifficulty)) {
+              _tmpDifficulty = null;
+            } else {
+              _tmpDifficulty = __TaskDifficulty_stringToEnum(_cursor.getString(_cursorIndexOfDifficulty));
+            }
+            final TaskStatus _tmpStatus;
+            _tmpStatus = __TaskStatus_stringToEnum(_cursor.getString(_cursorIndexOfStatus));
+            final Integer _tmpExperienceReward;
+            if (_cursor.isNull(_cursorIndexOfExperienceReward)) {
+              _tmpExperienceReward = null;
+            } else {
+              _tmpExperienceReward = _cursor.getInt(_cursorIndexOfExperienceReward);
+            }
+            final Integer _tmpCoinReward;
+            if (_cursor.isNull(_cursorIndexOfCoinReward)) {
+              _tmpCoinReward = null;
+            } else {
+              _tmpCoinReward = _cursor.getInt(_cursorIndexOfCoinReward);
+            }
+            final Integer _tmpEstimatedMinutes;
+            if (_cursor.isNull(_cursorIndexOfEstimatedMinutes)) {
+              _tmpEstimatedMinutes = null;
+            } else {
+              _tmpEstimatedMinutes = _cursor.getInt(_cursorIndexOfEstimatedMinutes);
+            }
+            final Integer _tmpEstimatedDuration;
+            if (_cursor.isNull(_cursorIndexOfEstimatedDuration)) {
+              _tmpEstimatedDuration = null;
+            } else {
+              _tmpEstimatedDuration = _cursor.getInt(_cursorIndexOfEstimatedDuration);
+            }
             final float _tmpProgress;
             _tmpProgress = _cursor.getFloat(_cursorIndexOfProgress);
-            final long _tmpCreatedAt;
-            _tmpCreatedAt = _cursor.getLong(_cursorIndexOfCreatedAt);
-            final Long _tmpCompletedAt;
-            if (_cursor.isNull(_cursorIndexOfCompletedAt)) {
-              _tmpCompletedAt = null;
-            } else {
-              _tmpCompletedAt = _cursor.getLong(_cursorIndexOfCompletedAt);
-            }
-            final String _tmpParentTaskId;
-            if (_cursor.isNull(_cursorIndexOfParentTaskId)) {
-              _tmpParentTaskId = null;
-            } else {
-              _tmpParentTaskId = _cursor.getString(_cursorIndexOfParentTaskId);
-            }
-            final int _tmpOrder;
-            _tmpOrder = _cursor.getInt(_cursorIndexOfOrder);
-            final String _tmpTargetGrade;
-            if (_cursor.isNull(_cursorIndexOfTargetGrade)) {
-              _tmpTargetGrade = null;
-            } else {
-              _tmpTargetGrade = _cursor.getString(_cursorIndexOfTargetGrade);
-            }
             final String _tmpActionType;
             if (_cursor.isNull(_cursorIndexOfActionType)) {
               _tmpActionType = null;
@@ -1274,7 +1528,41 @@ public final class TaskDao_Impl implements TaskDao {
             } else {
               _tmpActionPayload = _cursor.getString(_cursorIndexOfActionPayload);
             }
-            _item = new Task(_tmpId,_tmpTitle,_tmpDescription,_tmpType,_tmpDifficulty,_tmpStatus,_tmpCourseId,_tmpChapterId,_tmpExperienceReward,_tmpCoinReward,_tmpDeadline,_tmpEstimatedMinutes,_tmpProgress,_tmpCreatedAt,_tmpCompletedAt,_tmpParentTaskId,_tmpOrder,_tmpTargetGrade,_tmpActionType,_tmpActionPayload);
+            final String _tmpTargetGrade;
+            if (_cursor.isNull(_cursorIndexOfTargetGrade)) {
+              _tmpTargetGrade = null;
+            } else {
+              _tmpTargetGrade = _cursor.getString(_cursorIndexOfTargetGrade);
+            }
+            final String _tmpSource;
+            if (_cursor.isNull(_cursorIndexOfSource)) {
+              _tmpSource = null;
+            } else {
+              _tmpSource = _cursor.getString(_cursorIndexOfSource);
+            }
+            final Long _tmpCreatedAt;
+            if (_cursor.isNull(_cursorIndexOfCreatedAt)) {
+              _tmpCreatedAt = null;
+            } else {
+              _tmpCreatedAt = _cursor.getLong(_cursorIndexOfCreatedAt);
+            }
+            final Long _tmpDeadline;
+            if (_cursor.isNull(_cursorIndexOfDeadline)) {
+              _tmpDeadline = null;
+            } else {
+              _tmpDeadline = _cursor.getLong(_cursorIndexOfDeadline);
+            }
+            final Long _tmpCompletedAt;
+            if (_cursor.isNull(_cursorIndexOfCompletedAt)) {
+              _tmpCompletedAt = null;
+            } else {
+              _tmpCompletedAt = _cursor.getLong(_cursorIndexOfCompletedAt);
+            }
+            final boolean _tmpIsCompleted;
+            final int _tmp;
+            _tmp = _cursor.getInt(_cursorIndexOfIsCompleted);
+            _tmpIsCompleted = _tmp != 0;
+            _item = new Task(_tmpId,_tmpTitle,_tmpDescription,_tmpCourseId,_tmpChapterId,_tmpOrder,_tmpType,_tmpDifficulty,_tmpStatus,_tmpExperienceReward,_tmpCoinReward,_tmpEstimatedMinutes,_tmpEstimatedDuration,_tmpProgress,_tmpActionType,_tmpActionPayload,_tmpTargetGrade,_tmpSource,_tmpCreatedAt,_tmpDeadline,_tmpCompletedAt,_tmpIsCompleted);
             _result.add(_item);
           }
           return _result;
@@ -1305,23 +1593,25 @@ public final class TaskDao_Impl implements TaskDao {
           final int _cursorIndexOfId = CursorUtil.getColumnIndexOrThrow(_cursor, "id");
           final int _cursorIndexOfTitle = CursorUtil.getColumnIndexOrThrow(_cursor, "title");
           final int _cursorIndexOfDescription = CursorUtil.getColumnIndexOrThrow(_cursor, "description");
+          final int _cursorIndexOfCourseId = CursorUtil.getColumnIndexOrThrow(_cursor, "courseId");
+          final int _cursorIndexOfChapterId = CursorUtil.getColumnIndexOrThrow(_cursor, "chapterId");
+          final int _cursorIndexOfOrder = CursorUtil.getColumnIndexOrThrow(_cursor, "order");
           final int _cursorIndexOfType = CursorUtil.getColumnIndexOrThrow(_cursor, "type");
           final int _cursorIndexOfDifficulty = CursorUtil.getColumnIndexOrThrow(_cursor, "difficulty");
           final int _cursorIndexOfStatus = CursorUtil.getColumnIndexOrThrow(_cursor, "status");
-          final int _cursorIndexOfCourseId = CursorUtil.getColumnIndexOrThrow(_cursor, "courseId");
-          final int _cursorIndexOfChapterId = CursorUtil.getColumnIndexOrThrow(_cursor, "chapterId");
           final int _cursorIndexOfExperienceReward = CursorUtil.getColumnIndexOrThrow(_cursor, "experienceReward");
           final int _cursorIndexOfCoinReward = CursorUtil.getColumnIndexOrThrow(_cursor, "coinReward");
-          final int _cursorIndexOfDeadline = CursorUtil.getColumnIndexOrThrow(_cursor, "deadline");
           final int _cursorIndexOfEstimatedMinutes = CursorUtil.getColumnIndexOrThrow(_cursor, "estimatedMinutes");
+          final int _cursorIndexOfEstimatedDuration = CursorUtil.getColumnIndexOrThrow(_cursor, "estimatedDuration");
           final int _cursorIndexOfProgress = CursorUtil.getColumnIndexOrThrow(_cursor, "progress");
-          final int _cursorIndexOfCreatedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "createdAt");
-          final int _cursorIndexOfCompletedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "completedAt");
-          final int _cursorIndexOfParentTaskId = CursorUtil.getColumnIndexOrThrow(_cursor, "parentTaskId");
-          final int _cursorIndexOfOrder = CursorUtil.getColumnIndexOrThrow(_cursor, "order");
-          final int _cursorIndexOfTargetGrade = CursorUtil.getColumnIndexOrThrow(_cursor, "targetGrade");
           final int _cursorIndexOfActionType = CursorUtil.getColumnIndexOrThrow(_cursor, "actionType");
           final int _cursorIndexOfActionPayload = CursorUtil.getColumnIndexOrThrow(_cursor, "actionPayload");
+          final int _cursorIndexOfTargetGrade = CursorUtil.getColumnIndexOrThrow(_cursor, "targetGrade");
+          final int _cursorIndexOfSource = CursorUtil.getColumnIndexOrThrow(_cursor, "source");
+          final int _cursorIndexOfCreatedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "createdAt");
+          final int _cursorIndexOfDeadline = CursorUtil.getColumnIndexOrThrow(_cursor, "deadline");
+          final int _cursorIndexOfCompletedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "completedAt");
+          final int _cursorIndexOfIsCompleted = CursorUtil.getColumnIndexOrThrow(_cursor, "isCompleted");
           final List<Task> _result = new ArrayList<Task>(_cursor.getCount());
           while (_cursor.moveToNext()) {
             final Task _item;
@@ -1330,19 +1620,11 @@ public final class TaskDao_Impl implements TaskDao {
             final String _tmpTitle;
             _tmpTitle = _cursor.getString(_cursorIndexOfTitle);
             final String _tmpDescription;
-            _tmpDescription = _cursor.getString(_cursorIndexOfDescription);
-            final TaskType _tmpType;
-            final String _tmp;
-            _tmp = _cursor.getString(_cursorIndexOfType);
-            _tmpType = __converters.toTaskType(_tmp);
-            final TaskDifficulty _tmpDifficulty;
-            final String _tmp_1;
-            _tmp_1 = _cursor.getString(_cursorIndexOfDifficulty);
-            _tmpDifficulty = __converters.toTaskDifficulty(_tmp_1);
-            final TaskStatus _tmpStatus;
-            final String _tmp_2;
-            _tmp_2 = _cursor.getString(_cursorIndexOfStatus);
-            _tmpStatus = __converters.toTaskStatus(_tmp_2);
+            if (_cursor.isNull(_cursorIndexOfDescription)) {
+              _tmpDescription = null;
+            } else {
+              _tmpDescription = _cursor.getString(_cursorIndexOfDescription);
+            }
             final String _tmpCourseId;
             if (_cursor.isNull(_cursorIndexOfCourseId)) {
               _tmpCourseId = null;
@@ -1355,42 +1637,52 @@ public final class TaskDao_Impl implements TaskDao {
             } else {
               _tmpChapterId = _cursor.getString(_cursorIndexOfChapterId);
             }
-            final int _tmpExperienceReward;
-            _tmpExperienceReward = _cursor.getInt(_cursorIndexOfExperienceReward);
-            final int _tmpCoinReward;
-            _tmpCoinReward = _cursor.getInt(_cursorIndexOfCoinReward);
-            final Long _tmpDeadline;
-            if (_cursor.isNull(_cursorIndexOfDeadline)) {
-              _tmpDeadline = null;
+            final Integer _tmpOrder;
+            if (_cursor.isNull(_cursorIndexOfOrder)) {
+              _tmpOrder = null;
             } else {
-              _tmpDeadline = _cursor.getLong(_cursorIndexOfDeadline);
+              _tmpOrder = _cursor.getInt(_cursorIndexOfOrder);
             }
-            final int _tmpEstimatedMinutes;
-            _tmpEstimatedMinutes = _cursor.getInt(_cursorIndexOfEstimatedMinutes);
+            final TaskType _tmpType;
+            if (_cursor.isNull(_cursorIndexOfType)) {
+              _tmpType = null;
+            } else {
+              _tmpType = __TaskType_stringToEnum(_cursor.getString(_cursorIndexOfType));
+            }
+            final TaskDifficulty _tmpDifficulty;
+            if (_cursor.isNull(_cursorIndexOfDifficulty)) {
+              _tmpDifficulty = null;
+            } else {
+              _tmpDifficulty = __TaskDifficulty_stringToEnum(_cursor.getString(_cursorIndexOfDifficulty));
+            }
+            final TaskStatus _tmpStatus;
+            _tmpStatus = __TaskStatus_stringToEnum(_cursor.getString(_cursorIndexOfStatus));
+            final Integer _tmpExperienceReward;
+            if (_cursor.isNull(_cursorIndexOfExperienceReward)) {
+              _tmpExperienceReward = null;
+            } else {
+              _tmpExperienceReward = _cursor.getInt(_cursorIndexOfExperienceReward);
+            }
+            final Integer _tmpCoinReward;
+            if (_cursor.isNull(_cursorIndexOfCoinReward)) {
+              _tmpCoinReward = null;
+            } else {
+              _tmpCoinReward = _cursor.getInt(_cursorIndexOfCoinReward);
+            }
+            final Integer _tmpEstimatedMinutes;
+            if (_cursor.isNull(_cursorIndexOfEstimatedMinutes)) {
+              _tmpEstimatedMinutes = null;
+            } else {
+              _tmpEstimatedMinutes = _cursor.getInt(_cursorIndexOfEstimatedMinutes);
+            }
+            final Integer _tmpEstimatedDuration;
+            if (_cursor.isNull(_cursorIndexOfEstimatedDuration)) {
+              _tmpEstimatedDuration = null;
+            } else {
+              _tmpEstimatedDuration = _cursor.getInt(_cursorIndexOfEstimatedDuration);
+            }
             final float _tmpProgress;
             _tmpProgress = _cursor.getFloat(_cursorIndexOfProgress);
-            final long _tmpCreatedAt;
-            _tmpCreatedAt = _cursor.getLong(_cursorIndexOfCreatedAt);
-            final Long _tmpCompletedAt;
-            if (_cursor.isNull(_cursorIndexOfCompletedAt)) {
-              _tmpCompletedAt = null;
-            } else {
-              _tmpCompletedAt = _cursor.getLong(_cursorIndexOfCompletedAt);
-            }
-            final String _tmpParentTaskId;
-            if (_cursor.isNull(_cursorIndexOfParentTaskId)) {
-              _tmpParentTaskId = null;
-            } else {
-              _tmpParentTaskId = _cursor.getString(_cursorIndexOfParentTaskId);
-            }
-            final int _tmpOrder;
-            _tmpOrder = _cursor.getInt(_cursorIndexOfOrder);
-            final String _tmpTargetGrade;
-            if (_cursor.isNull(_cursorIndexOfTargetGrade)) {
-              _tmpTargetGrade = null;
-            } else {
-              _tmpTargetGrade = _cursor.getString(_cursorIndexOfTargetGrade);
-            }
             final String _tmpActionType;
             if (_cursor.isNull(_cursorIndexOfActionType)) {
               _tmpActionType = null;
@@ -1403,7 +1695,41 @@ public final class TaskDao_Impl implements TaskDao {
             } else {
               _tmpActionPayload = _cursor.getString(_cursorIndexOfActionPayload);
             }
-            _item = new Task(_tmpId,_tmpTitle,_tmpDescription,_tmpType,_tmpDifficulty,_tmpStatus,_tmpCourseId,_tmpChapterId,_tmpExperienceReward,_tmpCoinReward,_tmpDeadline,_tmpEstimatedMinutes,_tmpProgress,_tmpCreatedAt,_tmpCompletedAt,_tmpParentTaskId,_tmpOrder,_tmpTargetGrade,_tmpActionType,_tmpActionPayload);
+            final String _tmpTargetGrade;
+            if (_cursor.isNull(_cursorIndexOfTargetGrade)) {
+              _tmpTargetGrade = null;
+            } else {
+              _tmpTargetGrade = _cursor.getString(_cursorIndexOfTargetGrade);
+            }
+            final String _tmpSource;
+            if (_cursor.isNull(_cursorIndexOfSource)) {
+              _tmpSource = null;
+            } else {
+              _tmpSource = _cursor.getString(_cursorIndexOfSource);
+            }
+            final Long _tmpCreatedAt;
+            if (_cursor.isNull(_cursorIndexOfCreatedAt)) {
+              _tmpCreatedAt = null;
+            } else {
+              _tmpCreatedAt = _cursor.getLong(_cursorIndexOfCreatedAt);
+            }
+            final Long _tmpDeadline;
+            if (_cursor.isNull(_cursorIndexOfDeadline)) {
+              _tmpDeadline = null;
+            } else {
+              _tmpDeadline = _cursor.getLong(_cursorIndexOfDeadline);
+            }
+            final Long _tmpCompletedAt;
+            if (_cursor.isNull(_cursorIndexOfCompletedAt)) {
+              _tmpCompletedAt = null;
+            } else {
+              _tmpCompletedAt = _cursor.getLong(_cursorIndexOfCompletedAt);
+            }
+            final boolean _tmpIsCompleted;
+            final int _tmp;
+            _tmp = _cursor.getInt(_cursorIndexOfIsCompleted);
+            _tmpIsCompleted = _tmp != 0;
+            _item = new Task(_tmpId,_tmpTitle,_tmpDescription,_tmpCourseId,_tmpChapterId,_tmpOrder,_tmpType,_tmpDifficulty,_tmpStatus,_tmpExperienceReward,_tmpCoinReward,_tmpEstimatedMinutes,_tmpEstimatedDuration,_tmpProgress,_tmpActionType,_tmpActionPayload,_tmpTargetGrade,_tmpSource,_tmpCreatedAt,_tmpDeadline,_tmpCompletedAt,_tmpIsCompleted);
             _result.add(_item);
           }
           return _result;
@@ -1434,23 +1760,25 @@ public final class TaskDao_Impl implements TaskDao {
           final int _cursorIndexOfId = CursorUtil.getColumnIndexOrThrow(_cursor, "id");
           final int _cursorIndexOfTitle = CursorUtil.getColumnIndexOrThrow(_cursor, "title");
           final int _cursorIndexOfDescription = CursorUtil.getColumnIndexOrThrow(_cursor, "description");
+          final int _cursorIndexOfCourseId = CursorUtil.getColumnIndexOrThrow(_cursor, "courseId");
+          final int _cursorIndexOfChapterId = CursorUtil.getColumnIndexOrThrow(_cursor, "chapterId");
+          final int _cursorIndexOfOrder = CursorUtil.getColumnIndexOrThrow(_cursor, "order");
           final int _cursorIndexOfType = CursorUtil.getColumnIndexOrThrow(_cursor, "type");
           final int _cursorIndexOfDifficulty = CursorUtil.getColumnIndexOrThrow(_cursor, "difficulty");
           final int _cursorIndexOfStatus = CursorUtil.getColumnIndexOrThrow(_cursor, "status");
-          final int _cursorIndexOfCourseId = CursorUtil.getColumnIndexOrThrow(_cursor, "courseId");
-          final int _cursorIndexOfChapterId = CursorUtil.getColumnIndexOrThrow(_cursor, "chapterId");
           final int _cursorIndexOfExperienceReward = CursorUtil.getColumnIndexOrThrow(_cursor, "experienceReward");
           final int _cursorIndexOfCoinReward = CursorUtil.getColumnIndexOrThrow(_cursor, "coinReward");
-          final int _cursorIndexOfDeadline = CursorUtil.getColumnIndexOrThrow(_cursor, "deadline");
           final int _cursorIndexOfEstimatedMinutes = CursorUtil.getColumnIndexOrThrow(_cursor, "estimatedMinutes");
+          final int _cursorIndexOfEstimatedDuration = CursorUtil.getColumnIndexOrThrow(_cursor, "estimatedDuration");
           final int _cursorIndexOfProgress = CursorUtil.getColumnIndexOrThrow(_cursor, "progress");
-          final int _cursorIndexOfCreatedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "createdAt");
-          final int _cursorIndexOfCompletedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "completedAt");
-          final int _cursorIndexOfParentTaskId = CursorUtil.getColumnIndexOrThrow(_cursor, "parentTaskId");
-          final int _cursorIndexOfOrder = CursorUtil.getColumnIndexOrThrow(_cursor, "order");
-          final int _cursorIndexOfTargetGrade = CursorUtil.getColumnIndexOrThrow(_cursor, "targetGrade");
           final int _cursorIndexOfActionType = CursorUtil.getColumnIndexOrThrow(_cursor, "actionType");
           final int _cursorIndexOfActionPayload = CursorUtil.getColumnIndexOrThrow(_cursor, "actionPayload");
+          final int _cursorIndexOfTargetGrade = CursorUtil.getColumnIndexOrThrow(_cursor, "targetGrade");
+          final int _cursorIndexOfSource = CursorUtil.getColumnIndexOrThrow(_cursor, "source");
+          final int _cursorIndexOfCreatedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "createdAt");
+          final int _cursorIndexOfDeadline = CursorUtil.getColumnIndexOrThrow(_cursor, "deadline");
+          final int _cursorIndexOfCompletedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "completedAt");
+          final int _cursorIndexOfIsCompleted = CursorUtil.getColumnIndexOrThrow(_cursor, "isCompleted");
           final List<Task> _result = new ArrayList<Task>(_cursor.getCount());
           while (_cursor.moveToNext()) {
             final Task _item;
@@ -1459,19 +1787,11 @@ public final class TaskDao_Impl implements TaskDao {
             final String _tmpTitle;
             _tmpTitle = _cursor.getString(_cursorIndexOfTitle);
             final String _tmpDescription;
-            _tmpDescription = _cursor.getString(_cursorIndexOfDescription);
-            final TaskType _tmpType;
-            final String _tmp;
-            _tmp = _cursor.getString(_cursorIndexOfType);
-            _tmpType = __converters.toTaskType(_tmp);
-            final TaskDifficulty _tmpDifficulty;
-            final String _tmp_1;
-            _tmp_1 = _cursor.getString(_cursorIndexOfDifficulty);
-            _tmpDifficulty = __converters.toTaskDifficulty(_tmp_1);
-            final TaskStatus _tmpStatus;
-            final String _tmp_2;
-            _tmp_2 = _cursor.getString(_cursorIndexOfStatus);
-            _tmpStatus = __converters.toTaskStatus(_tmp_2);
+            if (_cursor.isNull(_cursorIndexOfDescription)) {
+              _tmpDescription = null;
+            } else {
+              _tmpDescription = _cursor.getString(_cursorIndexOfDescription);
+            }
             final String _tmpCourseId;
             if (_cursor.isNull(_cursorIndexOfCourseId)) {
               _tmpCourseId = null;
@@ -1484,42 +1804,52 @@ public final class TaskDao_Impl implements TaskDao {
             } else {
               _tmpChapterId = _cursor.getString(_cursorIndexOfChapterId);
             }
-            final int _tmpExperienceReward;
-            _tmpExperienceReward = _cursor.getInt(_cursorIndexOfExperienceReward);
-            final int _tmpCoinReward;
-            _tmpCoinReward = _cursor.getInt(_cursorIndexOfCoinReward);
-            final Long _tmpDeadline;
-            if (_cursor.isNull(_cursorIndexOfDeadline)) {
-              _tmpDeadline = null;
+            final Integer _tmpOrder;
+            if (_cursor.isNull(_cursorIndexOfOrder)) {
+              _tmpOrder = null;
             } else {
-              _tmpDeadline = _cursor.getLong(_cursorIndexOfDeadline);
+              _tmpOrder = _cursor.getInt(_cursorIndexOfOrder);
             }
-            final int _tmpEstimatedMinutes;
-            _tmpEstimatedMinutes = _cursor.getInt(_cursorIndexOfEstimatedMinutes);
+            final TaskType _tmpType;
+            if (_cursor.isNull(_cursorIndexOfType)) {
+              _tmpType = null;
+            } else {
+              _tmpType = __TaskType_stringToEnum(_cursor.getString(_cursorIndexOfType));
+            }
+            final TaskDifficulty _tmpDifficulty;
+            if (_cursor.isNull(_cursorIndexOfDifficulty)) {
+              _tmpDifficulty = null;
+            } else {
+              _tmpDifficulty = __TaskDifficulty_stringToEnum(_cursor.getString(_cursorIndexOfDifficulty));
+            }
+            final TaskStatus _tmpStatus;
+            _tmpStatus = __TaskStatus_stringToEnum(_cursor.getString(_cursorIndexOfStatus));
+            final Integer _tmpExperienceReward;
+            if (_cursor.isNull(_cursorIndexOfExperienceReward)) {
+              _tmpExperienceReward = null;
+            } else {
+              _tmpExperienceReward = _cursor.getInt(_cursorIndexOfExperienceReward);
+            }
+            final Integer _tmpCoinReward;
+            if (_cursor.isNull(_cursorIndexOfCoinReward)) {
+              _tmpCoinReward = null;
+            } else {
+              _tmpCoinReward = _cursor.getInt(_cursorIndexOfCoinReward);
+            }
+            final Integer _tmpEstimatedMinutes;
+            if (_cursor.isNull(_cursorIndexOfEstimatedMinutes)) {
+              _tmpEstimatedMinutes = null;
+            } else {
+              _tmpEstimatedMinutes = _cursor.getInt(_cursorIndexOfEstimatedMinutes);
+            }
+            final Integer _tmpEstimatedDuration;
+            if (_cursor.isNull(_cursorIndexOfEstimatedDuration)) {
+              _tmpEstimatedDuration = null;
+            } else {
+              _tmpEstimatedDuration = _cursor.getInt(_cursorIndexOfEstimatedDuration);
+            }
             final float _tmpProgress;
             _tmpProgress = _cursor.getFloat(_cursorIndexOfProgress);
-            final long _tmpCreatedAt;
-            _tmpCreatedAt = _cursor.getLong(_cursorIndexOfCreatedAt);
-            final Long _tmpCompletedAt;
-            if (_cursor.isNull(_cursorIndexOfCompletedAt)) {
-              _tmpCompletedAt = null;
-            } else {
-              _tmpCompletedAt = _cursor.getLong(_cursorIndexOfCompletedAt);
-            }
-            final String _tmpParentTaskId;
-            if (_cursor.isNull(_cursorIndexOfParentTaskId)) {
-              _tmpParentTaskId = null;
-            } else {
-              _tmpParentTaskId = _cursor.getString(_cursorIndexOfParentTaskId);
-            }
-            final int _tmpOrder;
-            _tmpOrder = _cursor.getInt(_cursorIndexOfOrder);
-            final String _tmpTargetGrade;
-            if (_cursor.isNull(_cursorIndexOfTargetGrade)) {
-              _tmpTargetGrade = null;
-            } else {
-              _tmpTargetGrade = _cursor.getString(_cursorIndexOfTargetGrade);
-            }
             final String _tmpActionType;
             if (_cursor.isNull(_cursorIndexOfActionType)) {
               _tmpActionType = null;
@@ -1532,7 +1862,41 @@ public final class TaskDao_Impl implements TaskDao {
             } else {
               _tmpActionPayload = _cursor.getString(_cursorIndexOfActionPayload);
             }
-            _item = new Task(_tmpId,_tmpTitle,_tmpDescription,_tmpType,_tmpDifficulty,_tmpStatus,_tmpCourseId,_tmpChapterId,_tmpExperienceReward,_tmpCoinReward,_tmpDeadline,_tmpEstimatedMinutes,_tmpProgress,_tmpCreatedAt,_tmpCompletedAt,_tmpParentTaskId,_tmpOrder,_tmpTargetGrade,_tmpActionType,_tmpActionPayload);
+            final String _tmpTargetGrade;
+            if (_cursor.isNull(_cursorIndexOfTargetGrade)) {
+              _tmpTargetGrade = null;
+            } else {
+              _tmpTargetGrade = _cursor.getString(_cursorIndexOfTargetGrade);
+            }
+            final String _tmpSource;
+            if (_cursor.isNull(_cursorIndexOfSource)) {
+              _tmpSource = null;
+            } else {
+              _tmpSource = _cursor.getString(_cursorIndexOfSource);
+            }
+            final Long _tmpCreatedAt;
+            if (_cursor.isNull(_cursorIndexOfCreatedAt)) {
+              _tmpCreatedAt = null;
+            } else {
+              _tmpCreatedAt = _cursor.getLong(_cursorIndexOfCreatedAt);
+            }
+            final Long _tmpDeadline;
+            if (_cursor.isNull(_cursorIndexOfDeadline)) {
+              _tmpDeadline = null;
+            } else {
+              _tmpDeadline = _cursor.getLong(_cursorIndexOfDeadline);
+            }
+            final Long _tmpCompletedAt;
+            if (_cursor.isNull(_cursorIndexOfCompletedAt)) {
+              _tmpCompletedAt = null;
+            } else {
+              _tmpCompletedAt = _cursor.getLong(_cursorIndexOfCompletedAt);
+            }
+            final boolean _tmpIsCompleted;
+            final int _tmp;
+            _tmp = _cursor.getInt(_cursorIndexOfIsCompleted);
+            _tmpIsCompleted = _tmp != 0;
+            _item = new Task(_tmpId,_tmpTitle,_tmpDescription,_tmpCourseId,_tmpChapterId,_tmpOrder,_tmpType,_tmpDifficulty,_tmpStatus,_tmpExperienceReward,_tmpCoinReward,_tmpEstimatedMinutes,_tmpEstimatedDuration,_tmpProgress,_tmpActionType,_tmpActionPayload,_tmpTargetGrade,_tmpSource,_tmpCreatedAt,_tmpDeadline,_tmpCompletedAt,_tmpIsCompleted);
             _result.add(_item);
           }
           return _result;
@@ -1565,23 +1929,25 @@ public final class TaskDao_Impl implements TaskDao {
           final int _cursorIndexOfId = CursorUtil.getColumnIndexOrThrow(_cursor, "id");
           final int _cursorIndexOfTitle = CursorUtil.getColumnIndexOrThrow(_cursor, "title");
           final int _cursorIndexOfDescription = CursorUtil.getColumnIndexOrThrow(_cursor, "description");
+          final int _cursorIndexOfCourseId = CursorUtil.getColumnIndexOrThrow(_cursor, "courseId");
+          final int _cursorIndexOfChapterId = CursorUtil.getColumnIndexOrThrow(_cursor, "chapterId");
+          final int _cursorIndexOfOrder = CursorUtil.getColumnIndexOrThrow(_cursor, "order");
           final int _cursorIndexOfType = CursorUtil.getColumnIndexOrThrow(_cursor, "type");
           final int _cursorIndexOfDifficulty = CursorUtil.getColumnIndexOrThrow(_cursor, "difficulty");
           final int _cursorIndexOfStatus = CursorUtil.getColumnIndexOrThrow(_cursor, "status");
-          final int _cursorIndexOfCourseId = CursorUtil.getColumnIndexOrThrow(_cursor, "courseId");
-          final int _cursorIndexOfChapterId = CursorUtil.getColumnIndexOrThrow(_cursor, "chapterId");
           final int _cursorIndexOfExperienceReward = CursorUtil.getColumnIndexOrThrow(_cursor, "experienceReward");
           final int _cursorIndexOfCoinReward = CursorUtil.getColumnIndexOrThrow(_cursor, "coinReward");
-          final int _cursorIndexOfDeadline = CursorUtil.getColumnIndexOrThrow(_cursor, "deadline");
           final int _cursorIndexOfEstimatedMinutes = CursorUtil.getColumnIndexOrThrow(_cursor, "estimatedMinutes");
+          final int _cursorIndexOfEstimatedDuration = CursorUtil.getColumnIndexOrThrow(_cursor, "estimatedDuration");
           final int _cursorIndexOfProgress = CursorUtil.getColumnIndexOrThrow(_cursor, "progress");
-          final int _cursorIndexOfCreatedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "createdAt");
-          final int _cursorIndexOfCompletedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "completedAt");
-          final int _cursorIndexOfParentTaskId = CursorUtil.getColumnIndexOrThrow(_cursor, "parentTaskId");
-          final int _cursorIndexOfOrder = CursorUtil.getColumnIndexOrThrow(_cursor, "order");
-          final int _cursorIndexOfTargetGrade = CursorUtil.getColumnIndexOrThrow(_cursor, "targetGrade");
           final int _cursorIndexOfActionType = CursorUtil.getColumnIndexOrThrow(_cursor, "actionType");
           final int _cursorIndexOfActionPayload = CursorUtil.getColumnIndexOrThrow(_cursor, "actionPayload");
+          final int _cursorIndexOfTargetGrade = CursorUtil.getColumnIndexOrThrow(_cursor, "targetGrade");
+          final int _cursorIndexOfSource = CursorUtil.getColumnIndexOrThrow(_cursor, "source");
+          final int _cursorIndexOfCreatedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "createdAt");
+          final int _cursorIndexOfDeadline = CursorUtil.getColumnIndexOrThrow(_cursor, "deadline");
+          final int _cursorIndexOfCompletedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "completedAt");
+          final int _cursorIndexOfIsCompleted = CursorUtil.getColumnIndexOrThrow(_cursor, "isCompleted");
           final List<Task> _result = new ArrayList<Task>(_cursor.getCount());
           while (_cursor.moveToNext()) {
             final Task _item;
@@ -1590,19 +1956,11 @@ public final class TaskDao_Impl implements TaskDao {
             final String _tmpTitle;
             _tmpTitle = _cursor.getString(_cursorIndexOfTitle);
             final String _tmpDescription;
-            _tmpDescription = _cursor.getString(_cursorIndexOfDescription);
-            final TaskType _tmpType;
-            final String _tmp;
-            _tmp = _cursor.getString(_cursorIndexOfType);
-            _tmpType = __converters.toTaskType(_tmp);
-            final TaskDifficulty _tmpDifficulty;
-            final String _tmp_1;
-            _tmp_1 = _cursor.getString(_cursorIndexOfDifficulty);
-            _tmpDifficulty = __converters.toTaskDifficulty(_tmp_1);
-            final TaskStatus _tmpStatus;
-            final String _tmp_2;
-            _tmp_2 = _cursor.getString(_cursorIndexOfStatus);
-            _tmpStatus = __converters.toTaskStatus(_tmp_2);
+            if (_cursor.isNull(_cursorIndexOfDescription)) {
+              _tmpDescription = null;
+            } else {
+              _tmpDescription = _cursor.getString(_cursorIndexOfDescription);
+            }
             final String _tmpCourseId;
             if (_cursor.isNull(_cursorIndexOfCourseId)) {
               _tmpCourseId = null;
@@ -1615,42 +1973,52 @@ public final class TaskDao_Impl implements TaskDao {
             } else {
               _tmpChapterId = _cursor.getString(_cursorIndexOfChapterId);
             }
-            final int _tmpExperienceReward;
-            _tmpExperienceReward = _cursor.getInt(_cursorIndexOfExperienceReward);
-            final int _tmpCoinReward;
-            _tmpCoinReward = _cursor.getInt(_cursorIndexOfCoinReward);
-            final Long _tmpDeadline;
-            if (_cursor.isNull(_cursorIndexOfDeadline)) {
-              _tmpDeadline = null;
+            final Integer _tmpOrder;
+            if (_cursor.isNull(_cursorIndexOfOrder)) {
+              _tmpOrder = null;
             } else {
-              _tmpDeadline = _cursor.getLong(_cursorIndexOfDeadline);
+              _tmpOrder = _cursor.getInt(_cursorIndexOfOrder);
             }
-            final int _tmpEstimatedMinutes;
-            _tmpEstimatedMinutes = _cursor.getInt(_cursorIndexOfEstimatedMinutes);
+            final TaskType _tmpType;
+            if (_cursor.isNull(_cursorIndexOfType)) {
+              _tmpType = null;
+            } else {
+              _tmpType = __TaskType_stringToEnum(_cursor.getString(_cursorIndexOfType));
+            }
+            final TaskDifficulty _tmpDifficulty;
+            if (_cursor.isNull(_cursorIndexOfDifficulty)) {
+              _tmpDifficulty = null;
+            } else {
+              _tmpDifficulty = __TaskDifficulty_stringToEnum(_cursor.getString(_cursorIndexOfDifficulty));
+            }
+            final TaskStatus _tmpStatus;
+            _tmpStatus = __TaskStatus_stringToEnum(_cursor.getString(_cursorIndexOfStatus));
+            final Integer _tmpExperienceReward;
+            if (_cursor.isNull(_cursorIndexOfExperienceReward)) {
+              _tmpExperienceReward = null;
+            } else {
+              _tmpExperienceReward = _cursor.getInt(_cursorIndexOfExperienceReward);
+            }
+            final Integer _tmpCoinReward;
+            if (_cursor.isNull(_cursorIndexOfCoinReward)) {
+              _tmpCoinReward = null;
+            } else {
+              _tmpCoinReward = _cursor.getInt(_cursorIndexOfCoinReward);
+            }
+            final Integer _tmpEstimatedMinutes;
+            if (_cursor.isNull(_cursorIndexOfEstimatedMinutes)) {
+              _tmpEstimatedMinutes = null;
+            } else {
+              _tmpEstimatedMinutes = _cursor.getInt(_cursorIndexOfEstimatedMinutes);
+            }
+            final Integer _tmpEstimatedDuration;
+            if (_cursor.isNull(_cursorIndexOfEstimatedDuration)) {
+              _tmpEstimatedDuration = null;
+            } else {
+              _tmpEstimatedDuration = _cursor.getInt(_cursorIndexOfEstimatedDuration);
+            }
             final float _tmpProgress;
             _tmpProgress = _cursor.getFloat(_cursorIndexOfProgress);
-            final long _tmpCreatedAt;
-            _tmpCreatedAt = _cursor.getLong(_cursorIndexOfCreatedAt);
-            final Long _tmpCompletedAt;
-            if (_cursor.isNull(_cursorIndexOfCompletedAt)) {
-              _tmpCompletedAt = null;
-            } else {
-              _tmpCompletedAt = _cursor.getLong(_cursorIndexOfCompletedAt);
-            }
-            final String _tmpParentTaskId;
-            if (_cursor.isNull(_cursorIndexOfParentTaskId)) {
-              _tmpParentTaskId = null;
-            } else {
-              _tmpParentTaskId = _cursor.getString(_cursorIndexOfParentTaskId);
-            }
-            final int _tmpOrder;
-            _tmpOrder = _cursor.getInt(_cursorIndexOfOrder);
-            final String _tmpTargetGrade;
-            if (_cursor.isNull(_cursorIndexOfTargetGrade)) {
-              _tmpTargetGrade = null;
-            } else {
-              _tmpTargetGrade = _cursor.getString(_cursorIndexOfTargetGrade);
-            }
             final String _tmpActionType;
             if (_cursor.isNull(_cursorIndexOfActionType)) {
               _tmpActionType = null;
@@ -1663,7 +2031,41 @@ public final class TaskDao_Impl implements TaskDao {
             } else {
               _tmpActionPayload = _cursor.getString(_cursorIndexOfActionPayload);
             }
-            _item = new Task(_tmpId,_tmpTitle,_tmpDescription,_tmpType,_tmpDifficulty,_tmpStatus,_tmpCourseId,_tmpChapterId,_tmpExperienceReward,_tmpCoinReward,_tmpDeadline,_tmpEstimatedMinutes,_tmpProgress,_tmpCreatedAt,_tmpCompletedAt,_tmpParentTaskId,_tmpOrder,_tmpTargetGrade,_tmpActionType,_tmpActionPayload);
+            final String _tmpTargetGrade;
+            if (_cursor.isNull(_cursorIndexOfTargetGrade)) {
+              _tmpTargetGrade = null;
+            } else {
+              _tmpTargetGrade = _cursor.getString(_cursorIndexOfTargetGrade);
+            }
+            final String _tmpSource;
+            if (_cursor.isNull(_cursorIndexOfSource)) {
+              _tmpSource = null;
+            } else {
+              _tmpSource = _cursor.getString(_cursorIndexOfSource);
+            }
+            final Long _tmpCreatedAt;
+            if (_cursor.isNull(_cursorIndexOfCreatedAt)) {
+              _tmpCreatedAt = null;
+            } else {
+              _tmpCreatedAt = _cursor.getLong(_cursorIndexOfCreatedAt);
+            }
+            final Long _tmpDeadline;
+            if (_cursor.isNull(_cursorIndexOfDeadline)) {
+              _tmpDeadline = null;
+            } else {
+              _tmpDeadline = _cursor.getLong(_cursorIndexOfDeadline);
+            }
+            final Long _tmpCompletedAt;
+            if (_cursor.isNull(_cursorIndexOfCompletedAt)) {
+              _tmpCompletedAt = null;
+            } else {
+              _tmpCompletedAt = _cursor.getLong(_cursorIndexOfCompletedAt);
+            }
+            final boolean _tmpIsCompleted;
+            final int _tmp;
+            _tmp = _cursor.getInt(_cursorIndexOfIsCompleted);
+            _tmpIsCompleted = _tmp != 0;
+            _item = new Task(_tmpId,_tmpTitle,_tmpDescription,_tmpCourseId,_tmpChapterId,_tmpOrder,_tmpType,_tmpDifficulty,_tmpStatus,_tmpExperienceReward,_tmpCoinReward,_tmpEstimatedMinutes,_tmpEstimatedDuration,_tmpProgress,_tmpActionType,_tmpActionPayload,_tmpTargetGrade,_tmpSource,_tmpCreatedAt,_tmpDeadline,_tmpCompletedAt,_tmpIsCompleted);
             _result.add(_item);
           }
           return _result;
@@ -1726,23 +2128,17 @@ public final class TaskDao_Impl implements TaskDao {
           final int _cursorIndexOfTaskId = CursorUtil.getColumnIndexOrThrow(_cursor, "taskId");
           final int _cursorIndexOfUserId = CursorUtil.getColumnIndexOrThrow(_cursor, "userId");
           final int _cursorIndexOfProgress = CursorUtil.getColumnIndexOrThrow(_cursor, "progress");
-          final int _cursorIndexOfTimeSpentMinutes = CursorUtil.getColumnIndexOrThrow(_cursor, "timeSpentMinutes");
-          final int _cursorIndexOfLastUpdatedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "lastUpdatedAt");
           final TaskProgress _result;
           if (_cursor.moveToFirst()) {
-            final String _tmpId;
-            _tmpId = _cursor.getString(_cursorIndexOfId);
+            final long _tmpId;
+            _tmpId = _cursor.getLong(_cursorIndexOfId);
             final String _tmpTaskId;
             _tmpTaskId = _cursor.getString(_cursorIndexOfTaskId);
             final String _tmpUserId;
             _tmpUserId = _cursor.getString(_cursorIndexOfUserId);
-            final float _tmpProgress;
-            _tmpProgress = _cursor.getFloat(_cursorIndexOfProgress);
-            final int _tmpTimeSpentMinutes;
-            _tmpTimeSpentMinutes = _cursor.getInt(_cursorIndexOfTimeSpentMinutes);
-            final long _tmpLastUpdatedAt;
-            _tmpLastUpdatedAt = _cursor.getLong(_cursorIndexOfLastUpdatedAt);
-            _result = new TaskProgress(_tmpId,_tmpTaskId,_tmpUserId,_tmpProgress,_tmpTimeSpentMinutes,_tmpLastUpdatedAt);
+            final int _tmpProgress;
+            _tmpProgress = _cursor.getInt(_cursorIndexOfProgress);
+            _result = new TaskProgress(_tmpId,_tmpTaskId,_tmpUserId,_tmpProgress);
           } else {
             _result = null;
           }
@@ -1768,34 +2164,25 @@ public final class TaskDao_Impl implements TaskDao {
         final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
         try {
           final int _cursorIndexOfId = CursorUtil.getColumnIndexOrThrow(_cursor, "id");
-          final int _cursorIndexOfTaskId = CursorUtil.getColumnIndexOrThrow(_cursor, "taskId");
           final int _cursorIndexOfTeamId = CursorUtil.getColumnIndexOrThrow(_cursor, "teamId");
-          final int _cursorIndexOfMemberIds = CursorUtil.getColumnIndexOrThrow(_cursor, "memberIds");
-          final int _cursorIndexOfLeaderUserId = CursorUtil.getColumnIndexOrThrow(_cursor, "leaderUserId");
-          final int _cursorIndexOfStatus = CursorUtil.getColumnIndexOrThrow(_cursor, "status");
-          final int _cursorIndexOfCreatedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "createdAt");
+          final int _cursorIndexOfTitle = CursorUtil.getColumnIndexOrThrow(_cursor, "title");
+          final int _cursorIndexOfDescription = CursorUtil.getColumnIndexOrThrow(_cursor, "description");
           final List<TeamTask> _result = new ArrayList<TeamTask>(_cursor.getCount());
           while (_cursor.moveToNext()) {
             final TeamTask _item;
             final String _tmpId;
             _tmpId = _cursor.getString(_cursorIndexOfId);
-            final String _tmpTaskId;
-            _tmpTaskId = _cursor.getString(_cursorIndexOfTaskId);
             final String _tmpTeamId;
             _tmpTeamId = _cursor.getString(_cursorIndexOfTeamId);
-            final List<String> _tmpMemberIds;
-            final String _tmp;
-            _tmp = _cursor.getString(_cursorIndexOfMemberIds);
-            _tmpMemberIds = __converters.toStringList(_tmp);
-            final String _tmpLeaderUserId;
-            _tmpLeaderUserId = _cursor.getString(_cursorIndexOfLeaderUserId);
-            final TaskStatus _tmpStatus;
-            final String _tmp_1;
-            _tmp_1 = _cursor.getString(_cursorIndexOfStatus);
-            _tmpStatus = __converters.toTaskStatus(_tmp_1);
-            final long _tmpCreatedAt;
-            _tmpCreatedAt = _cursor.getLong(_cursorIndexOfCreatedAt);
-            _item = new TeamTask(_tmpId,_tmpTaskId,_tmpTeamId,_tmpMemberIds,_tmpLeaderUserId,_tmpStatus,_tmpCreatedAt);
+            final String _tmpTitle;
+            _tmpTitle = _cursor.getString(_cursorIndexOfTitle);
+            final String _tmpDescription;
+            if (_cursor.isNull(_cursorIndexOfDescription)) {
+              _tmpDescription = null;
+            } else {
+              _tmpDescription = _cursor.getString(_cursorIndexOfDescription);
+            }
+            _item = new TeamTask(_tmpId,_tmpTeamId,_tmpTitle,_tmpDescription);
             _result.add(_item);
           }
           return _result;
@@ -1847,5 +2234,77 @@ public final class TaskDao_Impl implements TaskDao {
   @NonNull
   public static List<Class<?>> getRequiredConverters() {
     return Collections.emptyList();
+  }
+
+  private String __TaskType_enumToString(@NonNull final TaskType _value) {
+    switch (_value) {
+      case PRACTICE: return "PRACTICE";
+      case CHALLENGE: return "CHALLENGE";
+      case DAILY: return "DAILY";
+      case TEAM: return "TEAM";
+      case HOMEWORK: return "HOMEWORK";
+      case QUIZ: return "QUIZ";
+      case REVIEW: return "REVIEW";
+      case READING: return "READING";
+      case OTHER: return "OTHER";
+      default: throw new IllegalArgumentException("Can't convert enum to string, unknown enum value: " + _value);
+    }
+  }
+
+  private String __TaskDifficulty_enumToString(@NonNull final TaskDifficulty _value) {
+    switch (_value) {
+      case EASY: return "EASY";
+      case MEDIUM: return "MEDIUM";
+      case HARD: return "HARD";
+      case EXPERT: return "EXPERT";
+      default: throw new IllegalArgumentException("Can't convert enum to string, unknown enum value: " + _value);
+    }
+  }
+
+  private String __TaskStatus_enumToString(@NonNull final TaskStatus _value) {
+    switch (_value) {
+      case PENDING: return "PENDING";
+      case IN_PROGRESS: return "IN_PROGRESS";
+      case COMPLETED: return "COMPLETED";
+      case CANCELLED: return "CANCELLED";
+      case EXPIRED: return "EXPIRED";
+      default: throw new IllegalArgumentException("Can't convert enum to string, unknown enum value: " + _value);
+    }
+  }
+
+  private TaskType __TaskType_stringToEnum(@NonNull final String _value) {
+    switch (_value) {
+      case "PRACTICE": return TaskType.PRACTICE;
+      case "CHALLENGE": return TaskType.CHALLENGE;
+      case "DAILY": return TaskType.DAILY;
+      case "TEAM": return TaskType.TEAM;
+      case "HOMEWORK": return TaskType.HOMEWORK;
+      case "QUIZ": return TaskType.QUIZ;
+      case "REVIEW": return TaskType.REVIEW;
+      case "READING": return TaskType.READING;
+      case "OTHER": return TaskType.OTHER;
+      default: throw new IllegalArgumentException("Can't convert value to enum, unknown value: " + _value);
+    }
+  }
+
+  private TaskDifficulty __TaskDifficulty_stringToEnum(@NonNull final String _value) {
+    switch (_value) {
+      case "EASY": return TaskDifficulty.EASY;
+      case "MEDIUM": return TaskDifficulty.MEDIUM;
+      case "HARD": return TaskDifficulty.HARD;
+      case "EXPERT": return TaskDifficulty.EXPERT;
+      default: throw new IllegalArgumentException("Can't convert value to enum, unknown value: " + _value);
+    }
+  }
+
+  private TaskStatus __TaskStatus_stringToEnum(@NonNull final String _value) {
+    switch (_value) {
+      case "PENDING": return TaskStatus.PENDING;
+      case "IN_PROGRESS": return TaskStatus.IN_PROGRESS;
+      case "COMPLETED": return TaskStatus.COMPLETED;
+      case "CANCELLED": return TaskStatus.CANCELLED;
+      case "EXPIRED": return TaskStatus.EXPIRED;
+      default: throw new IllegalArgumentException("Can't convert value to enum, unknown value: " + _value);
+    }
   }
 }

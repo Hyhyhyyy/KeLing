@@ -23,6 +23,7 @@ import com.keling.app.data.model.ScheduleItem;
 import com.keling.app.data.model.WeekType;
 import java.lang.Class;
 import java.lang.Exception;
+import java.lang.IllegalStateException;
 import java.lang.Object;
 import java.lang.Override;
 import java.lang.String;
@@ -42,8 +43,6 @@ public final class CourseDao_Impl implements CourseDao {
   private final RoomDatabase __db;
 
   private final EntityInsertionAdapter<Course> __insertionAdapterOfCourse;
-
-  private final Converters __converters = new Converters();
 
   private final EntityInsertionAdapter<ScheduleItem> __insertionAdapterOfScheduleItem;
 
@@ -76,8 +75,12 @@ public final class CourseDao_Impl implements CourseDao {
         statement.bindString(1, entity.getId());
         statement.bindString(2, entity.getName());
         statement.bindString(3, entity.getCode());
-        final String _tmp = __converters.fromCourseType(entity.getType());
-        statement.bindString(4, _tmp);
+        final String _tmp = Converters.INSTANCE.fromCourseType(entity.getType());
+        if (_tmp == null) {
+          statement.bindNull(4);
+        } else {
+          statement.bindString(4, _tmp);
+        }
         statement.bindDouble(5, entity.getCredits());
         statement.bindString(6, entity.getTeacherName());
         if (entity.getTeacherId() == null) {
@@ -124,8 +127,12 @@ public final class CourseDao_Impl implements CourseDao {
         statement.bindString(8, entity.getLocation());
         statement.bindLong(9, entity.getWeekStart());
         statement.bindLong(10, entity.getWeekEnd());
-        final String _tmp = __converters.fromWeekType(entity.getWeekType());
-        statement.bindString(11, _tmp);
+        final String _tmp = Converters.INSTANCE.fromWeekType(entity.getWeekType());
+        if (_tmp == null) {
+          statement.bindNull(11);
+        } else {
+          statement.bindString(11, _tmp);
+        }
       }
     };
     this.__insertionAdapterOfChapter = new EntityInsertionAdapter<Chapter>(__db) {
@@ -176,8 +183,12 @@ public final class CourseDao_Impl implements CourseDao {
           statement.bindString(3, entity.getChapterId());
         }
         statement.bindString(4, entity.getTitle());
-        final String _tmp = __converters.fromMaterialType(entity.getType());
-        statement.bindString(5, _tmp);
+        final String _tmp = Converters.INSTANCE.fromMaterialType(entity.getType());
+        if (_tmp == null) {
+          statement.bindNull(5);
+        } else {
+          statement.bindString(5, _tmp);
+        }
         statement.bindString(6, entity.getUrl());
         statement.bindLong(7, entity.getSize());
         if (entity.getDownloadedPath() == null) {
@@ -214,8 +225,12 @@ public final class CourseDao_Impl implements CourseDao {
         statement.bindString(1, entity.getId());
         statement.bindString(2, entity.getName());
         statement.bindString(3, entity.getCode());
-        final String _tmp = __converters.fromCourseType(entity.getType());
-        statement.bindString(4, _tmp);
+        final String _tmp = Converters.INSTANCE.fromCourseType(entity.getType());
+        if (_tmp == null) {
+          statement.bindNull(4);
+        } else {
+          statement.bindString(4, _tmp);
+        }
         statement.bindDouble(5, entity.getCredits());
         statement.bindString(6, entity.getTeacherName());
         if (entity.getTeacherId() == null) {
@@ -581,8 +596,17 @@ public final class CourseDao_Impl implements CourseDao {
             _tmpCode = _cursor.getString(_cursorIndexOfCode);
             final CourseType _tmpType;
             final String _tmp;
-            _tmp = _cursor.getString(_cursorIndexOfType);
-            _tmpType = __converters.toCourseType(_tmp);
+            if (_cursor.isNull(_cursorIndexOfType)) {
+              _tmp = null;
+            } else {
+              _tmp = _cursor.getString(_cursorIndexOfType);
+            }
+            final CourseType _tmp_1 = Converters.INSTANCE.toCourseType(_tmp);
+            if (_tmp_1 == null) {
+              throw new IllegalStateException("Expected NON-NULL 'com.keling.app.data.model.CourseType', but it was NULL.");
+            } else {
+              _tmpType = _tmp_1;
+            }
             final float _tmpCredits;
             _tmpCredits = _cursor.getFloat(_cursorIndexOfCredits);
             final String _tmpTeacherName;
@@ -662,8 +686,17 @@ public final class CourseDao_Impl implements CourseDao {
             _tmpCode = _cursor.getString(_cursorIndexOfCode);
             final CourseType _tmpType;
             final String _tmp;
-            _tmp = _cursor.getString(_cursorIndexOfType);
-            _tmpType = __converters.toCourseType(_tmp);
+            if (_cursor.isNull(_cursorIndexOfType)) {
+              _tmp = null;
+            } else {
+              _tmp = _cursor.getString(_cursorIndexOfType);
+            }
+            final CourseType _tmp_1 = Converters.INSTANCE.toCourseType(_tmp);
+            if (_tmp_1 == null) {
+              throw new IllegalStateException("Expected NON-NULL 'com.keling.app.data.model.CourseType', but it was NULL.");
+            } else {
+              _tmpType = _tmp_1;
+            }
             final float _tmpCredits;
             _tmpCredits = _cursor.getFloat(_cursorIndexOfCredits);
             final String _tmpTeacherName;
@@ -748,8 +781,17 @@ public final class CourseDao_Impl implements CourseDao {
             _tmpCode = _cursor.getString(_cursorIndexOfCode);
             final CourseType _tmpType;
             final String _tmp;
-            _tmp = _cursor.getString(_cursorIndexOfType);
-            _tmpType = __converters.toCourseType(_tmp);
+            if (_cursor.isNull(_cursorIndexOfType)) {
+              _tmp = null;
+            } else {
+              _tmp = _cursor.getString(_cursorIndexOfType);
+            }
+            final CourseType _tmp_1 = Converters.INSTANCE.toCourseType(_tmp);
+            if (_tmp_1 == null) {
+              throw new IllegalStateException("Expected NON-NULL 'com.keling.app.data.model.CourseType', but it was NULL.");
+            } else {
+              _tmpType = _tmp_1;
+            }
             final float _tmpCredits;
             _tmpCredits = _cursor.getFloat(_cursorIndexOfCredits);
             final String _tmpTeacherName;
@@ -831,8 +873,17 @@ public final class CourseDao_Impl implements CourseDao {
             _tmpCode = _cursor.getString(_cursorIndexOfCode);
             final CourseType _tmpType;
             final String _tmp;
-            _tmp = _cursor.getString(_cursorIndexOfType);
-            _tmpType = __converters.toCourseType(_tmp);
+            if (_cursor.isNull(_cursorIndexOfType)) {
+              _tmp = null;
+            } else {
+              _tmp = _cursor.getString(_cursorIndexOfType);
+            }
+            final CourseType _tmp_1 = Converters.INSTANCE.toCourseType(_tmp);
+            if (_tmp_1 == null) {
+              throw new IllegalStateException("Expected NON-NULL 'com.keling.app.data.model.CourseType', but it was NULL.");
+            } else {
+              _tmpType = _tmp_1;
+            }
             final float _tmpCredits;
             _tmpCredits = _cursor.getFloat(_cursorIndexOfCredits);
             final String _tmpTeacherName;
@@ -929,8 +980,17 @@ public final class CourseDao_Impl implements CourseDao {
             _tmpWeekEnd = _cursor.getInt(_cursorIndexOfWeekEnd);
             final WeekType _tmpWeekType;
             final String _tmp;
-            _tmp = _cursor.getString(_cursorIndexOfWeekType);
-            _tmpWeekType = __converters.toWeekType(_tmp);
+            if (_cursor.isNull(_cursorIndexOfWeekType)) {
+              _tmp = null;
+            } else {
+              _tmp = _cursor.getString(_cursorIndexOfWeekType);
+            }
+            final WeekType _tmp_1 = Converters.INSTANCE.toWeekType(_tmp);
+            if (_tmp_1 == null) {
+              throw new IllegalStateException("Expected NON-NULL 'com.keling.app.data.model.WeekType', but it was NULL.");
+            } else {
+              _tmpWeekType = _tmp_1;
+            }
             _item = new ScheduleItem(_tmpId,_tmpCourseId,_tmpCourseName,_tmpTeacherName,_tmpDayOfWeek,_tmpStartTime,_tmpEndTime,_tmpLocation,_tmpWeekStart,_tmpWeekEnd,_tmpWeekType);
             _result.add(_item);
           }
@@ -993,8 +1053,17 @@ public final class CourseDao_Impl implements CourseDao {
             _tmpWeekEnd = _cursor.getInt(_cursorIndexOfWeekEnd);
             final WeekType _tmpWeekType;
             final String _tmp;
-            _tmp = _cursor.getString(_cursorIndexOfWeekType);
-            _tmpWeekType = __converters.toWeekType(_tmp);
+            if (_cursor.isNull(_cursorIndexOfWeekType)) {
+              _tmp = null;
+            } else {
+              _tmp = _cursor.getString(_cursorIndexOfWeekType);
+            }
+            final WeekType _tmp_1 = Converters.INSTANCE.toWeekType(_tmp);
+            if (_tmp_1 == null) {
+              throw new IllegalStateException("Expected NON-NULL 'com.keling.app.data.model.WeekType', but it was NULL.");
+            } else {
+              _tmpWeekType = _tmp_1;
+            }
             _item = new ScheduleItem(_tmpId,_tmpCourseId,_tmpCourseName,_tmpTeacherName,_tmpDayOfWeek,_tmpStartTime,_tmpEndTime,_tmpLocation,_tmpWeekStart,_tmpWeekEnd,_tmpWeekType);
             _result.add(_item);
           }
@@ -1183,8 +1252,17 @@ public final class CourseDao_Impl implements CourseDao {
             _tmpTitle = _cursor.getString(_cursorIndexOfTitle);
             final MaterialType _tmpType;
             final String _tmp;
-            _tmp = _cursor.getString(_cursorIndexOfType);
-            _tmpType = __converters.toMaterialType(_tmp);
+            if (_cursor.isNull(_cursorIndexOfType)) {
+              _tmp = null;
+            } else {
+              _tmp = _cursor.getString(_cursorIndexOfType);
+            }
+            final MaterialType _tmp_1 = Converters.INSTANCE.toMaterialType(_tmp);
+            if (_tmp_1 == null) {
+              throw new IllegalStateException("Expected NON-NULL 'com.keling.app.data.model.MaterialType', but it was NULL.");
+            } else {
+              _tmpType = _tmp_1;
+            }
             final String _tmpUrl;
             _tmpUrl = _cursor.getString(_cursorIndexOfUrl);
             final long _tmpSize;
@@ -1251,8 +1329,17 @@ public final class CourseDao_Impl implements CourseDao {
             _tmpTitle = _cursor.getString(_cursorIndexOfTitle);
             final MaterialType _tmpType;
             final String _tmp;
-            _tmp = _cursor.getString(_cursorIndexOfType);
-            _tmpType = __converters.toMaterialType(_tmp);
+            if (_cursor.isNull(_cursorIndexOfType)) {
+              _tmp = null;
+            } else {
+              _tmp = _cursor.getString(_cursorIndexOfType);
+            }
+            final MaterialType _tmp_1 = Converters.INSTANCE.toMaterialType(_tmp);
+            if (_tmp_1 == null) {
+              throw new IllegalStateException("Expected NON-NULL 'com.keling.app.data.model.MaterialType', but it was NULL.");
+            } else {
+              _tmpType = _tmp_1;
+            }
             final String _tmpUrl;
             _tmpUrl = _cursor.getString(_cursorIndexOfUrl);
             final long _tmpSize;

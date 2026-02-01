@@ -84,7 +84,7 @@ fun TaskDetailScreen(
                             )
                             Spacer(Modifier.height(8.dp))
                             Row {
-                                DifficultyBadge(difficulty = task.difficulty.name)
+                                task.difficulty?.let { DifficultyBadge(difficulty = it.name) }
                                 Spacer(Modifier.width(8.dp))
                                 task.courseId?.let { id ->
                                     Text(
@@ -161,7 +161,7 @@ fun TaskDetailScreen(
                         Text("任务说明", style = MaterialTheme.typography.titleSmall, color = TextSecondary)
                         Spacer(Modifier.height(12.dp))
                         Text(
-                            text = task.description,
+                            text = task.description.toString(),
                             style = MaterialTheme.typography.bodyMedium,
                             color = TextPrimary
                         )

@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 3,
-    "identityHash": "6544fa4500ac7f955886db999e8ce389",
+    "identityHash": "bea98894f299d19005373968081e8855",
     "entities": [
       {
         "tableName": "users",
@@ -400,7 +400,7 @@
       },
       {
         "tableName": "tasks",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `title` TEXT NOT NULL, `description` TEXT NOT NULL, `type` TEXT NOT NULL, `difficulty` TEXT NOT NULL, `status` TEXT NOT NULL, `courseId` TEXT, `chapterId` TEXT, `experienceReward` INTEGER NOT NULL, `coinReward` INTEGER NOT NULL, `deadline` INTEGER, `estimatedMinutes` INTEGER NOT NULL, `progress` REAL NOT NULL, `createdAt` INTEGER NOT NULL, `completedAt` INTEGER, `parentTaskId` TEXT, `order` INTEGER NOT NULL, `targetGrade` TEXT, `actionType` TEXT, `actionPayload` TEXT, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `title` TEXT NOT NULL, `description` TEXT, `courseId` TEXT, `chapterId` TEXT, `order` INTEGER, `type` TEXT, `difficulty` TEXT, `status` TEXT NOT NULL, `experienceReward` INTEGER, `coinReward` INTEGER, `estimatedMinutes` INTEGER, `estimatedDuration` INTEGER, `progress` REAL NOT NULL, `actionType` TEXT, `actionPayload` TEXT, `targetGrade` TEXT, `source` TEXT, `createdAt` INTEGER, `deadline` INTEGER, `completedAt` INTEGER, `isCompleted` INTEGER NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -418,25 +418,7 @@
             "fieldPath": "description",
             "columnName": "description",
             "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "type",
-            "columnName": "type",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "difficulty",
-            "columnName": "difficulty",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "status",
-            "columnName": "status",
-            "affinity": "TEXT",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "courseId",
@@ -451,20 +433,38 @@
             "notNull": false
           },
           {
+            "fieldPath": "order",
+            "columnName": "order",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "type",
+            "columnName": "type",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "difficulty",
+            "columnName": "difficulty",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "status",
+            "columnName": "status",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
             "fieldPath": "experienceReward",
             "columnName": "experienceReward",
             "affinity": "INTEGER",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "coinReward",
             "columnName": "coinReward",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "deadline",
-            "columnName": "deadline",
             "affinity": "INTEGER",
             "notNull": false
           },
@@ -472,43 +472,19 @@
             "fieldPath": "estimatedMinutes",
             "columnName": "estimatedMinutes",
             "affinity": "INTEGER",
-            "notNull": true
+            "notNull": false
+          },
+          {
+            "fieldPath": "estimatedDuration",
+            "columnName": "estimatedDuration",
+            "affinity": "INTEGER",
+            "notNull": false
           },
           {
             "fieldPath": "progress",
             "columnName": "progress",
             "affinity": "REAL",
             "notNull": true
-          },
-          {
-            "fieldPath": "createdAt",
-            "columnName": "createdAt",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "completedAt",
-            "columnName": "completedAt",
-            "affinity": "INTEGER",
-            "notNull": false
-          },
-          {
-            "fieldPath": "parentTaskId",
-            "columnName": "parentTaskId",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "order",
-            "columnName": "order",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "targetGrade",
-            "columnName": "targetGrade",
-            "affinity": "TEXT",
-            "notNull": false
           },
           {
             "fieldPath": "actionType",
@@ -521,6 +497,42 @@
             "columnName": "actionPayload",
             "affinity": "TEXT",
             "notNull": false
+          },
+          {
+            "fieldPath": "targetGrade",
+            "columnName": "targetGrade",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "source",
+            "columnName": "source",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "createdAt",
+            "columnName": "createdAt",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "deadline",
+            "columnName": "deadline",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "completedAt",
+            "columnName": "completedAt",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "isCompleted",
+            "columnName": "isCompleted",
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -534,17 +546,11 @@
       },
       {
         "tableName": "team_tasks",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `taskId` TEXT NOT NULL, `teamId` TEXT NOT NULL, `memberIds` TEXT NOT NULL, `leaderUserId` TEXT NOT NULL, `status` TEXT NOT NULL, `createdAt` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `teamId` TEXT NOT NULL, `title` TEXT NOT NULL, `description` TEXT, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "id",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "taskId",
-            "columnName": "taskId",
             "affinity": "TEXT",
             "notNull": true
           },
@@ -555,28 +561,16 @@
             "notNull": true
           },
           {
-            "fieldPath": "memberIds",
-            "columnName": "memberIds",
+            "fieldPath": "title",
+            "columnName": "title",
             "affinity": "TEXT",
             "notNull": true
           },
           {
-            "fieldPath": "leaderUserId",
-            "columnName": "leaderUserId",
+            "fieldPath": "description",
+            "columnName": "description",
             "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "status",
-            "columnName": "status",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "createdAt",
-            "columnName": "createdAt",
-            "affinity": "INTEGER",
-            "notNull": true
+            "notNull": false
           }
         ],
         "primaryKey": {
@@ -590,12 +584,12 @@
       },
       {
         "tableName": "task_progress",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `taskId` TEXT NOT NULL, `userId` TEXT NOT NULL, `progress` REAL NOT NULL, `timeSpentMinutes` INTEGER NOT NULL, `lastUpdatedAt` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `taskId` TEXT NOT NULL, `userId` TEXT NOT NULL, `progress` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "id",
-            "affinity": "TEXT",
+            "affinity": "INTEGER",
             "notNull": true
           },
           {
@@ -613,24 +607,12 @@
           {
             "fieldPath": "progress",
             "columnName": "progress",
-            "affinity": "REAL",
-            "notNull": true
-          },
-          {
-            "fieldPath": "timeSpentMinutes",
-            "columnName": "timeSpentMinutes",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "lastUpdatedAt",
-            "columnName": "lastUpdatedAt",
             "affinity": "INTEGER",
             "notNull": true
           }
         ],
         "primaryKey": {
-          "autoGenerate": false,
+          "autoGenerate": true,
           "columnNames": [
             "id"
           ]
@@ -640,7 +622,7 @@
       },
       {
         "tableName": "study_sessions",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `dayKey` TEXT NOT NULL, `source` TEXT NOT NULL, `taskId` TEXT, `durationMinutes` INTEGER NOT NULL, `createdAt` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `dayKey` TEXT NOT NULL, `source` TEXT NOT NULL, `taskId` TEXT, `durationMinutes` INTEGER NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -669,12 +651,6 @@
           {
             "fieldPath": "durationMinutes",
             "columnName": "durationMinutes",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "createdAt",
-            "columnName": "createdAt",
             "affinity": "INTEGER",
             "notNull": true
           }
@@ -1090,7 +1066,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '6544fa4500ac7f955886db999e8ce389')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'bea98894f299d19005373968081e8855')"
     ]
   }
 }

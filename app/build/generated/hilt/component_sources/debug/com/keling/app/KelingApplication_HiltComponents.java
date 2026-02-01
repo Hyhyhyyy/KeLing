@@ -13,6 +13,7 @@ import com.keling.app.ui.screens.home.HomeViewModel_HiltModules;
 import com.keling.app.ui.screens.knowledge.KnowledgeGraphViewModel_HiltModules;
 import com.keling.app.ui.screens.knowledge.KnowledgePracticeViewModel_HiltModules;
 import com.keling.app.ui.screens.login.LoginViewModel_HiltModules;
+import com.keling.app.ui.screens.profile.ProfileViewModel_HiltModules;
 import com.keling.app.ui.screens.settings.AccessibilityViewModel_HiltModules;
 import com.keling.app.ui.screens.settings.PersonalProfileViewModel_HiltModules;
 import com.keling.app.ui.screens.settings.PrivacySettingsViewModel_HiltModules;
@@ -187,6 +188,7 @@ public final class KelingApplication_HiltComponents {
           LoginViewModel_HiltModules.KeyModule.class,
           PersonalProfileViewModel_HiltModules.KeyModule.class,
           PrivacySettingsViewModel_HiltModules.KeyModule.class,
+          ProfileViewModel_HiltModules.KeyModule.class,
           TaskDetailViewModel_HiltModules.KeyModule.class,
           TaskExecutionViewModel_HiltModules.KeyModule.class,
           TasksViewModel_HiltModules.KeyModule.class
@@ -238,6 +240,7 @@ public final class KelingApplication_HiltComponents {
           LoginViewModel_HiltModules.BindsModule.class,
           PersonalProfileViewModel_HiltModules.BindsModule.class,
           PrivacySettingsViewModel_HiltModules.BindsModule.class,
+          ProfileViewModel_HiltModules.BindsModule.class,
           TaskDetailViewModel_HiltModules.BindsModule.class,
           TaskExecutionViewModel_HiltModules.BindsModule.class,
           TasksViewModel_HiltModules.BindsModule.class

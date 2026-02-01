@@ -89,6 +89,14 @@ sealed class Screen(
     
     // 学情报告
     object LearningReport : Screen("learning_report", "学情报告")
+    // 学习记录
+    object LearningRecords : Screen("learning_records", "学习记录")
+    // 知识图谱入口（选课）
+    object KnowledgeGraphEntry : Screen("knowledge_graph_entry", "知识图谱")
+    // 我的好友
+    object Friends : Screen("friends", "我的好友")
+    // 排行榜
+    object Leaderboard : Screen("leaderboard", "排行榜")
 }
 
 /**

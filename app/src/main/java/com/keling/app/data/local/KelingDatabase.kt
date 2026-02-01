@@ -5,6 +5,8 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.keling.app.data.local.dao.*
 import com.keling.app.data.model.*
+// 导入你刚创建的实体类
+import com.keling.app.data.local.entity.TaskRecordEntity
 
 @Database(
     entities = [
@@ -14,6 +16,7 @@ import com.keling.app.data.model.*
         Chapter::class,
         Material::class,
         Task::class,
+        TaskRecord::class,
         TeamTask::class,
         TaskProgress::class,
         StudySession::class,
@@ -23,12 +26,16 @@ import com.keling.app.data.model.*
         UserBadge::class,
         KnowledgePoint::class,
         KnowledgeRelation::class,
-        LearningRecord::class
+        LearningRecord::class,
+    TaskRecordEntity::class
     ],
     version = 3,
     exportSchema = true
-)
-@TypeConverters(Converters::class)
+)abstract class AppDatabase : RoomDatabase() {
+    abstract fun taskDao(): TaskDao
+    abstract fun taskRecordDao(): TaskRecordDao
+}
+@TypeConverters(Converters::class) // <-- 确保是 androidx.room.TypeConverters
 abstract class KelingDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
     abstract fun courseDao(): CourseDao

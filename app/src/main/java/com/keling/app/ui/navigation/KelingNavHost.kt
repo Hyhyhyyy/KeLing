@@ -27,6 +27,11 @@ import com.keling.app.ui.screens.knowledge.KnowledgePracticeScreen
 import com.keling.app.ui.screens.home.HomeScreen
 import com.keling.app.ui.screens.login.LoginScreen
 import com.keling.app.ui.screens.profile.ProfileScreen
+import com.keling.app.ui.screens.profile.LearningReportScreen
+import com.keling.app.ui.screens.profile.LearningRecordsScreen
+import com.keling.app.ui.screens.profile.KnowledgeGraphEntryScreen
+import com.keling.app.ui.screens.profile.FriendsScreen
+import com.keling.app.ui.screens.profile.LeaderboardScreen
 import com.keling.app.ui.screens.settings.AccessibilitySettingsScreen
 import com.keling.app.ui.screens.settings.AccountSecurityScreen
 import com.keling.app.ui.screens.settings.AboutScreen
@@ -261,8 +266,50 @@ fun KelingNavHost() {
                     },
                     onNavigateToLearningReport = {
                         navController.navigate(Screen.LearningReport.route)
+                    },
+                    onNavigateToKnowledgeGraph = {
+                        navController.navigate(Screen.KnowledgeGraphEntry.route)
+                    },
+                    onNavigateToLearningRecords = {
+                        navController.navigate(Screen.LearningRecords.route)
+                    },
+                    onNavigateToFriends = {
+                        navController.navigate(Screen.Friends.route)
+                    },
+                    onNavigateToLeaderboard = {
+                        navController.navigate(Screen.Leaderboard.route)
                     }
                 )
+            }
+
+            // 学情报告
+            composable(Screen.LearningReport.route) {
+                LearningReportScreen(onBack = { navController.popBackStack() })
+            }
+
+            // 学习记录
+            composable(Screen.LearningRecords.route) {
+                LearningRecordsScreen(onBack = { navController.popBackStack() })
+            }
+
+            // 知识图谱入口（选课后进入知识图谱）
+            composable(Screen.KnowledgeGraphEntry.route) {
+                KnowledgeGraphEntryScreen(
+                    onBack = { navController.popBackStack() },
+                    onNavigateToKnowledgeGraph = { courseId ->
+                        navController.navigate(Screen.KnowledgeGraph.createRoute(courseId))
+                    }
+                )
+            }
+
+            // 我的好友
+            composable(Screen.Friends.route) {
+                FriendsScreen(onBack = { navController.popBackStack() })
+            }
+
+            // 排行榜
+            composable(Screen.Leaderboard.route) {
+                LeaderboardScreen(onBack = { navController.popBackStack() })
             }
 
             // AI助手

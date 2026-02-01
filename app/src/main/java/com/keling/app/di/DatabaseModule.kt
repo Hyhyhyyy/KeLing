@@ -3,7 +3,12 @@ package com.keling.app.di
 import android.content.Context
 import androidx.room.Room
 import com.keling.app.data.local.KelingDatabase
-import com.keling.app.data.local.dao.*
+import com.keling.app.data.local.dao.AchievementDao
+import com.keling.app.data.local.dao.CourseDao
+import com.keling.app.data.local.dao.KnowledgeDao
+import com.keling.app.data.local.dao.TaskDao
+import com.keling.app.data.local.dao.TaskRecordDao
+import com.keling.app.data.local.dao.UserDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

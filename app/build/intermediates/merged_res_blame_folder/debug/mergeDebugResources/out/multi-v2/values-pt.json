@@ -1,10 +1,27 @@
 {
     "logs": [
         {
-            "outputFile": "com.keling.app-mergeDebugResources-73:/values-pt/values-pt.xml",
+            "outputFile": "com.keling.app-mergeDebugResources-2:/values-pt/values-pt.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\13581\\.gradle\\caches\\8.13\\transforms\\3aa6064787682b48baa7c80ba75afb2b\\transformed\\appcompat-1.6.1\\res\\values-pt\\values-pt.xml",
+                    "source": "D:\\Android-gradle\\caches\\8.13\\transforms\\0d566e498e0bc97ba25b0e1efee85bed\\transformed\\core-1.12.0\\res\\values-pt\\values-pt.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8,9",
+                        "startColumns": "4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,152,254,353,453,560,670,790",
+                        "endColumns": "96,101,98,99,106,109,119,100",
+                        "endOffsets": "147,249,348,448,555,665,785,886"
+                    },
+                    "to": {
+                        "startLines": "33,34,35,36,37,38,39,112",
+                        "startColumns": "4,4,4,4,4,4,4,4",
+                        "startOffsets": "3299,3396,3498,3597,3697,3804,3914,11489",
+                        "endColumns": "96,101,98,99,106,109,119,100",
+                        "endOffsets": "3391,3493,3592,3692,3799,3909,4029,11585"
+                    }
+                },
+                {
+                    "source": "D:\\Android-gradle\\caches\\8.13\\transforms\\3aa6064787682b48baa7c80ba75afb2b\\transformed\\appcompat-1.6.1\\res\\values-pt\\values-pt.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
@@ -21,7 +38,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\13581\\.gradle\\caches\\8.13\\transforms\\ea3ba3c0da4f396212684c5553cf3e13\\transformed\\material3-1.1.2\\res\\values-pt\\values-pt.xml",
+                    "source": "D:\\Android-gradle\\caches\\8.13\\transforms\\ea3ba3c0da4f396212684c5553cf3e13\\transformed\\material3-1.1.2\\res\\values-pt\\values-pt.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
@@ -38,24 +55,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\13581\\.gradle\\caches\\8.13\\transforms\\cf8b7d705f1ae408486404d2167c46c9\\transformed\\biometric-1.1.0\\res\\values-pt\\values-pt.xml",
-                    "from": {
-                        "startLines": "2,3,4,5,6,7,8,9,10,11,12,13",
-                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4",
-                        "startOffsets": "55,159,253,370,509,656,787,917,1061,1162,1296,1440",
-                        "endColumns": "103,93,116,138,146,130,129,143,100,133,143,122",
-                        "endOffsets": "154,248,365,504,651,782,912,1056,1157,1291,1435,1558"
-                    },
-                    "to": {
-                        "startLines": "43,76,90,91,92,93,94,95,96,97,98,99",
-                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4",
-                        "startOffsets": "4291,8052,9173,9290,9429,9576,9707,9837,9981,10082,10216,10360",
-                        "endColumns": "103,93,116,138,146,130,129,143,100,133,143,122",
-                        "endOffsets": "4390,8141,9285,9424,9571,9702,9832,9976,10077,10211,10355,10478"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\13581\\.gradle\\caches\\8.13\\transforms\\46724b8568c34f3917315459e20bf63c\\transformed\\media3-exoplayer-1.2.0\\res\\values-pt\\values-pt.xml",
+                    "source": "D:\\Android-gradle\\caches\\8.13\\transforms\\46724b8568c34f3917315459e20bf63c\\transformed\\media3-exoplayer-1.2.0\\res\\values-pt\\values-pt.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10",
                         "startColumns": "4,4,4,4,4,4,4,4,4",
@@ -72,7 +72,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\13581\\.gradle\\caches\\8.13\\transforms\\aa32e2a108dc4460fa9c3d9d20b12b9c\\transformed\\ui-release\\res\\values-pt\\values-pt.xml",
+                    "source": "D:\\Android-gradle\\caches\\8.13\\transforms\\aa32e2a108dc4460fa9c3d9d20b12b9c\\transformed\\ui-release\\res\\values-pt\\values-pt.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
@@ -89,20 +89,20 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\13581\\.gradle\\caches\\8.13\\transforms\\0d566e498e0bc97ba25b0e1efee85bed\\transformed\\core-1.12.0\\res\\values-pt\\values-pt.xml",
+                    "source": "D:\\Android-gradle\\caches\\8.13\\transforms\\cf8b7d705f1ae408486404d2167c46c9\\transformed\\biometric-1.1.0\\res\\values-pt\\values-pt.xml",
                     "from": {
-                        "startLines": "2,3,4,5,6,7,8,9",
-                        "startColumns": "4,4,4,4,4,4,4,4",
-                        "startOffsets": "55,152,254,353,453,560,670,790",
-                        "endColumns": "96,101,98,99,106,109,119,100",
-                        "endOffsets": "147,249,348,448,555,665,785,886"
+                        "startLines": "2,3,4,5,6,7,8,9,10,11,12,13",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,159,253,370,509,656,787,917,1061,1162,1296,1440",
+                        "endColumns": "103,93,116,138,146,130,129,143,100,133,143,122",
+                        "endOffsets": "154,248,365,504,651,782,912,1056,1157,1291,1435,1558"
                     },
                     "to": {
-                        "startLines": "33,34,35,36,37,38,39,112",
-                        "startColumns": "4,4,4,4,4,4,4,4",
-                        "startOffsets": "3299,3396,3498,3597,3697,3804,3914,11489",
-                        "endColumns": "96,101,98,99,106,109,119,100",
-                        "endOffsets": "3391,3493,3592,3692,3799,3909,4029,11585"
+                        "startLines": "43,76,90,91,92,93,94,95,96,97,98,99",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "4291,8052,9173,9290,9429,9576,9707,9837,9981,10082,10216,10360",
+                        "endColumns": "103,93,116,138,146,130,129,143,100,133,143,122",
+                        "endOffsets": "4390,8141,9285,9424,9571,9702,9832,9976,10077,10211,10355,10478"
                     }
                 }
             ]

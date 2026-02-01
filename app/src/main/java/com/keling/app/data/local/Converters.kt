@@ -4,104 +4,107 @@ import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.keling.app.data.model.*
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
-class Converters {
+object Converters {
     private val gson = Gson()
+    private val formatter: DateTimeFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME
 
-    // UserRole
-    @TypeConverter
-    fun fromUserRole(role: UserRole): String = role.name
+    // ---- Enum / custom types (nullable-safe) ----
+    @TypeConverter @JvmStatic
+    fun fromUserRole(role: UserRole?): String? = role?.name
 
-    @TypeConverter
-    fun toUserRole(value: String): UserRole = UserRole.valueOf(value)
+    @TypeConverter @JvmStatic
+    fun toUserRole(value: String?): UserRole? = value?.let { UserRole.valueOf(it) }
 
-    // PrivacyLevel
-    @TypeConverter
-    fun fromPrivacyLevel(level: PrivacyLevel): String = level.name
+    @TypeConverter @JvmStatic
+    fun fromPrivacyLevel(level: PrivacyLevel?): String? = level?.name
 
-    @TypeConverter
-    fun toPrivacyLevel(value: String): PrivacyLevel = PrivacyLevel.valueOf(value)
+    @TypeConverter @JvmStatic
+    fun toPrivacyLevel(value: String?): PrivacyLevel? = value?.let { PrivacyLevel.valueOf(it) }
 
-    // CourseType
-    @TypeConverter
-    fun fromCourseType(type: CourseType): String = type.name
+    @TypeConverter @JvmStatic
+    fun fromCourseType(type: CourseType?): String? = type?.name
 
-    @TypeConverter
-    fun toCourseType(value: String): CourseType = CourseType.valueOf(value)
+    @TypeConverter @JvmStatic
+    fun toCourseType(value: String?): CourseType? = value?.let { CourseType.valueOf(it) }
 
-    // WeekType
-    @TypeConverter
-    fun fromWeekType(type: WeekType): String = type.name
+    @TypeConverter @JvmStatic
+    fun fromWeekType(type: WeekType?): String? = type?.name
 
-    @TypeConverter
-    fun toWeekType(value: String): WeekType = WeekType.valueOf(value)
+    @TypeConverter @JvmStatic
+    fun toWeekType(value: String?): WeekType? = value?.let { WeekType.valueOf(it) }
 
-    // MaterialType
-    @TypeConverter
-    fun fromMaterialType(type: MaterialType): String = type.name
+    @TypeConverter @JvmStatic
+    fun fromMaterialType(type: MaterialType?): String? = type?.name
 
-    @TypeConverter
-    fun toMaterialType(value: String): MaterialType = MaterialType.valueOf(value)
+    @TypeConverter @JvmStatic
+    fun toMaterialType(value: String?): MaterialType? = value?.let { MaterialType.valueOf(it) }
 
-    // TaskType
-    @TypeConverter
-    fun fromTaskType(type: TaskType): String = type.name
+    @TypeConverter @JvmStatic
+    fun fromTaskType(type: TaskType?): String? = type?.name
 
-    @TypeConverter
-    fun toTaskType(value: String): TaskType = TaskType.valueOf(value)
+    @TypeConverter @JvmStatic
+    fun toTaskType(value: String?): TaskType? = value?.let { TaskType.valueOf(it) }
 
-    // TaskDifficulty
-    @TypeConverter
-    fun fromTaskDifficulty(difficulty: TaskDifficulty): String = difficulty.name
+    @TypeConverter @JvmStatic
+    fun fromTaskDifficulty(difficulty: TaskDifficulty?): String? = difficulty?.name
 
-    @TypeConverter
-    fun toTaskDifficulty(value: String): TaskDifficulty = TaskDifficulty.valueOf(value)
+    @TypeConverter @JvmStatic
+    fun toTaskDifficulty(value: String?): TaskDifficulty? = value?.let { TaskDifficulty.valueOf(it) }
 
-    // TaskStatus
-    @TypeConverter
-    fun fromTaskStatus(status: TaskStatus): String = status.name
+    @TypeConverter @JvmStatic
+    fun fromTaskStatus(status: TaskStatus?): String? = status?.name
 
-    @TypeConverter
-    fun toTaskStatus(value: String): TaskStatus = TaskStatus.valueOf(value)
+    @TypeConverter @JvmStatic
+    fun toTaskStatus(value: String?): TaskStatus? = value?.let { TaskStatus.valueOf(it) }
 
-    // AchievementCategory
-    @TypeConverter
-    fun fromAchievementCategory(category: AchievementCategory): String = category.name
+    @TypeConverter @JvmStatic
+    fun fromAchievementCategory(category: AchievementCategory?): String? = category?.name
 
-    @TypeConverter
-    fun toAchievementCategory(value: String): AchievementCategory = AchievementCategory.valueOf(value)
+    @TypeConverter @JvmStatic
+    fun toAchievementCategory(value: String?): AchievementCategory? = value?.let { AchievementCategory.valueOf(it) }
 
-    // AchievementRarity
-    @TypeConverter
-    fun fromAchievementRarity(rarity: AchievementRarity): String = rarity.name
+    @TypeConverter @JvmStatic
+    fun fromAchievementRarity(rarity: AchievementRarity?): String? = rarity?.name
 
-    @TypeConverter
-    fun toAchievementRarity(value: String): AchievementRarity = AchievementRarity.valueOf(value)
+    @TypeConverter @JvmStatic
+    fun toAchievementRarity(value: String?): AchievementRarity? = value?.let { AchievementRarity.valueOf(it) }
 
-    // RelationType
-    @TypeConverter
-    fun fromRelationType(type: RelationType): String = type.name
+    @TypeConverter @JvmStatic
+    fun fromRelationType(type: RelationType?): String? = type?.name
 
-    @TypeConverter
-    fun toRelationType(value: String): RelationType = RelationType.valueOf(value)
+    @TypeConverter @JvmStatic
+    fun toRelationType(value: String?): RelationType? = value?.let { RelationType.valueOf(it) }
 
-    // List<String>
-    @TypeConverter
-    fun fromStringList(list: List<String>): String = gson.toJson(list)
+    // ---- List<String> ----
+    @TypeConverter @JvmStatic
+    fun fromStringList(list: List<String>?): String? = gson.toJson(list ?: emptyList<String>())
 
-    @TypeConverter
-    fun toStringList(value: String): List<String> {
+    @TypeConverter @JvmStatic
+    fun toStringList(value: String?): List<String> {
+        if (value.isNullOrEmpty()) return emptyList()
         val type = object : TypeToken<List<String>>() {}.type
         return gson.fromJson(value, type) ?: emptyList()
     }
 
-    // Map<String, Float>
-    @TypeConverter
-    fun fromFloatMap(map: Map<String, Float>): String = gson.toJson(map)
+    // ---- Map<String, Float> ----
+    @TypeConverter @JvmStatic
+    fun fromFloatMap(map: Map<String, Float>?): String? = gson.toJson(map ?: emptyMap<String, Float>())
 
-    @TypeConverter
-    fun toFloatMap(value: String): Map<String, Float> {
+    @TypeConverter @JvmStatic
+    fun toFloatMap(value: String?): Map<String, Float> {
+        if (value.isNullOrEmpty()) return emptyMap()
         val type = object : TypeToken<Map<String, Float>>() {}.type
         return gson.fromJson(value, type) ?: emptyMap()
     }
+
+    // ---- LocalDateTime <-> String ----
+    @TypeConverter @JvmStatic
+    fun fromLocalDateTime(value: LocalDateTime?): String? = value?.format(formatter)
+
+    @TypeConverter @JvmStatic
+    fun toLocalDateTime(value: String?): LocalDateTime? =
+        value?.let { LocalDateTime.parse(it, formatter) }
 }
