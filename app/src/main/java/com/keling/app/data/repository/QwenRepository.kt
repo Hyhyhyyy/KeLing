@@ -20,13 +20,18 @@ class QwenRepository @Inject constructor(
         val (provider, modelId) = aiPreferencesRepository.currentAiConfig.first()
 
         // 2. 准备参数
-        // 优先使用 local.properties 注入的 Key，如果没有，降级到默认 QWEN_API_KEY (为了兼容旧逻辑)
-        // 实际上 AiConfig Enum 里已经映射了 BuildConfig 的 Key
-        var apiKey = provider.apiKey
+        // 优先使用用户在设置中输入的自定义 Key (覆盖 BuildConfig)
+        val userApiKey = aiPreferencesRepository.apiKey.first()
+
+        var apiKey = if (userApiKey.isNotBlank()) {
+            userApiKey
+        } else {
+            provider.apiKey
+        }
+
+        // 兼容旧逻辑：如果此时 Key 仍为空，且是 Qwen，尝试用 legacy BuildConfig Key
         if (apiKey.isBlank() && provider == AiProvider.QWEN) {
-             // Fallback for Qwen legacy key
-             apiKey = aiPreferencesRepository.apiKey.first()
-             if (apiKey.isBlank()) apiKey = BuildConfig.QWEN_API_KEY
+             apiKey = BuildConfig.QWEN_API_KEY
         }
 
         if (apiKey.isBlank()) {

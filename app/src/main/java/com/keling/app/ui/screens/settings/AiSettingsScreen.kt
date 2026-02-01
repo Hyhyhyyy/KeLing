@@ -209,8 +209,8 @@ fun AiSettingsScreen(
                         OutlinedTextField(
                             value = apiKeyInput,
                             onValueChange = { apiKeyInput = it },
-                            label = { Text("输入 Qwen API Key") },
-                            placeholder = { Text("例如：sk-xxxx") },
+                            label = { Text("输入 Custom API Key") },
+                            placeholder = { Text("覆盖当前厂商默认 Key") },
                             visualTransformation = if (keyVisible) {
                                 VisualTransformation.None
                             } else {
