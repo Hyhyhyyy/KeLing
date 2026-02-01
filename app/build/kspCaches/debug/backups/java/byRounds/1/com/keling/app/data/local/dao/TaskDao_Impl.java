@@ -13,6 +13,7 @@ import androidx.room.SharedSQLiteStatement;
 import androidx.room.util.CursorUtil;
 import androidx.room.util.DBUtil;
 import androidx.sqlite.db.SupportSQLiteStatement;
+import com.keling.app.data.local.Converters;
 import com.keling.app.data.model.StudySession;
 import com.keling.app.data.model.Task;
 import com.keling.app.data.model.TaskDifficulty;
@@ -22,7 +23,7 @@ import com.keling.app.data.model.TaskType;
 import com.keling.app.data.model.TeamTask;
 import java.lang.Class;
 import java.lang.Exception;
-import java.lang.IllegalArgumentException;
+import java.lang.IllegalStateException;
 import java.lang.Integer;
 import java.lang.Long;
 import java.lang.Object;
@@ -95,17 +96,24 @@ public final class TaskDao_Impl implements TaskDao {
         } else {
           statement.bindLong(6, entity.getOrder());
         }
-        if (entity.getType() == null) {
+        final String _tmp = Converters.INSTANCE.fromTaskType(entity.getType());
+        if (_tmp == null) {
           statement.bindNull(7);
         } else {
-          statement.bindString(7, __TaskType_enumToString(entity.getType()));
+          statement.bindString(7, _tmp);
         }
-        if (entity.getDifficulty() == null) {
+        final String _tmp_1 = Converters.INSTANCE.fromTaskDifficulty(entity.getDifficulty());
+        if (_tmp_1 == null) {
           statement.bindNull(8);
         } else {
-          statement.bindString(8, __TaskDifficulty_enumToString(entity.getDifficulty()));
+          statement.bindString(8, _tmp_1);
         }
-        statement.bindString(9, __TaskStatus_enumToString(entity.getStatus()));
+        final String _tmp_2 = Converters.INSTANCE.fromTaskStatus(entity.getStatus());
+        if (_tmp_2 == null) {
+          statement.bindNull(9);
+        } else {
+          statement.bindString(9, _tmp_2);
+        }
         if (entity.getExperienceReward() == null) {
           statement.bindNull(10);
         } else {
@@ -162,8 +170,8 @@ public final class TaskDao_Impl implements TaskDao {
         } else {
           statement.bindLong(21, entity.getCompletedAt());
         }
-        final int _tmp = entity.isCompleted() ? 1 : 0;
-        statement.bindLong(22, _tmp);
+        final int _tmp_3 = entity.isCompleted() ? 1 : 0;
+        statement.bindLong(22, _tmp_3);
       }
     };
     this.__insertionAdapterOfTaskProgress = new EntityInsertionAdapter<TaskProgress>(__db) {
@@ -268,17 +276,24 @@ public final class TaskDao_Impl implements TaskDao {
         } else {
           statement.bindLong(6, entity.getOrder());
         }
-        if (entity.getType() == null) {
+        final String _tmp = Converters.INSTANCE.fromTaskType(entity.getType());
+        if (_tmp == null) {
           statement.bindNull(7);
         } else {
-          statement.bindString(7, __TaskType_enumToString(entity.getType()));
+          statement.bindString(7, _tmp);
         }
-        if (entity.getDifficulty() == null) {
+        final String _tmp_1 = Converters.INSTANCE.fromTaskDifficulty(entity.getDifficulty());
+        if (_tmp_1 == null) {
           statement.bindNull(8);
         } else {
-          statement.bindString(8, __TaskDifficulty_enumToString(entity.getDifficulty()));
+          statement.bindString(8, _tmp_1);
         }
-        statement.bindString(9, __TaskStatus_enumToString(entity.getStatus()));
+        final String _tmp_2 = Converters.INSTANCE.fromTaskStatus(entity.getStatus());
+        if (_tmp_2 == null) {
+          statement.bindNull(9);
+        } else {
+          statement.bindString(9, _tmp_2);
+        }
         if (entity.getExperienceReward() == null) {
           statement.bindNull(10);
         } else {
@@ -335,8 +350,8 @@ public final class TaskDao_Impl implements TaskDao {
         } else {
           statement.bindLong(21, entity.getCompletedAt());
         }
-        final int _tmp = entity.isCompleted() ? 1 : 0;
-        statement.bindLong(22, _tmp);
+        final int _tmp_3 = entity.isCompleted() ? 1 : 0;
+        statement.bindLong(22, _tmp_3);
         statement.bindString(23, entity.getId());
       }
     };
@@ -532,7 +547,12 @@ public final class TaskDao_Impl implements TaskDao {
       public Unit call() throws Exception {
         final SupportSQLiteStatement _stmt = __preparedStmtOfUpdateTaskStatus.acquire();
         int _argIndex = 1;
-        _stmt.bindString(_argIndex, __TaskStatus_enumToString(status));
+        final String _tmp = Converters.INSTANCE.fromTaskStatus(status);
+        if (_tmp == null) {
+          _stmt.bindNull(_argIndex);
+        } else {
+          _stmt.bindString(_argIndex, _tmp);
+        }
         _argIndex = 2;
         _stmt.bindString(_argIndex, taskId);
         try {
@@ -560,7 +580,12 @@ public final class TaskDao_Impl implements TaskDao {
       public Unit call() throws Exception {
         final SupportSQLiteStatement _stmt = __preparedStmtOfCompleteTask.acquire();
         int _argIndex = 1;
-        _stmt.bindString(_argIndex, __TaskStatus_enumToString(status));
+        final String _tmp = Converters.INSTANCE.fromTaskStatus(status);
+        if (_tmp == null) {
+          _stmt.bindNull(_argIndex);
+        } else {
+          _stmt.bindString(_argIndex, _tmp);
+        }
         _argIndex = 2;
         _stmt.bindLong(_argIndex, completedAt);
         _argIndex = 3;
@@ -647,19 +672,34 @@ public final class TaskDao_Impl implements TaskDao {
               _tmpOrder = _cursor.getInt(_cursorIndexOfOrder);
             }
             final TaskType _tmpType;
+            final String _tmp;
             if (_cursor.isNull(_cursorIndexOfType)) {
-              _tmpType = null;
+              _tmp = null;
             } else {
-              _tmpType = __TaskType_stringToEnum(_cursor.getString(_cursorIndexOfType));
+              _tmp = _cursor.getString(_cursorIndexOfType);
             }
+            _tmpType = Converters.INSTANCE.toTaskType(_tmp);
             final TaskDifficulty _tmpDifficulty;
+            final String _tmp_1;
             if (_cursor.isNull(_cursorIndexOfDifficulty)) {
-              _tmpDifficulty = null;
+              _tmp_1 = null;
             } else {
-              _tmpDifficulty = __TaskDifficulty_stringToEnum(_cursor.getString(_cursorIndexOfDifficulty));
+              _tmp_1 = _cursor.getString(_cursorIndexOfDifficulty);
             }
+            _tmpDifficulty = Converters.INSTANCE.toTaskDifficulty(_tmp_1);
             final TaskStatus _tmpStatus;
-            _tmpStatus = __TaskStatus_stringToEnum(_cursor.getString(_cursorIndexOfStatus));
+            final String _tmp_2;
+            if (_cursor.isNull(_cursorIndexOfStatus)) {
+              _tmp_2 = null;
+            } else {
+              _tmp_2 = _cursor.getString(_cursorIndexOfStatus);
+            }
+            final TaskStatus _tmp_3 = Converters.INSTANCE.toTaskStatus(_tmp_2);
+            if (_tmp_3 == null) {
+              throw new IllegalStateException("Expected NON-NULL 'com.keling.app.data.model.TaskStatus', but it was NULL.");
+            } else {
+              _tmpStatus = _tmp_3;
+            }
             final Integer _tmpExperienceReward;
             if (_cursor.isNull(_cursorIndexOfExperienceReward)) {
               _tmpExperienceReward = null;
@@ -729,9 +769,9 @@ public final class TaskDao_Impl implements TaskDao {
               _tmpCompletedAt = _cursor.getLong(_cursorIndexOfCompletedAt);
             }
             final boolean _tmpIsCompleted;
-            final int _tmp;
-            _tmp = _cursor.getInt(_cursorIndexOfIsCompleted);
-            _tmpIsCompleted = _tmp != 0;
+            final int _tmp_4;
+            _tmp_4 = _cursor.getInt(_cursorIndexOfIsCompleted);
+            _tmpIsCompleted = _tmp_4 != 0;
             _result = new Task(_tmpId,_tmpTitle,_tmpDescription,_tmpCourseId,_tmpChapterId,_tmpOrder,_tmpType,_tmpDifficulty,_tmpStatus,_tmpExperienceReward,_tmpCoinReward,_tmpEstimatedMinutes,_tmpEstimatedDuration,_tmpProgress,_tmpActionType,_tmpActionPayload,_tmpTargetGrade,_tmpSource,_tmpCreatedAt,_tmpDeadline,_tmpCompletedAt,_tmpIsCompleted);
           } else {
             _result = null;
@@ -810,19 +850,34 @@ public final class TaskDao_Impl implements TaskDao {
               _tmpOrder = _cursor.getInt(_cursorIndexOfOrder);
             }
             final TaskType _tmpType;
+            final String _tmp;
             if (_cursor.isNull(_cursorIndexOfType)) {
-              _tmpType = null;
+              _tmp = null;
             } else {
-              _tmpType = __TaskType_stringToEnum(_cursor.getString(_cursorIndexOfType));
+              _tmp = _cursor.getString(_cursorIndexOfType);
             }
+            _tmpType = Converters.INSTANCE.toTaskType(_tmp);
             final TaskDifficulty _tmpDifficulty;
+            final String _tmp_1;
             if (_cursor.isNull(_cursorIndexOfDifficulty)) {
-              _tmpDifficulty = null;
+              _tmp_1 = null;
             } else {
-              _tmpDifficulty = __TaskDifficulty_stringToEnum(_cursor.getString(_cursorIndexOfDifficulty));
+              _tmp_1 = _cursor.getString(_cursorIndexOfDifficulty);
             }
+            _tmpDifficulty = Converters.INSTANCE.toTaskDifficulty(_tmp_1);
             final TaskStatus _tmpStatus;
-            _tmpStatus = __TaskStatus_stringToEnum(_cursor.getString(_cursorIndexOfStatus));
+            final String _tmp_2;
+            if (_cursor.isNull(_cursorIndexOfStatus)) {
+              _tmp_2 = null;
+            } else {
+              _tmp_2 = _cursor.getString(_cursorIndexOfStatus);
+            }
+            final TaskStatus _tmp_3 = Converters.INSTANCE.toTaskStatus(_tmp_2);
+            if (_tmp_3 == null) {
+              throw new IllegalStateException("Expected NON-NULL 'com.keling.app.data.model.TaskStatus', but it was NULL.");
+            } else {
+              _tmpStatus = _tmp_3;
+            }
             final Integer _tmpExperienceReward;
             if (_cursor.isNull(_cursorIndexOfExperienceReward)) {
               _tmpExperienceReward = null;
@@ -892,9 +947,9 @@ public final class TaskDao_Impl implements TaskDao {
               _tmpCompletedAt = _cursor.getLong(_cursorIndexOfCompletedAt);
             }
             final boolean _tmpIsCompleted;
-            final int _tmp;
-            _tmp = _cursor.getInt(_cursorIndexOfIsCompleted);
-            _tmpIsCompleted = _tmp != 0;
+            final int _tmp_4;
+            _tmp_4 = _cursor.getInt(_cursorIndexOfIsCompleted);
+            _tmpIsCompleted = _tmp_4 != 0;
             _result = new Task(_tmpId,_tmpTitle,_tmpDescription,_tmpCourseId,_tmpChapterId,_tmpOrder,_tmpType,_tmpDifficulty,_tmpStatus,_tmpExperienceReward,_tmpCoinReward,_tmpEstimatedMinutes,_tmpEstimatedDuration,_tmpProgress,_tmpActionType,_tmpActionPayload,_tmpTargetGrade,_tmpSource,_tmpCreatedAt,_tmpDeadline,_tmpCompletedAt,_tmpIsCompleted);
           } else {
             _result = null;
@@ -917,7 +972,12 @@ public final class TaskDao_Impl implements TaskDao {
     final String _sql = "SELECT * FROM tasks WHERE status = ? ORDER BY deadline ASC";
     final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 1);
     int _argIndex = 1;
-    _statement.bindString(_argIndex, __TaskStatus_enumToString(status));
+    final String _tmp = Converters.INSTANCE.fromTaskStatus(status);
+    if (_tmp == null) {
+      _statement.bindNull(_argIndex);
+    } else {
+      _statement.bindString(_argIndex, _tmp);
+    }
     return CoroutinesRoom.createFlow(__db, false, new String[] {"tasks"}, new Callable<List<Task>>() {
       @Override
       @NonNull
@@ -978,19 +1038,34 @@ public final class TaskDao_Impl implements TaskDao {
               _tmpOrder = _cursor.getInt(_cursorIndexOfOrder);
             }
             final TaskType _tmpType;
+            final String _tmp_1;
             if (_cursor.isNull(_cursorIndexOfType)) {
-              _tmpType = null;
+              _tmp_1 = null;
             } else {
-              _tmpType = __TaskType_stringToEnum(_cursor.getString(_cursorIndexOfType));
+              _tmp_1 = _cursor.getString(_cursorIndexOfType);
             }
+            _tmpType = Converters.INSTANCE.toTaskType(_tmp_1);
             final TaskDifficulty _tmpDifficulty;
+            final String _tmp_2;
             if (_cursor.isNull(_cursorIndexOfDifficulty)) {
-              _tmpDifficulty = null;
+              _tmp_2 = null;
             } else {
-              _tmpDifficulty = __TaskDifficulty_stringToEnum(_cursor.getString(_cursorIndexOfDifficulty));
+              _tmp_2 = _cursor.getString(_cursorIndexOfDifficulty);
             }
+            _tmpDifficulty = Converters.INSTANCE.toTaskDifficulty(_tmp_2);
             final TaskStatus _tmpStatus;
-            _tmpStatus = __TaskStatus_stringToEnum(_cursor.getString(_cursorIndexOfStatus));
+            final String _tmp_3;
+            if (_cursor.isNull(_cursorIndexOfStatus)) {
+              _tmp_3 = null;
+            } else {
+              _tmp_3 = _cursor.getString(_cursorIndexOfStatus);
+            }
+            final TaskStatus _tmp_4 = Converters.INSTANCE.toTaskStatus(_tmp_3);
+            if (_tmp_4 == null) {
+              throw new IllegalStateException("Expected NON-NULL 'com.keling.app.data.model.TaskStatus', but it was NULL.");
+            } else {
+              _tmpStatus = _tmp_4;
+            }
             final Integer _tmpExperienceReward;
             if (_cursor.isNull(_cursorIndexOfExperienceReward)) {
               _tmpExperienceReward = null;
@@ -1060,9 +1135,9 @@ public final class TaskDao_Impl implements TaskDao {
               _tmpCompletedAt = _cursor.getLong(_cursorIndexOfCompletedAt);
             }
             final boolean _tmpIsCompleted;
-            final int _tmp;
-            _tmp = _cursor.getInt(_cursorIndexOfIsCompleted);
-            _tmpIsCompleted = _tmp != 0;
+            final int _tmp_5;
+            _tmp_5 = _cursor.getInt(_cursorIndexOfIsCompleted);
+            _tmpIsCompleted = _tmp_5 != 0;
             _item = new Task(_tmpId,_tmpTitle,_tmpDescription,_tmpCourseId,_tmpChapterId,_tmpOrder,_tmpType,_tmpDifficulty,_tmpStatus,_tmpExperienceReward,_tmpCoinReward,_tmpEstimatedMinutes,_tmpEstimatedDuration,_tmpProgress,_tmpActionType,_tmpActionPayload,_tmpTargetGrade,_tmpSource,_tmpCreatedAt,_tmpDeadline,_tmpCompletedAt,_tmpIsCompleted);
             _result.add(_item);
           }
@@ -1084,7 +1159,12 @@ public final class TaskDao_Impl implements TaskDao {
     final String _sql = "SELECT * FROM tasks WHERE type = ? ORDER BY deadline ASC";
     final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 1);
     int _argIndex = 1;
-    _statement.bindString(_argIndex, __TaskType_enumToString(type));
+    final String _tmp = Converters.INSTANCE.fromTaskType(type);
+    if (_tmp == null) {
+      _statement.bindNull(_argIndex);
+    } else {
+      _statement.bindString(_argIndex, _tmp);
+    }
     return CoroutinesRoom.createFlow(__db, false, new String[] {"tasks"}, new Callable<List<Task>>() {
       @Override
       @NonNull
@@ -1145,19 +1225,34 @@ public final class TaskDao_Impl implements TaskDao {
               _tmpOrder = _cursor.getInt(_cursorIndexOfOrder);
             }
             final TaskType _tmpType;
+            final String _tmp_1;
             if (_cursor.isNull(_cursorIndexOfType)) {
-              _tmpType = null;
+              _tmp_1 = null;
             } else {
-              _tmpType = __TaskType_stringToEnum(_cursor.getString(_cursorIndexOfType));
+              _tmp_1 = _cursor.getString(_cursorIndexOfType);
             }
+            _tmpType = Converters.INSTANCE.toTaskType(_tmp_1);
             final TaskDifficulty _tmpDifficulty;
+            final String _tmp_2;
             if (_cursor.isNull(_cursorIndexOfDifficulty)) {
-              _tmpDifficulty = null;
+              _tmp_2 = null;
             } else {
-              _tmpDifficulty = __TaskDifficulty_stringToEnum(_cursor.getString(_cursorIndexOfDifficulty));
+              _tmp_2 = _cursor.getString(_cursorIndexOfDifficulty);
             }
+            _tmpDifficulty = Converters.INSTANCE.toTaskDifficulty(_tmp_2);
             final TaskStatus _tmpStatus;
-            _tmpStatus = __TaskStatus_stringToEnum(_cursor.getString(_cursorIndexOfStatus));
+            final String _tmp_3;
+            if (_cursor.isNull(_cursorIndexOfStatus)) {
+              _tmp_3 = null;
+            } else {
+              _tmp_3 = _cursor.getString(_cursorIndexOfStatus);
+            }
+            final TaskStatus _tmp_4 = Converters.INSTANCE.toTaskStatus(_tmp_3);
+            if (_tmp_4 == null) {
+              throw new IllegalStateException("Expected NON-NULL 'com.keling.app.data.model.TaskStatus', but it was NULL.");
+            } else {
+              _tmpStatus = _tmp_4;
+            }
             final Integer _tmpExperienceReward;
             if (_cursor.isNull(_cursorIndexOfExperienceReward)) {
               _tmpExperienceReward = null;
@@ -1227,9 +1322,9 @@ public final class TaskDao_Impl implements TaskDao {
               _tmpCompletedAt = _cursor.getLong(_cursorIndexOfCompletedAt);
             }
             final boolean _tmpIsCompleted;
-            final int _tmp;
-            _tmp = _cursor.getInt(_cursorIndexOfIsCompleted);
-            _tmpIsCompleted = _tmp != 0;
+            final int _tmp_5;
+            _tmp_5 = _cursor.getInt(_cursorIndexOfIsCompleted);
+            _tmpIsCompleted = _tmp_5 != 0;
             _item = new Task(_tmpId,_tmpTitle,_tmpDescription,_tmpCourseId,_tmpChapterId,_tmpOrder,_tmpType,_tmpDifficulty,_tmpStatus,_tmpExperienceReward,_tmpCoinReward,_tmpEstimatedMinutes,_tmpEstimatedDuration,_tmpProgress,_tmpActionType,_tmpActionPayload,_tmpTargetGrade,_tmpSource,_tmpCreatedAt,_tmpDeadline,_tmpCompletedAt,_tmpIsCompleted);
             _result.add(_item);
           }
@@ -1310,19 +1405,34 @@ public final class TaskDao_Impl implements TaskDao {
               _tmpOrder = _cursor.getInt(_cursorIndexOfOrder);
             }
             final TaskType _tmpType;
+            final String _tmp;
             if (_cursor.isNull(_cursorIndexOfType)) {
-              _tmpType = null;
+              _tmp = null;
             } else {
-              _tmpType = __TaskType_stringToEnum(_cursor.getString(_cursorIndexOfType));
+              _tmp = _cursor.getString(_cursorIndexOfType);
             }
+            _tmpType = Converters.INSTANCE.toTaskType(_tmp);
             final TaskDifficulty _tmpDifficulty;
+            final String _tmp_1;
             if (_cursor.isNull(_cursorIndexOfDifficulty)) {
-              _tmpDifficulty = null;
+              _tmp_1 = null;
             } else {
-              _tmpDifficulty = __TaskDifficulty_stringToEnum(_cursor.getString(_cursorIndexOfDifficulty));
+              _tmp_1 = _cursor.getString(_cursorIndexOfDifficulty);
             }
+            _tmpDifficulty = Converters.INSTANCE.toTaskDifficulty(_tmp_1);
             final TaskStatus _tmpStatus;
-            _tmpStatus = __TaskStatus_stringToEnum(_cursor.getString(_cursorIndexOfStatus));
+            final String _tmp_2;
+            if (_cursor.isNull(_cursorIndexOfStatus)) {
+              _tmp_2 = null;
+            } else {
+              _tmp_2 = _cursor.getString(_cursorIndexOfStatus);
+            }
+            final TaskStatus _tmp_3 = Converters.INSTANCE.toTaskStatus(_tmp_2);
+            if (_tmp_3 == null) {
+              throw new IllegalStateException("Expected NON-NULL 'com.keling.app.data.model.TaskStatus', but it was NULL.");
+            } else {
+              _tmpStatus = _tmp_3;
+            }
             final Integer _tmpExperienceReward;
             if (_cursor.isNull(_cursorIndexOfExperienceReward)) {
               _tmpExperienceReward = null;
@@ -1392,9 +1502,9 @@ public final class TaskDao_Impl implements TaskDao {
               _tmpCompletedAt = _cursor.getLong(_cursorIndexOfCompletedAt);
             }
             final boolean _tmpIsCompleted;
-            final int _tmp;
-            _tmp = _cursor.getInt(_cursorIndexOfIsCompleted);
-            _tmpIsCompleted = _tmp != 0;
+            final int _tmp_4;
+            _tmp_4 = _cursor.getInt(_cursorIndexOfIsCompleted);
+            _tmpIsCompleted = _tmp_4 != 0;
             _item = new Task(_tmpId,_tmpTitle,_tmpDescription,_tmpCourseId,_tmpChapterId,_tmpOrder,_tmpType,_tmpDifficulty,_tmpStatus,_tmpExperienceReward,_tmpCoinReward,_tmpEstimatedMinutes,_tmpEstimatedDuration,_tmpProgress,_tmpActionType,_tmpActionPayload,_tmpTargetGrade,_tmpSource,_tmpCreatedAt,_tmpDeadline,_tmpCompletedAt,_tmpIsCompleted);
             _result.add(_item);
           }
@@ -1477,19 +1587,34 @@ public final class TaskDao_Impl implements TaskDao {
               _tmpOrder = _cursor.getInt(_cursorIndexOfOrder);
             }
             final TaskType _tmpType;
+            final String _tmp;
             if (_cursor.isNull(_cursorIndexOfType)) {
-              _tmpType = null;
+              _tmp = null;
             } else {
-              _tmpType = __TaskType_stringToEnum(_cursor.getString(_cursorIndexOfType));
+              _tmp = _cursor.getString(_cursorIndexOfType);
             }
+            _tmpType = Converters.INSTANCE.toTaskType(_tmp);
             final TaskDifficulty _tmpDifficulty;
+            final String _tmp_1;
             if (_cursor.isNull(_cursorIndexOfDifficulty)) {
-              _tmpDifficulty = null;
+              _tmp_1 = null;
             } else {
-              _tmpDifficulty = __TaskDifficulty_stringToEnum(_cursor.getString(_cursorIndexOfDifficulty));
+              _tmp_1 = _cursor.getString(_cursorIndexOfDifficulty);
             }
+            _tmpDifficulty = Converters.INSTANCE.toTaskDifficulty(_tmp_1);
             final TaskStatus _tmpStatus;
-            _tmpStatus = __TaskStatus_stringToEnum(_cursor.getString(_cursorIndexOfStatus));
+            final String _tmp_2;
+            if (_cursor.isNull(_cursorIndexOfStatus)) {
+              _tmp_2 = null;
+            } else {
+              _tmp_2 = _cursor.getString(_cursorIndexOfStatus);
+            }
+            final TaskStatus _tmp_3 = Converters.INSTANCE.toTaskStatus(_tmp_2);
+            if (_tmp_3 == null) {
+              throw new IllegalStateException("Expected NON-NULL 'com.keling.app.data.model.TaskStatus', but it was NULL.");
+            } else {
+              _tmpStatus = _tmp_3;
+            }
             final Integer _tmpExperienceReward;
             if (_cursor.isNull(_cursorIndexOfExperienceReward)) {
               _tmpExperienceReward = null;
@@ -1559,9 +1684,9 @@ public final class TaskDao_Impl implements TaskDao {
               _tmpCompletedAt = _cursor.getLong(_cursorIndexOfCompletedAt);
             }
             final boolean _tmpIsCompleted;
-            final int _tmp;
-            _tmp = _cursor.getInt(_cursorIndexOfIsCompleted);
-            _tmpIsCompleted = _tmp != 0;
+            final int _tmp_4;
+            _tmp_4 = _cursor.getInt(_cursorIndexOfIsCompleted);
+            _tmpIsCompleted = _tmp_4 != 0;
             _item = new Task(_tmpId,_tmpTitle,_tmpDescription,_tmpCourseId,_tmpChapterId,_tmpOrder,_tmpType,_tmpDifficulty,_tmpStatus,_tmpExperienceReward,_tmpCoinReward,_tmpEstimatedMinutes,_tmpEstimatedDuration,_tmpProgress,_tmpActionType,_tmpActionPayload,_tmpTargetGrade,_tmpSource,_tmpCreatedAt,_tmpDeadline,_tmpCompletedAt,_tmpIsCompleted);
             _result.add(_item);
           }
@@ -1644,19 +1769,34 @@ public final class TaskDao_Impl implements TaskDao {
               _tmpOrder = _cursor.getInt(_cursorIndexOfOrder);
             }
             final TaskType _tmpType;
+            final String _tmp;
             if (_cursor.isNull(_cursorIndexOfType)) {
-              _tmpType = null;
+              _tmp = null;
             } else {
-              _tmpType = __TaskType_stringToEnum(_cursor.getString(_cursorIndexOfType));
+              _tmp = _cursor.getString(_cursorIndexOfType);
             }
+            _tmpType = Converters.INSTANCE.toTaskType(_tmp);
             final TaskDifficulty _tmpDifficulty;
+            final String _tmp_1;
             if (_cursor.isNull(_cursorIndexOfDifficulty)) {
-              _tmpDifficulty = null;
+              _tmp_1 = null;
             } else {
-              _tmpDifficulty = __TaskDifficulty_stringToEnum(_cursor.getString(_cursorIndexOfDifficulty));
+              _tmp_1 = _cursor.getString(_cursorIndexOfDifficulty);
             }
+            _tmpDifficulty = Converters.INSTANCE.toTaskDifficulty(_tmp_1);
             final TaskStatus _tmpStatus;
-            _tmpStatus = __TaskStatus_stringToEnum(_cursor.getString(_cursorIndexOfStatus));
+            final String _tmp_2;
+            if (_cursor.isNull(_cursorIndexOfStatus)) {
+              _tmp_2 = null;
+            } else {
+              _tmp_2 = _cursor.getString(_cursorIndexOfStatus);
+            }
+            final TaskStatus _tmp_3 = Converters.INSTANCE.toTaskStatus(_tmp_2);
+            if (_tmp_3 == null) {
+              throw new IllegalStateException("Expected NON-NULL 'com.keling.app.data.model.TaskStatus', but it was NULL.");
+            } else {
+              _tmpStatus = _tmp_3;
+            }
             final Integer _tmpExperienceReward;
             if (_cursor.isNull(_cursorIndexOfExperienceReward)) {
               _tmpExperienceReward = null;
@@ -1726,9 +1866,9 @@ public final class TaskDao_Impl implements TaskDao {
               _tmpCompletedAt = _cursor.getLong(_cursorIndexOfCompletedAt);
             }
             final boolean _tmpIsCompleted;
-            final int _tmp;
-            _tmp = _cursor.getInt(_cursorIndexOfIsCompleted);
-            _tmpIsCompleted = _tmp != 0;
+            final int _tmp_4;
+            _tmp_4 = _cursor.getInt(_cursorIndexOfIsCompleted);
+            _tmpIsCompleted = _tmp_4 != 0;
             _item = new Task(_tmpId,_tmpTitle,_tmpDescription,_tmpCourseId,_tmpChapterId,_tmpOrder,_tmpType,_tmpDifficulty,_tmpStatus,_tmpExperienceReward,_tmpCoinReward,_tmpEstimatedMinutes,_tmpEstimatedDuration,_tmpProgress,_tmpActionType,_tmpActionPayload,_tmpTargetGrade,_tmpSource,_tmpCreatedAt,_tmpDeadline,_tmpCompletedAt,_tmpIsCompleted);
             _result.add(_item);
           }
@@ -1811,19 +1951,34 @@ public final class TaskDao_Impl implements TaskDao {
               _tmpOrder = _cursor.getInt(_cursorIndexOfOrder);
             }
             final TaskType _tmpType;
+            final String _tmp;
             if (_cursor.isNull(_cursorIndexOfType)) {
-              _tmpType = null;
+              _tmp = null;
             } else {
-              _tmpType = __TaskType_stringToEnum(_cursor.getString(_cursorIndexOfType));
+              _tmp = _cursor.getString(_cursorIndexOfType);
             }
+            _tmpType = Converters.INSTANCE.toTaskType(_tmp);
             final TaskDifficulty _tmpDifficulty;
+            final String _tmp_1;
             if (_cursor.isNull(_cursorIndexOfDifficulty)) {
-              _tmpDifficulty = null;
+              _tmp_1 = null;
             } else {
-              _tmpDifficulty = __TaskDifficulty_stringToEnum(_cursor.getString(_cursorIndexOfDifficulty));
+              _tmp_1 = _cursor.getString(_cursorIndexOfDifficulty);
             }
+            _tmpDifficulty = Converters.INSTANCE.toTaskDifficulty(_tmp_1);
             final TaskStatus _tmpStatus;
-            _tmpStatus = __TaskStatus_stringToEnum(_cursor.getString(_cursorIndexOfStatus));
+            final String _tmp_2;
+            if (_cursor.isNull(_cursorIndexOfStatus)) {
+              _tmp_2 = null;
+            } else {
+              _tmp_2 = _cursor.getString(_cursorIndexOfStatus);
+            }
+            final TaskStatus _tmp_3 = Converters.INSTANCE.toTaskStatus(_tmp_2);
+            if (_tmp_3 == null) {
+              throw new IllegalStateException("Expected NON-NULL 'com.keling.app.data.model.TaskStatus', but it was NULL.");
+            } else {
+              _tmpStatus = _tmp_3;
+            }
             final Integer _tmpExperienceReward;
             if (_cursor.isNull(_cursorIndexOfExperienceReward)) {
               _tmpExperienceReward = null;
@@ -1893,9 +2048,9 @@ public final class TaskDao_Impl implements TaskDao {
               _tmpCompletedAt = _cursor.getLong(_cursorIndexOfCompletedAt);
             }
             final boolean _tmpIsCompleted;
-            final int _tmp;
-            _tmp = _cursor.getInt(_cursorIndexOfIsCompleted);
-            _tmpIsCompleted = _tmp != 0;
+            final int _tmp_4;
+            _tmp_4 = _cursor.getInt(_cursorIndexOfIsCompleted);
+            _tmpIsCompleted = _tmp_4 != 0;
             _item = new Task(_tmpId,_tmpTitle,_tmpDescription,_tmpCourseId,_tmpChapterId,_tmpOrder,_tmpType,_tmpDifficulty,_tmpStatus,_tmpExperienceReward,_tmpCoinReward,_tmpEstimatedMinutes,_tmpEstimatedDuration,_tmpProgress,_tmpActionType,_tmpActionPayload,_tmpTargetGrade,_tmpSource,_tmpCreatedAt,_tmpDeadline,_tmpCompletedAt,_tmpIsCompleted);
             _result.add(_item);
           }
@@ -1980,19 +2135,34 @@ public final class TaskDao_Impl implements TaskDao {
               _tmpOrder = _cursor.getInt(_cursorIndexOfOrder);
             }
             final TaskType _tmpType;
+            final String _tmp;
             if (_cursor.isNull(_cursorIndexOfType)) {
-              _tmpType = null;
+              _tmp = null;
             } else {
-              _tmpType = __TaskType_stringToEnum(_cursor.getString(_cursorIndexOfType));
+              _tmp = _cursor.getString(_cursorIndexOfType);
             }
+            _tmpType = Converters.INSTANCE.toTaskType(_tmp);
             final TaskDifficulty _tmpDifficulty;
+            final String _tmp_1;
             if (_cursor.isNull(_cursorIndexOfDifficulty)) {
-              _tmpDifficulty = null;
+              _tmp_1 = null;
             } else {
-              _tmpDifficulty = __TaskDifficulty_stringToEnum(_cursor.getString(_cursorIndexOfDifficulty));
+              _tmp_1 = _cursor.getString(_cursorIndexOfDifficulty);
             }
+            _tmpDifficulty = Converters.INSTANCE.toTaskDifficulty(_tmp_1);
             final TaskStatus _tmpStatus;
-            _tmpStatus = __TaskStatus_stringToEnum(_cursor.getString(_cursorIndexOfStatus));
+            final String _tmp_2;
+            if (_cursor.isNull(_cursorIndexOfStatus)) {
+              _tmp_2 = null;
+            } else {
+              _tmp_2 = _cursor.getString(_cursorIndexOfStatus);
+            }
+            final TaskStatus _tmp_3 = Converters.INSTANCE.toTaskStatus(_tmp_2);
+            if (_tmp_3 == null) {
+              throw new IllegalStateException("Expected NON-NULL 'com.keling.app.data.model.TaskStatus', but it was NULL.");
+            } else {
+              _tmpStatus = _tmp_3;
+            }
             final Integer _tmpExperienceReward;
             if (_cursor.isNull(_cursorIndexOfExperienceReward)) {
               _tmpExperienceReward = null;
@@ -2062,9 +2232,9 @@ public final class TaskDao_Impl implements TaskDao {
               _tmpCompletedAt = _cursor.getLong(_cursorIndexOfCompletedAt);
             }
             final boolean _tmpIsCompleted;
-            final int _tmp;
-            _tmp = _cursor.getInt(_cursorIndexOfIsCompleted);
-            _tmpIsCompleted = _tmp != 0;
+            final int _tmp_4;
+            _tmp_4 = _cursor.getInt(_cursorIndexOfIsCompleted);
+            _tmpIsCompleted = _tmp_4 != 0;
             _item = new Task(_tmpId,_tmpTitle,_tmpDescription,_tmpCourseId,_tmpChapterId,_tmpOrder,_tmpType,_tmpDifficulty,_tmpStatus,_tmpExperienceReward,_tmpCoinReward,_tmpEstimatedMinutes,_tmpEstimatedDuration,_tmpProgress,_tmpActionType,_tmpActionPayload,_tmpTargetGrade,_tmpSource,_tmpCreatedAt,_tmpDeadline,_tmpCompletedAt,_tmpIsCompleted);
             _result.add(_item);
           }
@@ -2234,77 +2404,5 @@ public final class TaskDao_Impl implements TaskDao {
   @NonNull
   public static List<Class<?>> getRequiredConverters() {
     return Collections.emptyList();
-  }
-
-  private String __TaskType_enumToString(@NonNull final TaskType _value) {
-    switch (_value) {
-      case PRACTICE: return "PRACTICE";
-      case CHALLENGE: return "CHALLENGE";
-      case DAILY: return "DAILY";
-      case TEAM: return "TEAM";
-      case HOMEWORK: return "HOMEWORK";
-      case QUIZ: return "QUIZ";
-      case REVIEW: return "REVIEW";
-      case READING: return "READING";
-      case OTHER: return "OTHER";
-      default: throw new IllegalArgumentException("Can't convert enum to string, unknown enum value: " + _value);
-    }
-  }
-
-  private String __TaskDifficulty_enumToString(@NonNull final TaskDifficulty _value) {
-    switch (_value) {
-      case EASY: return "EASY";
-      case MEDIUM: return "MEDIUM";
-      case HARD: return "HARD";
-      case EXPERT: return "EXPERT";
-      default: throw new IllegalArgumentException("Can't convert enum to string, unknown enum value: " + _value);
-    }
-  }
-
-  private String __TaskStatus_enumToString(@NonNull final TaskStatus _value) {
-    switch (_value) {
-      case PENDING: return "PENDING";
-      case IN_PROGRESS: return "IN_PROGRESS";
-      case COMPLETED: return "COMPLETED";
-      case CANCELLED: return "CANCELLED";
-      case EXPIRED: return "EXPIRED";
-      default: throw new IllegalArgumentException("Can't convert enum to string, unknown enum value: " + _value);
-    }
-  }
-
-  private TaskType __TaskType_stringToEnum(@NonNull final String _value) {
-    switch (_value) {
-      case "PRACTICE": return TaskType.PRACTICE;
-      case "CHALLENGE": return TaskType.CHALLENGE;
-      case "DAILY": return TaskType.DAILY;
-      case "TEAM": return TaskType.TEAM;
-      case "HOMEWORK": return TaskType.HOMEWORK;
-      case "QUIZ": return TaskType.QUIZ;
-      case "REVIEW": return TaskType.REVIEW;
-      case "READING": return TaskType.READING;
-      case "OTHER": return TaskType.OTHER;
-      default: throw new IllegalArgumentException("Can't convert value to enum, unknown value: " + _value);
-    }
-  }
-
-  private TaskDifficulty __TaskDifficulty_stringToEnum(@NonNull final String _value) {
-    switch (_value) {
-      case "EASY": return TaskDifficulty.EASY;
-      case "MEDIUM": return TaskDifficulty.MEDIUM;
-      case "HARD": return TaskDifficulty.HARD;
-      case "EXPERT": return TaskDifficulty.EXPERT;
-      default: throw new IllegalArgumentException("Can't convert value to enum, unknown value: " + _value);
-    }
-  }
-
-  private TaskStatus __TaskStatus_stringToEnum(@NonNull final String _value) {
-    switch (_value) {
-      case "PENDING": return TaskStatus.PENDING;
-      case "IN_PROGRESS": return TaskStatus.IN_PROGRESS;
-      case "COMPLETED": return TaskStatus.COMPLETED;
-      case "CANCELLED": return TaskStatus.CANCELLED;
-      case "EXPIRED": return TaskStatus.EXPIRED;
-      default: throw new IllegalArgumentException("Can't convert value to enum, unknown value: " + _value);
-    }
   }
 }

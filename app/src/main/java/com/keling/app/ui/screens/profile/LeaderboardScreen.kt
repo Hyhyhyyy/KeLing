@@ -199,6 +199,7 @@ private fun LeaderboardItem(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun LeaderboardUserDetailSheet(
     user: LeaderboardUser,

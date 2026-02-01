@@ -48,4 +48,7 @@ object DatabaseModule {
 
     @Provides
     fun provideKnowledgeDao(database: KelingDatabase): KnowledgeDao = database.knowledgeDao()
+
+    @Provides
+    fun provideTaskRecordDao(database: KelingDatabase): TaskRecordDao = database.taskRecordDao()
 }

@@ -27,19 +27,17 @@ import com.keling.app.data.local.entity.TaskRecordEntity
         KnowledgePoint::class,
         KnowledgeRelation::class,
         LearningRecord::class,
-    TaskRecordEntity::class
+        TaskRecordEntity::class
     ],
-    version = 3,
+    version = 4,
     exportSchema = true
-)abstract class AppDatabase : RoomDatabase() {
-    abstract fun taskDao(): TaskDao
-    abstract fun taskRecordDao(): TaskRecordDao
-}
-@TypeConverters(Converters::class) // <-- 确保是 androidx.room.TypeConverters
+)
+@TypeConverters(Converters::class)
 abstract class KelingDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
     abstract fun courseDao(): CourseDao
     abstract fun taskDao(): TaskDao
     abstract fun achievementDao(): AchievementDao
     abstract fun knowledgeDao(): KnowledgeDao
+    abstract fun taskRecordDao(): TaskRecordDao
 }

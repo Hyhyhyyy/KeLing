@@ -13,6 +13,10 @@ import com.keling.app.ui.screens.home.HomeViewModel_HiltModules;
 import com.keling.app.ui.screens.knowledge.KnowledgeGraphViewModel_HiltModules;
 import com.keling.app.ui.screens.knowledge.KnowledgePracticeViewModel_HiltModules;
 import com.keling.app.ui.screens.login.LoginViewModel_HiltModules;
+import com.keling.app.ui.screens.profile.FriendsViewModel_HiltModules;
+import com.keling.app.ui.screens.profile.KnowledgeGraphEntryViewModel_HiltModules;
+import com.keling.app.ui.screens.profile.LeaderboardViewModel_HiltModules;
+import com.keling.app.ui.screens.profile.LearningReportViewModel_HiltModules;
 import com.keling.app.ui.screens.profile.ProfileViewModel_HiltModules;
 import com.keling.app.ui.screens.settings.AccessibilityViewModel_HiltModules;
 import com.keling.app.ui.screens.settings.PersonalProfileViewModel_HiltModules;
@@ -179,12 +183,16 @@ public final class KelingApplication_HiltComponents {
           CourseDetailViewModel_HiltModules.KeyModule.class,
           CoursesViewModel_HiltModules.KeyModule.class,
           FocusViewModel_HiltModules.KeyModule.class,
+          FriendsViewModel_HiltModules.KeyModule.class,
           HiltWrapper_ActivityRetainedComponentManager_LifecycleModule.class,
           HomeViewModel_HiltModules.KeyModule.class,
           ActivityCBuilderModule.class,
           ViewModelCBuilderModule.class,
+          KnowledgeGraphEntryViewModel_HiltModules.KeyModule.class,
           KnowledgeGraphViewModel_HiltModules.KeyModule.class,
           KnowledgePracticeViewModel_HiltModules.KeyModule.class,
+          LeaderboardViewModel_HiltModules.KeyModule.class,
+          LearningReportViewModel_HiltModules.KeyModule.class,
           LoginViewModel_HiltModules.KeyModule.class,
           PersonalProfileViewModel_HiltModules.KeyModule.class,
           PrivacySettingsViewModel_HiltModules.KeyModule.class,
@@ -233,10 +241,14 @@ public final class KelingApplication_HiltComponents {
           CourseDetailViewModel_HiltModules.BindsModule.class,
           CoursesViewModel_HiltModules.BindsModule.class,
           FocusViewModel_HiltModules.BindsModule.class,
+          FriendsViewModel_HiltModules.BindsModule.class,
           HiltWrapper_HiltViewModelFactory_ViewModelModule.class,
           HomeViewModel_HiltModules.BindsModule.class,
+          KnowledgeGraphEntryViewModel_HiltModules.BindsModule.class,
           KnowledgeGraphViewModel_HiltModules.BindsModule.class,
           KnowledgePracticeViewModel_HiltModules.BindsModule.class,
+          LeaderboardViewModel_HiltModules.BindsModule.class,
+          LearningReportViewModel_HiltModules.BindsModule.class,
           LoginViewModel_HiltModules.BindsModule.class,
           PersonalProfileViewModel_HiltModules.BindsModule.class,
           PrivacySettingsViewModel_HiltModules.BindsModule.class,

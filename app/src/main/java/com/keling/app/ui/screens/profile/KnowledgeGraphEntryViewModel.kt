@@ -1,7 +1,6 @@
 package com.keling.app.ui.screens.profile
 
 import androidx.lifecycle.ViewModel
-import com.keling.app.data.model.Course
 import androidx.lifecycle.viewModelScope
 import com.keling.app.data.model.Course
 import com.keling.app.data.repository.CourseRepository
