@@ -236,7 +236,7 @@ private fun ReadingExecution(
     Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
         Text(task.title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = TextPrimary)
         Spacer(Modifier.height(8.dp))
-        Text(task.description, style = MaterialTheme.typography.bodyMedium, color = TextSecondary)
+        Text(task.description.toString(), style = MaterialTheme.typography.bodyMedium, color = TextSecondary)
         Spacer(Modifier.height(24.dp))
         NeonCard(glowColor = NeonPurple) {
             Text("阅读时长", style = MaterialTheme.typography.labelMedium, color = TextSecondary)
@@ -277,7 +277,7 @@ private fun VideoExecution(
     Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
         Text(task.title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = TextPrimary)
         Spacer(Modifier.height(8.dp))
-        Text(task.description, style = MaterialTheme.typography.bodyMedium, color = TextSecondary)
+        Text(task.description.toString(), style = MaterialTheme.typography.bodyMedium, color = TextSecondary)
         Spacer(Modifier.height(24.dp))
         NeonCard(glowColor = NeonBlue) {
             Text("观看时长", style = MaterialTheme.typography.labelMedium, color = TextSecondary)
@@ -315,7 +315,7 @@ private fun ExerciseExecution(
     Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
         Text(task.title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = TextPrimary)
         Spacer(Modifier.height(8.dp))
-        Text(task.description, style = MaterialTheme.typography.bodyMedium, color = TextSecondary)
+        Text(task.description.toString(), style = MaterialTheme.typography.bodyMedium, color = TextSecondary)
         if (payload != null) {
             Spacer(Modifier.height(8.dp))
             Text("${payload.subject} · ${payload.chapter}，题号 ${payload.exerciseIds}", style = MaterialTheme.typography.bodySmall, color = TextTertiary)
@@ -358,7 +358,7 @@ private fun MemorizationExecution(
     Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
         Text(task.title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = TextPrimary)
         Spacer(Modifier.height(8.dp))
-        Text(task.description, style = MaterialTheme.typography.bodyMedium, color = TextSecondary)
+        Text(task.description.toString(), style = MaterialTheme.typography.bodyMedium, color = TextSecondary)
         if (payload != null) {
             Spacer(Modifier.height(8.dp))
             Text("${payload.itemDescription} × ${payload.itemCount}", style = MaterialTheme.typography.bodySmall, color = TextTertiary)

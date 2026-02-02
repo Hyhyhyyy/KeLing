@@ -54,6 +54,8 @@ interface TaskRepository {
 
     /** 根据标题完成一条挑战任务（用于实践星球报名的活动完成） */
     suspend fun completeChallengeTaskByTitle(title: String)
+
+    suspend fun update(task: Task)
 }
 
 /**
@@ -137,6 +139,10 @@ class TaskRepositoryImpl @Inject constructor(
 
     private val difficultyAlpha = 0.25f
     private val difficultyBeta = 1.5f
+
+    override suspend fun update(task: Task) {
+        taskDao.updateTask(task)
+    }
 
     override fun getActiveTasks(): Flow<List<Task>> = taskDao.getActiveTasks()
 
@@ -280,17 +286,20 @@ class TaskRepositoryImpl @Inject constructor(
     }
 
     override suspend fun recordStudyFromTask(task: Task, source: TaskActionType) {
-        val minutes = when (source) {
+        val minutes: Int = when (source) {
             TaskActionType.READING, TaskActionType.VIDEO -> {
                 val payloadMinutes = when (source) {
                     TaskActionType.READING -> parsePayload<ReadingPayload>(task.actionType, task.actionPayload)?.durationMinutes
                     TaskActionType.VIDEO -> parsePayload<VideoPayload>(task.actionType, task.actionPayload)?.durationMinutes
                     else -> null
                 }
-                (payloadMinutes ?: task.estimatedMinutes).coerceAtLeast(1)
+                (payloadMinutes ?: task.estimatedMinutes ?: 0).coerceAtLeast(1)
             }
             TaskActionType.EXERCISE, TaskActionType.MEMORIZATION, TaskActionType.QUIZ -> {
-                task.estimatedMinutes.coerceAtLeast(1)
+                (task.estimatedMinutes ?: 0).coerceAtLeast(1)
+            }
+            else -> {
+                (task.estimatedMinutes ?: 0).coerceAtLeast(1)
             }
         }
         val session = StudySession(
@@ -298,7 +307,7 @@ class TaskRepositoryImpl @Inject constructor(
             dayKey = currentDayKey(),
             source = "TASK_${source.name}",
             taskId = task.id,
-            durationMinutes = minutes
+            durationMinutes = minutes.coerceAtLeast(1)
         )
         taskDao.insertStudySession(session)
     }

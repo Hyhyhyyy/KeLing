@@ -59,7 +59,7 @@ fun SplashScreen(
     
     LaunchedEffect(Unit) {
         startAnimation = true
-        delay(2500) // 等待动画完成；TODO: 已登录则 onNavigateToHome() 否则 onNavigateToLogin()
+        delay(2500) // 等待动画完成
         onNavigateToLogin()
     }
     

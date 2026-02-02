@@ -102,14 +102,16 @@ fun TasksScreen(
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             items(uiState.filteredTasks) { task ->
-                TaskCard(
-                    title = task.title,
-                    description = task.description,
-                    progress = task.progress,
-                    difficulty = task.difficulty.name,
-                    expReward = task.experienceReward,
-                    onClick = { onNavigateToTaskDetail(task.id) }
-                )
+                task.difficulty?.let {
+                    TaskCard(
+                        title = task.title,
+                        description = task.description.toString(),
+                        progress = task.progress,
+                        difficulty = it.name,
+                        expReward = task.experienceReward!!,
+                        onClick = { onNavigateToTaskDetail(task.id) }
+                    )
+                }
             }
             
             if (uiState.filteredTasks.isEmpty()) {

@@ -5,6 +5,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -24,8 +26,6 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.keling.app.ui.components.NeonButton
-import com.keling.app.ui.components.NeonOutlinedButton
 import com.keling.app.ui.theme.*
 
 @Composable
@@ -83,7 +83,9 @@ fun LoginScreen(
         
         Column(
             modifier = Modifier
-                .fillMaxSize()
+                .fillMaxWidth()
+                .fillMaxHeight()
+                .verticalScroll(rememberScrollState())
                 .padding(24.dp)
                 .statusBarsPadding(),
             horizontalAlignment = Alignment.CenterHorizontally
@@ -113,7 +115,7 @@ fun LoginScreen(
             Spacer(modifier = Modifier.height(24.dp))
             
             Text(
-                text = "欢迎回到课灵",
+                text = "欢迎来到课灵",
                 style = MaterialTheme.typography.headlineMedium,
                 fontWeight = FontWeight.Bold,
                 color = TextPrimary
@@ -218,23 +220,35 @@ fun LoginScreen(
             
             Spacer(modifier = Modifier.height(32.dp))
             
-            // 登录按钮
-            NeonButton(
-                text = "登 录",
-                onClick = { viewModel.login(username, password) },
-                isLoading = uiState.isLoading,
-                modifier = Modifier.fillMaxWidth()
-            )
+            // 登录/注册按钮
+            Button(
+                onClick = { 
+                    val role = when (selectedRole) {
+                        0 -> com.keling.app.data.model.UserRole.STUDENT
+                        1 -> com.keling.app.data.model.UserRole.TEACHER
+                        else -> com.keling.app.data.model.UserRole.PARENT
+                    }
+                    viewModel.login(username, password, role)
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(52.dp),
+                enabled = !uiState.isLoading,
+                colors = ButtonDefaults.buttonColors(containerColor = NeonBlue),
+                shape = RoundedCornerShape(26.dp)
+            ) {
+                if (uiState.isLoading) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(24.dp),
+                        color = DarkBackground,
+                        strokeWidth = 2.dp
+                    )
+                } else {
+                    Text("登 录 / 注 册", color = DarkBackground)
+                }
+            }
             
             Spacer(modifier = Modifier.height(16.dp))
-            
-            // 生物识别登录
-            NeonOutlinedButton(
-                text = "使用生物识别登录",
-                onClick = { /* 生物识别登录 */ },
-                color = NeonPurple,
-                modifier = Modifier.fillMaxWidth()
-            )
             
             // 错误提示
             uiState.error?.let { error ->
@@ -250,7 +264,7 @@ fun LoginScreen(
             
             // 底部提示
             Text(
-                text = "首次登录将自动创建账户",
+                text = "已有账户直接登录，新用户自动注册",
                 style = MaterialTheme.typography.bodySmall,
                 color = TextTertiary
             )

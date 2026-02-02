@@ -1,18 +1,24 @@
-*.hprof
-*.apk
-/build/
-/.gradle/
+# Gradle
+.gradle/
+build/
 
-# Android/Gradle build outputs
-**/build/
-**/.gradle/
-
-# Android Studio / IntelliJ
-**/.idea/
+# Android
 *.iml
+local.properties
+*.apk
+*.aab
+*.dex
+output/
 
-# Local SDK/keys
+# IDE
+.idea/
+*.hprof
 
-# OS
+# Keystore
+*.jks
+*.keystore
+
+# Misc
 .DS_Store
+*.log
 Thumbs.db

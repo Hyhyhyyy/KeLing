@@ -11,7 +11,7 @@ import javax.inject.Inject
 interface UserRepository {
     fun getCurrentUser(): Flow<User?>
     suspend fun getUserById(userId: String): User?
-    suspend fun login(username: String, password: String): Result<User>
+    suspend fun login(username: String, password: String, role: com.keling.app.data.model.UserRole = com.keling.app.data.model.UserRole.STUDENT): Result<User>
     suspend fun logout()
     suspend fun updateUser(user: User)
     suspend fun getDashboardData(userId: String): DashboardData
@@ -33,20 +33,18 @@ class UserRepositoryImpl @Inject constructor(
         return userDao.getUserById(userId)
     }
 
-    override suspend fun login(username: String, password: String): Result<User> {
+    override suspend fun login(username: String, password: String, role: com.keling.app.data.model.UserRole): Result<User> {
         return try {
-            // 模拟登录逻辑，实际应调用远程API
             val user = userDao.getUserByUsername(username)
             if (user != null) {
                 currentUserId = user.id
                 userDao.updateLastLogin(user.id, System.currentTimeMillis())
                 Result.success(user)
             } else {
-                // 创建演示用户
-                val demoUser = createDemoUser(username)
-                userDao.insertUser(demoUser)
-                currentUserId = demoUser.id
-                Result.success(demoUser)
+                val newUser = createNewUser(username.trim(), role)
+                userDao.insertUser(newUser)
+                currentUserId = newUser.id
+                Result.success(newUser)
             }
         } catch (e: Exception) {
             Result.failure(e)
@@ -97,12 +95,12 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
-    private fun createDemoUser(username: String): User {
+    private fun createNewUser(username: String, role: com.keling.app.data.model.UserRole): User {
         return User(
             id = "user_${System.currentTimeMillis()}",
             username = username,
-            realName = "演示用户",
-            role = com.keling.app.data.model.UserRole.STUDENT,
+            realName = "新用户_$username",
+            role = role,
             schoolId = "DUT",
             classId = "CS2024",
             grade = "2024级"

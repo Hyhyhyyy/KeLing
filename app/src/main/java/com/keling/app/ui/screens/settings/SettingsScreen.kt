@@ -113,16 +113,16 @@ fun SettingsScreen(
             // 其他
             SettingsSection(title = "其他") {
                 SettingsItem(
+                    icon = Icons.Default.SmartToy,
+                    title = "AI 设置",
+                    subtitle = "API 密钥、模型选择",
+                    onClick = onNavigateToAiSettings
+                )
+                SettingsItem(
                     icon = Icons.Default.Storage,
                     title = "存储管理",
                     subtitle = "清除缓存、下载管理",
                     onClick = onNavigateToStorage
-                )
-                SettingsItem(
-                    icon = Icons.Default.SmartToy,
-                    title = "AI 设置",
-                    subtitle = "配置 API Key",
-                    onClick = onNavigateToAiSettings
                 )
                 SettingsItem(
                     icon = Icons.Default.Info,

@@ -80,19 +80,19 @@ fun HomeScreen(
                         .height(160.dp)
                 )
             }
-            
+
             // 今日任务
             item {
                 SectionHeader(title = "今日任务", actionText = "查看全部")
             }
-            
+
             items(uiState.todayTasks) { task ->
                 TaskCard(
                     title = task.title,
-                    description = task.description,
+                    description = task.description ?: "",
                     progress = task.progress,
-                    difficulty = task.difficulty.name,
-                    expReward = task.experienceReward,
+                    difficulty = task.difficulty?.name ?: "未知",
+                    expReward = task.experienceReward ?: 0,
                     onClick = { onNavigateToTask(task.id) },
                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp)
                 )

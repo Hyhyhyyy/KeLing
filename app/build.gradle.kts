@@ -69,6 +69,10 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
 
+    kotlinOptions {
+        jvmTarget = "17"
+    }
+
     buildFeatures {
         compose = true
         buildConfig = true
@@ -155,16 +159,11 @@ dependencies {
     // Testing
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    androidTestImplementation(platform("androidx.compose:compose-bom:2023.10.01"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
-}
-
-// Restore wrapper task for :app module, matching root version to satisfy tooling requests
-tasks.register<Wrapper>("wrapper") {
-    gradleVersion = "8.5"
-    distributionUrl = "https://mirrors.cloud.tencent.com/gradle/gradle-8.5-bin.zip"
-    validateDistributionUrl = false
 }
 
 // IDE sync expects this task in some setups
