@@ -1,140 +1,111 @@
-# 课灵 · 游戏化学习助手
+# 课灵 KeLing
 
-<p align="center">
-  <strong>让学习变成一场有趣的冒险</strong>
-</p>
+> 🌱 多端知识管理应用 - 培育你的知识星球
 
-## 项目简介
-
-**课灵**是一款专为大学生设计的 Android 游戏化学习助手。通过将学习任务游戏化，结合 AI 与个性化推荐，帮助学生更高效、更有趣地完成学业。
-
-### 核心特性
-
-| 模块 | 功能 |
-|------|------|
-| 任务系统 | 三维任务地图、动态难度、组队协作、日常任务模板 |
-| 成就体系 | 徽章、经验值、排行榜 |
-| AI 助手 | 多模态交互、学情诊断、知识图谱、智能推荐 |
-| 课程管理 | 教务同步、智能课表、教材数字化（OCR） |
-| 无障碍 | 字体调节、高对比度、TTS、手势 |
-
-## 技术栈
-
-| 层级 | 技术 |
-|------|------|
-| 语言 | Kotlin 1.9.20 |
-| UI | Jetpack Compose、Material3 |
-| 架构 | MVVM + Clean Architecture |
-| DI | Hilt |
-| 导航 | Navigation Compose |
-| 本地 | Room、DataStore |
-| 网络 | Retrofit、OkHttp |
-| 组件 | Lottie、Vico、Coil、ML Kit、CameraX、BiometricPrompt |
-
-依赖版本统一由 `gradle/libs.versions.toml` 管理。
-
-## 项目结构
+## 📱 项目结构
 
 ```
 KeLing/
-├── app/                          # Android 应用
-│   └── src/main/
-│       ├── java/com/keling/app/
-│       │   ├── data/             # 数据层
-│       │   │   ├── local/        # Room DAO、Database
-│       │   │   ├── model/        # 数据模型（含 DailyTaskTemplate）
-│       │   │   ├── remote/      # ApiService
-│       │   │   ├── repository/  # Repository 实现
-│       │   │   └── task/        # GradeTaskGenerator
-│       │   ├── di/              # Hilt 模块
-│       │   ├── ui/
-│       │   │   ├── components/  # NeonCard、NeonButton 等
-│       │   │   ├── navigation/  # KelingNavHost、NavRoutes
-│       │   │   ├── screens/     # 各功能页面
-│       │   │   └── theme/       # 科幻霓虹主题
-│       │   └── util/
-│       └── res/
-├── KeLingShowcase/               # 产品展示页（静态 HTML）
-│   ├── index.html                # 主展示（13 页幻灯片）
-│   ├── architecture-and-logo.html
-│   ├── css/keling-theme.css      # 共享主题样式
-│   └── js/
-│       ├── logo-animation.js     # 课灵几何动效
-│       └── showcase-slides.js    # 数据驱动 slide 生成
-├── gradle/
-│   ├── libs.versions.toml        # 版本目录
-│   └── wrapper/
-└── build.gradle.kts
+├── apps/
+│   ├── android/          # Android 移动端 (Kotlin + Jetpack Compose)
+│   ├── web/              # Web 网页端 (React + TypeScript + Vite)
+│   └── server/           # 后端服务器 (Node.js + Express + Prisma)
+├── packages/
+│   └── shared/           # 共享类型定义
+├── start.bat             # Windows 启动脚本
+└── package.json          # Monorepo 配置
 ```
 
-## 快速开始
+## 🚀 快速开始
+
+### Windows 用户
+
+双击 `start.bat` 文件，选择要启动的服务。
+
+### 手动启动
+
+```bash
+# 安装依赖
+npm run install:all
+
+# 同时启动后端和前端
+npm run dev
+
+# 或单独启动
+npm run dev:server  # 后端: http://localhost:3001
+npm run dev:web     # 前端: http://localhost:5173
+```
+
+### Android 开发
+
+1. 使用 Android Studio 打开 `apps/android` 目录
+2. 等待 Gradle 同步完成
+3. 点击 Run 按钮启动
+
+## 🛠 技术栈
+
+### 移动端 (Android)
+- Kotlin + Jetpack Compose
+- Material Design 3
+- DataStore (本地存储)
+- Ktor (网络请求)
+- MVVM 架构
+
+### 网页端 (Web)
+- React 18 + TypeScript
+- Vite (构建工具)
+- Zustand (状态管理)
+- Framer Motion (动画)
+- React Router (路由)
+
+### 后端 (Server)
+- Node.js + Express
+- Prisma ORM
+- SQLite 数据库
+- JWT 认证
+- RESTful API
+
+## 📡 API 端点
+
+| 端点 | 说明 |
+|------|------|
+| `POST /api/auth/register` | 用户注册 |
+| `POST /api/auth/login` | 用户登录 |
+| `GET /api/auth/me` | 获取当前用户 |
+| `GET /api/courses` | 获取课程列表 |
+| `POST /api/courses` | 创建课程 |
+| `GET /api/tasks` | 获取任务列表 |
+| `POST /api/tasks` | 创建任务 |
+| `POST /api/checkin` | 每日签到 |
+
+## 🔄 数据同步
+
+移动端和网页端共享同一套后端 API，用户数据实时同步：
+
+- ✅ 用户认证 (JWT Token)
+- ✅ 课程管理
+- ✅ 任务系统
+- ✅ 笔记同步
+- ✅ 签到记录
+
+## 📝 开发说明
 
 ### 环境要求
+- Node.js >= 18
+- Android Studio (用于移动端开发)
+- JDK 17+
 
-- **JDK 17**（AGP 8.13 需 Java 11+）
-- Android SDK 34
-- Gradle 8.13（项目自带 wrapper）
+### 配置文件
 
-### 构建与运行
+- `apps/server/.env` - 后端环境变量
+- `apps/android/app/src/main/java/com/keling/app/network/ApiClient.kt` - 移动端 API 配置
 
-```bash
-# 克隆项目
-git clone https://github.com/your-org/keling.git
-cd keling
+### API 地址配置
 
-# 使用 JDK 17 构建（Windows PowerShell）
-$env:JAVA_HOME = "D:\Program Files\Java\jdk-17.0.18"  # 按实际路径调整
-.\gradlew.bat assembleDebug
+| 环境 | Web | Android 模拟器 | Android 真机 |
+|------|-----|---------------|-------------|
+| 开发 | localhost:3001 | 10.0.2.2:3001 | 局域网IP:3001 |
 
-# 或直接运行（若默认 Java 已是 17）
-.\gradlew.bat assembleDebug
-```
+## 📄 License
 
-APK 输出路径：`app/build/outputs/apk/debug/app-debug.apk`
-
-### 展示页
-
-在 `KeLingShowcase/` 目录下用浏览器打开 `index.html`，或通过本地 HTTP 服务访问：
-
-```bash
-cd KeLingShowcase
-python -m http.server 8765
-# 访问 http://localhost:8765
-```
-
-## 设计规范
-
-### 配色（科幻霓虹）
-
-| 名称 | 色值 | 用途 |
-|------|------|------|
-| NeonBlue | #00D4FF | 主色 |
-| NeonPurple | #BF00FF | 强调 |
-| NeonGreen | #00FF88 | 成功 |
-| NeonGold | #FFD700 | 成就/奖励 |
-| DarkBackground | #0A0E17 | 背景 |
-| DarkSurface | #121824 | 卡片 |
-| DarkCard | #1E2838 | 组件 |
-
-## 版本历史
-
-### v1.0.0（开发中）
-
-- 核心功能：任务、课程、成就、AI 助手、无障碍
-- 科幻霓虹 UI
-- 展示页抽离共享 CSS/JS，数据驱动 slide
-
-## 贡献
-
-1. Fork 本仓库
-2. 创建分支 `git checkout -b feature/xxx`
-3. 提交 `git commit -m 'Add xxx'`
-4. 推送并创建 Pull Request
-
-## 许可证
-
-仅供学习与教育使用。
-
----
-
-<p align="center">Made with ❤️ by 课灵团队</p>
+MIT License
