@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Trophy, Lock, Zap, Gem, ChevronRight, Star } from 'lucide-react';
+import { Trophy, Lock, Zap, Gem, Star } from 'lucide-react';
 import { achievementAPI } from '../../services/api';
 import type { Achievement, UserAchievement, AchievementCategory } from '../../types';
 import './Achievements.css';

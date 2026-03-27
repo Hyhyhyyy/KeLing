@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  Plus, X, Clock, Zap, Gem, Play, Pause, Check,
-  Target, AlertCircle, ChevronDown, Timer
+  Plus, X, Clock, Zap, Gem, Play, Check,
+  Target, Timer
 } from 'lucide-react';
 import { useAppStore } from '../../store/useAppStore';
-import { taskAPI } from '../../services/api';
-import type { Task, TaskType, TaskStatus } from '../../types';
+import type { TaskType, TaskStatus } from '../../types';
 import './Tasks.css';
 
 const TASK_TYPES: { value: TaskType; label: string; icon: string; color: string }[] = [
@@ -26,8 +24,7 @@ const TASK_STATUS_CONFIG: Record<TaskStatus, { label: string; color: string }> =
 };
 
 const Tasks: React.FC = () => {
-  const navigate = useNavigate();
-  const { tasks, courses, createTask, updateTask, completeTask, deleteTask, user } = useAppStore();
+  const { tasks, courses, createTask, updateTask, completeTask, deleteTask } = useAppStore();
 
   const [filter, setFilter] = useState<'all' | TaskStatus>('all');
   const [showCreateDialog, setShowCreateDialog] = useState(false);
@@ -44,7 +41,7 @@ const Tasks: React.FC = () => {
 
   // 番茄钟计时器
   useEffect(() => {
-    let interval: NodeJS.Timeout;
+    let interval: ReturnType<typeof setInterval>;
     if (activeTimer) {
       interval = setInterval(() => {
         setTimerSeconds(s => s + 1);

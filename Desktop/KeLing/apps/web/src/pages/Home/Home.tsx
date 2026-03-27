@@ -44,10 +44,6 @@ const Home: React.FC = () => {
   };
 
   const pendingTasks = tasks.filter(t => t.status === 'PENDING' || t.status === 'IN_PROGRESS');
-  const completedToday = tasks.filter(t =>
-    t.status === 'COMPLETED' && t.completedAt &&
-    new Date(t.completedAt).toDateString() === new Date().toDateString()
-  );
 
   const getGreeting = () => {
     const hour = new Date().getHours();

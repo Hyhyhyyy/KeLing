@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
   ArrowLeft, BookOpen, Clock, MapPin, User, Trash2,
-  Edit3, Target, Zap, Gem, ChevronRight
+  Edit3, Target, Zap, ChevronRight
 } from 'lucide-react';
 import { useAppStore } from '../../store/useAppStore';
 import { courseAPI, knowledgeAPI } from '../../services/api';
@@ -13,7 +13,7 @@ import './CourseDetail.css';
 const CourseDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { courses, updateCourse, deleteCourse, user } = useAppStore();
+  const { updateCourse, deleteCourse } = useAppStore();
 
   const [course, setCourse] = useState<Course | null>(null);
   const [nodes, setNodes] = useState<KnowledgeNode[]>([]);

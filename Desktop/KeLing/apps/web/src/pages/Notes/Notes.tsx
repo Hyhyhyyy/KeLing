@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  Plus, X, Search, FileText, Clock, Tag,
-  BookOpen, Sparkles, Edit3, Trash2
+  Plus, X, Search, FileText, Clock,
+  BookOpen, Sparkles, Trash2
 } from 'lucide-react';
 import { useAppStore } from '../../store/useAppStore';
 import { noteAPI } from '../../services/api';
@@ -18,8 +17,7 @@ const SOURCE_CONFIG: Record<NoteSource, { label: string; icon: string; color: st
 };
 
 const Notes: React.FC = () => {
-  const navigate = useNavigate();
-  const { notes, createNote, user } = useAppStore();
+  const { notes, createNote } = useAppStore();
 
   const [searchQuery, setSearchQuery] = useState('');
   const [showCreateDialog, setShowCreateDialog] = useState(false);

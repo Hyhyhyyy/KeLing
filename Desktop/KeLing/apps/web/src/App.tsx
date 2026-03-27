@@ -54,7 +54,7 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) =
 const TopNav: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { user, logout } = useAppStore();
+  const { user } = useAppStore();
 
   const navItems = [
     { path: '/', icon: '🏠', label: '首页' },

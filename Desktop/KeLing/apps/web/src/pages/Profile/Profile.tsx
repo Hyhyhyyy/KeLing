@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
-  User, Zap, Gem, Calendar, Clock, Trophy,
-  Settings, LogOut, ChevronRight, Edit3, Target
+  User, Zap, Gem, Calendar, Trophy,
+  Settings, LogOut, ChevronRight, Target
 } from 'lucide-react';
 import { useAppStore } from '../../store/useAppStore';
 import { checkinAPI } from '../../services/api';
