@@ -1,142 +1,128 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 380" width="1280" height="380" role="img" aria-label="课灵 KeLing 2.0">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 380" width="1280" height="380" role="img" aria-label="课灵 KeLing 2.0 · 知识卡片与标签体系">
   <defs>
-    <linearGradient id="bg_KeLing2" x1="0" y1="0" x2="0.4" y2="1">
-      <stop offset="0.00" stop-color="#1e0b3b"/><stop offset="0.33" stop-color="#2e1065"/><stop offset="0.67" stop-color="#4c1d95"/><stop offset="1.00" stop-color="#831843"/>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1a1206"/>
+      <stop offset="0.55" stop-color="#2e2208"/>
+      <stop offset="1" stop-color="#15100a"/>
     </linearGradient>
-    <linearGradient id="g_KeLing2" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0" stop-color="#f5d0fe"/>
-      <stop offset="0.5" stop-color="#e9d5ff"/>
-      <stop offset="1" stop-color="#c4b5fd"/>
-      <animate attributeName="x1" values="0;0.3;0" dur="8s" repeatCount="indefinite"/>
-      <animate attributeName="x2" values="1;0.7;1" dur="8s" repeatCount="indefinite"/>
+    <linearGradient id="beamGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#fde68a" stop-opacity="0"/>
+      <stop offset="0.5" stop-color="#fbbf24" stop-opacity="0.8"/>
+      <stop offset="1" stop-color="#fde68a" stop-opacity="0"/>
     </linearGradient>
-    <filter id="blur_KeLing2" x="-50%" y="-50%" width="200%" height="200%">
-      <feGaussianBlur stdDeviation="34"/>
-    </filter>
-    <clipPath id="clip_KeLing2"><rect x="0" y="0" width="1280" height="380" rx="18"/></clipPath>
-    <radialGradient id="dream_g_KeLing2" cx="0.5" cy="0.5" r="0.5">
-      <stop offset="0" stop-color="#e9d5ff" stop-opacity="0.35"/>
-      <stop offset="1" stop-color="#e9d5ff" stop-opacity="0"/>
+    <radialGradient id="haloGrad" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#f59e0b" stop-opacity="0.5"/>
+      <stop offset="1" stop-color="#f59e0b" stop-opacity="0"/>
     </radialGradient>
+    <linearGradient id="titleGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#fcd34d"/>
+      <stop offset="1" stop-color="#f59e0b"/>
+    </linearGradient>
+    <linearGradient id="cardGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fdf6e3"/>
+      <stop offset="1" stop-color="#f3e6c4"/>
+    </linearGradient>
   </defs>
-  <g clip-path="url(#clip_KeLing2)">
-    <rect x="0" y="0" width="1280" height="380" fill="url(#bg_KeLing2)"/>
-    <g filter="url(#blur_KeLing2)">
 
-  <circle cx="180" cy="120" r="150" fill="#c084fc" opacity="0.30">
-    <animateTransform attributeName="transform" type="translate" values="0 0; 40 16.0; 0 0" dur="60s" begin="0.0s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.6 1; 0.4 0 0.6 1" keyTimes="0;0.5;1"/>
-    <animate attributeName="opacity" values="0.18;0.42;0.18" dur="48.0s" begin="0.0s" repeatCount="indefinite"/>
-  </circle>
+  <rect width="1280" height="380" fill="url(#bgGrad)"/>
 
-  <circle cx="1080" cy="90" r="120" fill="#f472b6" opacity="0.30">
-    <animateTransform attributeName="transform" type="translate" values="0 0; -30 -12.0; 0 0" dur="70s" begin="1.2s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.6 1; 0.4 0 0.6 1" keyTimes="0;0.5;1"/>
-    <animate attributeName="opacity" values="0.18;0.42;0.18" dur="56.0s" begin="1.2s" repeatCount="indefinite"/>
-  </circle>
-
-  <circle cx="980" cy="300" r="170" fill="#a78bfa" opacity="0.30">
-    <animateTransform attributeName="transform" type="translate" values="0 0; 50 20.0; 0 0" dur="55s" begin="0.6s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.6 1; 0.4 0 0.6 1" keyTimes="0;0.5;1"/>
-    <animate attributeName="opacity" values="0.18;0.42;0.18" dur="44.0s" begin="0.6s" repeatCount="indefinite"/>
-  </circle>
-
-  <circle cx="320" cy="320" r="110" fill="#f472b6" opacity="0.30">
-    <animateTransform attributeName="transform" type="translate" values="0 0; -25 -10.0; 0 0" dur="65s" begin="2.0s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.6 1; 0.4 0 0.6 1" keyTimes="0;0.5;1"/>
-    <animate attributeName="opacity" values="0.18;0.42;0.18" dur="52.0s" begin="2.0s" repeatCount="indefinite"/>
-  </circle>
-</g>
-    
-  <circle cx="320" cy="190" r="150" fill="none" stroke="#e9d5ff" stroke-width="1.2" opacity="0.18" stroke-dasharray="6 14">
-    <animateTransform attributeName="transform" type="rotate" from="0 320 190" to="360 320 190" dur="40s" repeatCount="indefinite"/>
-  </circle>
-  <circle cx="320" cy="190" r="110" fill="none" stroke="#e9d5ff" stroke-width="1" opacity="0.12"/>
-
-  <g opacity="0.12">
-    <rect x="-300" y="150" width="300" height="3" fill="#e9d5ff" transform="rotate(-18 0 150)">
-      <animateTransform attributeName="transform" type="translate" values="-200 0; 1700 0" dur="9s" repeatCount="indefinite"/>
-    </rect>
-    <rect x="-300" y="250" width="220" height="2" fill="#e9d5ff" transform="rotate(-18 0 250)">
-      <animateTransform attributeName="transform" type="translate" values="-200 0; 1700 0" dur="13s" begin="2s" repeatCount="indefinite"/>
-    </rect>
-  </g>
-      <circle cx="1050" cy="190" r="210" fill="url(#dream_g_KeLing2)">
-      <animate attributeName="opacity" values="0.5;0.9;0.5" dur="5s" repeatCount="indefinite"/>
-    </circle>
+  <!-- (a) BANNER-WIDE MOTION: amber light sweep across the full width -->
   <g>
-<circle cx="480" cy="349" r="1.5" fill="#e9d5ff" opacity="0"><animate attributeName="opacity" values="0;0.9;0" dur="5s" begin="1.5s" repeatCount="indefinite"/><animateTransform attributeName="transform" type="translate" values="0 0; -6 1; 0 0" dur="5s" begin="1.5s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.6 1;0.4 0 0.6 1" keyTimes="0;0.5;1"/></circle>
-<circle cx="1132" cy="73" r="2" fill="#e9d5ff" opacity="0"><animate attributeName="opacity" values="0;0.9;0" dur="7s" begin="0.5s" repeatCount="indefinite"/><animateTransform attributeName="transform" type="translate" values="0 0; -7 12; 0 0" dur="7s" begin="0.5s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.6 1;0.4 0 0.6 1" keyTimes="0;0.5;1"/></circle>
-<circle cx="283" cy="121" r="2.5" fill="#f472b6" opacity="0"><animate attributeName="opacity" values="0;0.9;0" dur="10s" begin="1.6s" repeatCount="indefinite"/><animateTransform attributeName="transform" type="translate" values="0 0; -16 10; 0 0" dur="10s" begin="1.6s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.6 1;0.4 0 0.6 1" keyTimes="0;0.5;1"/></circle>
-<circle cx="182" cy="167" r="1.5" fill="#e9d5ff" opacity="0"><animate attributeName="opacity" values="0;0.9;0" dur="6s" begin="3.6s" repeatCount="indefinite"/><animateTransform attributeName="transform" type="translate" values="0 0; -11 13; 0 0" dur="6s" begin="3.6s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.6 1;0.4 0 0.6 1" keyTimes="0;0.5;1"/></circle>
-<circle cx="798" cy="255" r="1.5" fill="#e9d5ff" opacity="0"><animate attributeName="opacity" values="0;0.9;0" dur="6s" begin="1.4s" repeatCount="indefinite"/><animateTransform attributeName="transform" type="translate" values="0 0; -13 9; 0 0" dur="6s" begin="1.4s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.6 1;0.4 0 0.6 1" keyTimes="0;0.5;1"/></circle>
-<circle cx="628" cy="267" r="3" fill="#e9d5ff" opacity="0"><animate attributeName="opacity" values="0;0.9;0" dur="5s" begin="0.3s" repeatCount="indefinite"/><animateTransform attributeName="transform" type="translate" values="0 0; 1 8; 0 0" dur="5s" begin="0.3s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.6 1;0.4 0 0.6 1" keyTimes="0;0.5;1"/></circle>
-<circle cx="1091" cy="75" r="2.5" fill="#e9d5ff" opacity="0"><animate attributeName="opacity" values="0;0.9;0" dur="6s" begin="0.8s" repeatCount="indefinite"/><animateTransform attributeName="transform" type="translate" values="0 0; -4 1; 0 0" dur="6s" begin="0.8s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.6 1;0.4 0 0.6 1" keyTimes="0;0.5;1"/></circle>
-<circle cx="459" cy="108" r="3" fill="#f472b6" opacity="0"><animate attributeName="opacity" values="0;0.9;0" dur="5s" begin="0.7s" repeatCount="indefinite"/><animateTransform attributeName="transform" type="translate" values="0 0; -12 13; 0 0" dur="5s" begin="0.7s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.6 1;0.4 0 0.6 1" keyTimes="0;0.5;1"/></circle>
-<circle cx="195" cy="42" r="3" fill="#f472b6" opacity="0"><animate attributeName="opacity" values="0;0.9;0" dur="6s" begin="3.3s" repeatCount="indefinite"/><animateTransform attributeName="transform" type="translate" values="0 0; 7 -13; 0 0" dur="6s" begin="3.3s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.6 1;0.4 0 0.6 1" keyTimes="0;0.5;1"/></circle>
-<circle cx="786" cy="328" r="2" fill="#f472b6" opacity="0"><animate attributeName="opacity" values="0;0.9;0" dur="8s" begin="1.3s" repeatCount="indefinite"/><animateTransform attributeName="transform" type="translate" values="0 0; 12 13; 0 0" dur="8s" begin="1.3s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.6 1;0.4 0 0.6 1" keyTimes="0;0.5;1"/></circle>
-<circle cx="249" cy="32" r="3" fill="#f472b6" opacity="0"><animate attributeName="opacity" values="0;0.9;0" dur="8s" begin="1.0s" repeatCount="indefinite"/><animateTransform attributeName="transform" type="translate" values="0 0; -16 12; 0 0" dur="8s" begin="1.0s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.6 1;0.4 0 0.6 1" keyTimes="0;0.5;1"/></circle>
-<circle cx="1176" cy="251" r="1.5" fill="#f472b6" opacity="0"><animate attributeName="opacity" values="0;0.9;0" dur="7s" begin="0.2s" repeatCount="indefinite"/><animateTransform attributeName="transform" type="translate" values="0 0; -16 14; 0 0" dur="7s" begin="0.2s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.6 1;0.4 0 0.6 1" keyTimes="0;0.5;1"/></circle>
-<circle cx="667" cy="270" r="2" fill="#f472b6" opacity="0"><animate attributeName="opacity" values="0;0.9;0" dur="9s" begin="3.2s" repeatCount="indefinite"/><animateTransform attributeName="transform" type="translate" values="0 0; -4 -13; 0 0" dur="9s" begin="3.2s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.6 1;0.4 0 0.6 1" keyTimes="0;0.5;1"/></circle>
-<circle cx="106" cy="166" r="1.5" fill="#e9d5ff" opacity="0"><animate attributeName="opacity" values="0;0.9;0" dur="7s" begin="1.9s" repeatCount="indefinite"/><animateTransform attributeName="transform" type="translate" values="0 0; 5 0; 0 0" dur="7s" begin="1.9s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.6 1;0.4 0 0.6 1" keyTimes="0;0.5;1"/></circle>
-<circle cx="138" cy="37" r="1.5" fill="#e9d5ff" opacity="0"><animate attributeName="opacity" values="0;0.9;0" dur="5s" begin="0.3s" repeatCount="indefinite"/><animateTransform attributeName="transform" type="translate" values="0 0; -18 4; 0 0" dur="5s" begin="0.3s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.6 1;0.4 0 0.6 1" keyTimes="0;0.5;1"/></circle>
-<circle cx="997" cy="66" r="3" fill="#e9d5ff" opacity="0"><animate attributeName="opacity" values="0;0.9;0" dur="11s" begin="1.6s" repeatCount="indefinite"/><animateTransform attributeName="transform" type="translate" values="0 0; 12 -1; 0 0" dur="11s" begin="1.6s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.6 1;0.4 0 0.6 1" keyTimes="0;0.5;1"/></circle>
-<circle cx="173" cy="201" r="2" fill="#e9d5ff" opacity="0"><animate attributeName="opacity" values="0;0.9;0" dur="9s" begin="1.2s" repeatCount="indefinite"/><animateTransform attributeName="transform" type="translate" values="0 0; 13 -12; 0 0" dur="9s" begin="1.2s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.6 1;0.4 0 0.6 1" keyTimes="0;0.5;1"/></circle>
-<circle cx="613" cy="314" r="2.5" fill="#e9d5ff" opacity="0"><animate attributeName="opacity" values="0;0.9;0" dur="10s" begin="2.6s" repeatCount="indefinite"/><animateTransform attributeName="transform" type="translate" values="0 0; -15 6; 0 0" dur="10s" begin="2.6s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.6 1;0.4 0 0.6 1" keyTimes="0;0.5;1"/></circle>
-<circle cx="444" cy="183" r="3" fill="#e9d5ff" opacity="0"><animate attributeName="opacity" values="0;0.9;0" dur="5s" begin="3.0s" repeatCount="indefinite"/><animateTransform attributeName="transform" type="translate" values="0 0; 11 -5; 0 0" dur="5s" begin="3.0s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.6 1;0.4 0 0.6 1" keyTimes="0;0.5;1"/></circle>
-<circle cx="121" cy="132" r="1.5" fill="#e9d5ff" opacity="0"><animate attributeName="opacity" values="0;0.9;0" dur="5s" begin="3.5s" repeatCount="indefinite"/><animateTransform attributeName="transform" type="translate" values="0 0; 19 0; 0 0" dur="5s" begin="3.5s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.6 1;0.4 0 0.6 1" keyTimes="0;0.5;1"/></circle>
-<circle cx="585" cy="242" r="2" fill="#f472b6" opacity="0"><animate attributeName="opacity" values="0;0.9;0" dur="7s" begin="0.5s" repeatCount="indefinite"/><animateTransform attributeName="transform" type="translate" values="0 0; -4 8; 0 0" dur="7s" begin="0.5s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.6 1;0.4 0 0.6 1" keyTimes="0;0.5;1"/></circle>
-<circle cx="880" cy="207" r="2" fill="#f472b6" opacity="0"><animate attributeName="opacity" values="0;0.9;0" dur="9s" begin="3.2s" repeatCount="indefinite"/><animateTransform attributeName="transform" type="translate" values="0 0; 5 7; 0 0" dur="9s" begin="3.2s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.6 1;0.4 0 0.6 1" keyTimes="0;0.5;1"/></circle>
-<circle cx="665" cy="194" r="2.5" fill="#e9d5ff" opacity="0"><animate attributeName="opacity" values="0;0.9;0" dur="9s" begin="0.8s" repeatCount="indefinite"/><animateTransform attributeName="transform" type="translate" values="0 0; -1 1; 0 0" dur="9s" begin="0.8s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.6 1;0.4 0 0.6 1" keyTimes="0;0.5;1"/></circle>
-<circle cx="714" cy="86" r="1.5" fill="#e9d5ff" opacity="0"><animate attributeName="opacity" values="0;0.9;0" dur="8s" begin="3.4s" repeatCount="indefinite"/><animateTransform attributeName="transform" type="translate" values="0 0; 5 -10; 0 0" dur="8s" begin="3.4s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.6 1;0.4 0 0.6 1" keyTimes="0;0.5;1"/></circle>
-<circle cx="528" cy="324" r="2" fill="#e9d5ff" opacity="0"><animate attributeName="opacity" values="0;0.9;0" dur="9s" begin="2.1s" repeatCount="indefinite"/><animateTransform attributeName="transform" type="translate" values="0 0; 10 -5; 0 0" dur="9s" begin="2.1s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.6 1;0.4 0 0.6 1" keyTimes="0;0.5;1"/></circle>
-<circle cx="51" cy="234" r="2.5" fill="#f472b6" opacity="0"><animate attributeName="opacity" values="0;0.9;0" dur="8s" begin="2.5s" repeatCount="indefinite"/><animateTransform attributeName="transform" type="translate" values="0 0; 12 10; 0 0" dur="8s" begin="2.5s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.6 1;0.4 0 0.6 1" keyTimes="0;0.5;1"/></circle>
-<circle cx="819" cy="204" r="1.5" fill="#f472b6" opacity="0"><animate attributeName="opacity" values="0;0.9;0" dur="6s" begin="3.7s" repeatCount="indefinite"/><animateTransform attributeName="transform" type="translate" values="0 0; -12 -1; 0 0" dur="6s" begin="3.7s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.6 1;0.4 0 0.6 1" keyTimes="0;0.5;1"/></circle>
-<circle cx="902" cy="172" r="3" fill="#e9d5ff" opacity="0"><animate attributeName="opacity" values="0;0.9;0" dur="5s" begin="3.4s" repeatCount="indefinite"/><animateTransform attributeName="transform" type="translate" values="0 0; -15 -11; 0 0" dur="5s" begin="3.4s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.6 1;0.4 0 0.6 1" keyTimes="0;0.5;1"/></circle>
-<circle cx="83" cy="44" r="3" fill="#e9d5ff" opacity="0"><animate attributeName="opacity" values="0;0.9;0" dur="9s" begin="3.6s" repeatCount="indefinite"/><animateTransform attributeName="transform" type="translate" values="0 0; -9 -6; 0 0" dur="9s" begin="3.6s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.6 1;0.4 0 0.6 1" keyTimes="0;0.5;1"/></circle>
-<circle cx="884" cy="75" r="2.5" fill="#e9d5ff" opacity="0"><animate attributeName="opacity" values="0;0.9;0" dur="5s" begin="0.7s" repeatCount="indefinite"/><animateTransform attributeName="transform" type="translate" values="0 0; 0 -1; 0 0" dur="5s" begin="0.7s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.6 1;0.4 0 0.6 1" keyTimes="0;0.5;1"/></circle>
+    <rect x="-220" y="0" width="220" height="380" fill="url(#beamGrad)" opacity="0">
+      <animate attributeName="x" values="-220;1500;-220" dur="8.2s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0;0.5;0" dur="8.2s" repeatCount="indefinite"/>
+    </rect>
   </g>
-    <g transform="translate(1050,190)">
-    <circle cx="0" cy="0" r="40" fill="none" stroke="#e9d5ff" stroke-width="3"/>
-    <path d="M-12 -16 Q0 -28 12 -16 Q20 -2 12 14 Q0 26 -12 14 Q-20 -2 -12 -16 Z" fill="#f472b6" opacity="0.85"/>
-    <g>
-      <circle cx="120" cy="0" r="9" fill="#e9d5ff"/>
-      <circle cx="-120" cy="0" r="7" fill="#f472b6"/>
-      <circle cx="0" cy="-120" r="6" fill="#e9d5ff"/>
-      <circle cx="0" cy="120" r="8" fill="#f472b6"/>
-      <ellipse cx="0" cy="0" rx="120" ry="46" fill="none" stroke="#e9d5ff" stroke-width="1.5" opacity="0.4"/>
-      <animateTransform attributeName="transform" type="rotate" from="0 0 0" to="360 0 0" dur="30s" repeatCount="indefinite"/>
-    </g>
+  <g fill="#fde68a">
+    <circle cx="0" cy="100" r="2.2" opacity="0.6">
+      <animate attributeName="cx" values="-20;1320" dur="10s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="0" cy="295" r="1.8" opacity="0.5">
+      <animate attributeName="cx" values="1320;-20" dur="12s" repeatCount="indefinite"/>
+    </circle>
   </g>
-    
-  <line x1="80" y1="250" x2="440" y2="250" stroke="url(#g_KeLing2)" stroke-width="4" stroke-linecap="round" stroke-dasharray="360" stroke-dashoffset="360">
-    <animate attributeName="stroke-dashoffset" values="360;0;0" keyTimes="0;0.55;1" dur="1.8s" fill="freeze"/>
-    <animate attributeName="opacity" values="0;1;1" keyTimes="0;0.2;1" dur="1.8s" fill="freeze"/>
+
+  <!-- (b) TITLE-SURROUND MOTION: pulsing halo + draw-on underline -->
+  <circle cx="300" cy="128" r="132" fill="url(#haloGrad)">
+    <animate attributeName="r" values="116;144;116" dur="4.4s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.5;0.85;0.5" dur="4.4s" repeatCount="indefinite"/>
+  </circle>
+
+  <text x="62" y="134" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-size="48" font-weight="800" fill="url(#titleGrad)">课灵 KeLing 2.0</text>
+  <line x1="64" y1="154" x2="300" y2="154" stroke="#f59e0b" stroke-width="4" stroke-linecap="round" stroke-dasharray="240" stroke-dashoffset="240">
+    <animate attributeName="stroke-dashoffset" values="240;0;0;240" keyTimes="0;0.5;0.85;1" dur="6s" repeatCount="indefinite"/>
   </line>
-    
-  <text x="80" y="200" font-family="'Segoe UI','Helvetica Neue',Arial,sans-serif" font-size="66" font-weight="800" fill="url(#g_KeLing2)" letter-spacing="-1">
-    <animateTransform attributeName="transform" type="translate" values="-40 12; 0 0; 0 0" keyTimes="0;0.5;1" dur="1.6s" fill="freeze" calcMode="spline" keySplines="0.34 1.56 0.64 1;0 0 1 1"/>
-    <animate attributeName="opacity" values="0;1;1" keyTimes="0;0.5;1" dur="1.6s" fill="freeze"/>
-    课灵 KeLing 2.0
-  </text>
-  <text x="82" y="238" font-family="'Segoe UI','Helvetica Neue',Arial,sans-serif" font-size="22" font-weight="500" fill="#e9d5ff">
-    <animate attributeName="opacity" values="0;0;1" keyTimes="0;0.5;1" dur="1.8s" fill="freeze"/>
-    多端知识管理学习助手 · 培育你的知识星球
-  </text>
-      <g transform="translate(80,280)" opacity="0">
-    <rect x="0" y="0" width="58" height="28" rx="14" fill="#f472b6" fill-opacity="0.14" stroke="#e9d5ff" stroke-opacity="0.55" stroke-width="1"/>
-    <text x="29" y="19" text-anchor="middle" font-family="monospace" font-size="14" fill="#e9d5ff">知识管理</text>
-    <animate attributeName="opacity" values="0;1" begin="0.95s" dur="0.5s" fill="freeze"/>
-    <animateTransform attributeName="transform" type="translate" values="80 292; 80 280" begin="0.95s" dur="0.55s" fill="freeze" calcMode="spline" keySplines="0.34 1.56 0.64 1;0 0 1 1" keyTimes="0;1"/>
+  <text x="64" y="188" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-size="19" font-weight="500" fill="#fde68a">知识卡片 · 标签体系 · 跨端同步</text>
+
+  <g font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-size="15" font-weight="600" fill="#fde68a">
+    <rect x="64" y="208" width="96" height="30" rx="15" fill="#2e2208"/>
+    <text x="84" y="228">知识卡片</text>
+    <rect x="176" y="208" width="88" height="30" rx="15" fill="#2e2208"/>
+    <text x="196" y="228">标签体系</text>
+    <rect x="280" y="208" width="96" height="30" rx="15" fill="#2e2208"/>
+    <text x="300" y="228">跨端同步</text>
   </g>
-  <g transform="translate(150,280)" opacity="0">
-    <rect x="0" y="0" width="40" height="28" rx="14" fill="#f472b6" fill-opacity="0.14" stroke="#e9d5ff" stroke-opacity="0.55" stroke-width="1"/>
-    <text x="20" y="19" text-anchor="middle" font-family="monospace" font-size="14" fill="#e9d5ff">多端</text>
-    <animate attributeName="opacity" values="0;1" begin="1.11s" dur="0.5s" fill="freeze"/>
-    <animateTransform attributeName="transform" type="translate" values="150 292; 150 280" begin="1.11s" dur="0.55s" fill="freeze" calcMode="spline" keySplines="0.34 1.56 0.64 1;0 0 1 1" keyTimes="0;1"/>
-  </g>
-  <g transform="translate(202,280)" opacity="0">
-    <rect x="0" y="0" width="40" height="28" rx="14" fill="#f472b6" fill-opacity="0.14" stroke="#e9d5ff" stroke-opacity="0.55" stroke-width="1"/>
-    <text x="20" y="19" text-anchor="middle" font-family="monospace" font-size="14" fill="#e9d5ff">AI</text>
-    <animate attributeName="opacity" values="0;1" begin="1.27s" dur="0.5s" fill="freeze"/>
-    <animateTransform attributeName="transform" type="translate" values="202 292; 202 280" begin="1.27s" dur="0.55s" fill="freeze" calcMode="spline" keySplines="0.34 1.56 0.64 1;0 0 1 1" keyTimes="0;1"/>
-  </g>
-    <text x="1240" y="356" text-anchor="end" font-family="'Segoe UI','Helvetica Neue',Arial,sans-serif" font-size="14" fill="#e9d5ff" opacity="0.55">made with &#10084; by Hyhyhyyy</text>
+
+  <!-- HERO MOTIF (right): a stack of knowledge cards with tag chips, synced across ends -->
+  <g transform="translate(985,192)">
+    <!-- sync lines phone/web -> cards -->
+    <g stroke="#fbbf24" stroke-width="3" fill="none" stroke-linecap="round" stroke-dasharray="9 7" opacity="0.7">
+      <path d="M-150,40 C-110,10 -80,-10 -40,-30">
+        <animate attributeName="stroke-dashoffset" values="0;-32;0" dur="2.4s" repeatCount="indefinite"/>
+      </path>
+      <path d="M150,40 C110,10 80,-10 40,-30">
+        <animate attributeName="stroke-dashoffset" values="0;-32;0" dur="2.4s" begin="0.6s" repeatCount="indefinite"/>
+      </path>
+    </g>
+    <!-- knowledge card 1 (back) -->
+    <g>
+      <animateTransform attributeName="transform" type="translate" values="0 0;0 -6;0 0" dur="4.8s" repeatCount="indefinite"/>
+      <rect x="-152" y="-58" width="104" height="78" rx="12" fill="url(#cardGrad)"/>
+      <rect x="-136" y="-40" width="58" height="8" rx="4" fill="#b08924"/>
+      <rect x="-136" y="-24" width="72" height="6" rx="3" fill="#cbb277"/>
+      <rect x="-136" y="-10" width="56" height="6" rx="3" fill="#cbb277"/>
+      <rect x="-136" y="6" width="40" height="14" rx="7" fill="#f59e0b"/>
+    </g>
+    <!-- knowledge card 2 (front, center) -->
+    <g>
+      <animateTransform attributeName="transform" type="translate" values="0 0;0 -9;0 0" dur="4.4s" begin="0.3s" repeatCount="indefinite"/>
+      <rect x="-30" y="-78" width="112" height="84" rx="12" fill="#fffaf0"/>
+      <rect x="-12" y="-60" width="64" height="8" rx="4" fill="#b08924"/>
+      <rect x="-12" y="-44" width="80" height="6" rx="3" fill="#cbb277"/>
+      <rect x="-12" y="-30" width="64" height="6" rx="3" fill="#cbb277"/>
+      <rect x="-12" y="-16" width="48" height="6" rx="3" fill="#cbb277"/>
+      <rect x="-12" y="2" width="46" height="14" rx="7" fill="#f59e0b"/>
+    </g>
+    <!-- knowledge card 3 (back right) -->
+    <g>
+      <animateTransform attributeName="transform" type="translate" values="0 0;0 -6;0 0" dur="5s" begin="0.6s" repeatCount="indefinite"/>
+      <rect x="92" y="-56" width="104" height="78" rx="12" fill="url(#cardGrad)"/>
+      <rect x="108" y="-38" width="58" height="8" rx="4" fill="#b08924"/>
+      <rect x="108" y="-22" width="72" height="6" rx="3" fill="#cbb277"/>
+      <rect x="108" y="-8" width="56" height="6" rx="3" fill="#cbb277"/>
+      <rect x="108" y="8" width="40" height="14" rx="7" fill="#f59e0b"/>
+    </g>
+    <!-- floating tag chips -->
+    <g font-family="'PingFang SC',sans-serif" font-size="11" font-weight="800" fill="#fff">
+      <g>
+        <animate attributeName="opacity" values="0.7;1;0.7" dur="2.4s" repeatCount="indefinite"/>
+        <rect x="-70" y="-104" width="46" height="20" rx="10" fill="#0ea5e9"/>
+        <text x="-58" y="-89">#课程</text>
+      </g>
+      <g>
+        <animate attributeName="opacity" values="1;0.7;1" dur="2.8s" repeatCount="indefinite"/>
+        <rect x="20" y="-112" width="46" height="20" rx="10" fill="#10b981"/>
+        <text x="32" y="-97">#笔记</text>
+      </g>
+    </g>
+    <!-- two endpoints: phone + web -->
+    <g fill="#2e2208" stroke="#fbbf24" stroke-width="2">
+      <rect x="-168" y="40" width="34" height="56" rx="6"/>
+      <rect x="134" y="40" width="46" height="42" rx="5"/>
+    </g>
+    <g fill="#fbbf24">
+      <rect x="-162" y="48" width="22" height="4" rx="2"/><rect x="-162" y="58" width="22" height="4" rx="2"/>
+      <rect x="142" y="48" width="30" height="4" rx="2"/><rect x="142" y="58" width="30" height="4" rx="2"/>
+    </g>
   </g>
 </svg>
