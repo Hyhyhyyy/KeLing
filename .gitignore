@@ -50,3 +50,9 @@ coverage/
 # Misc
 *.log
 .cache/
+
+# Added during audit hardening (signing keys / databases / env)
+*.jks
+*.keystore
+**/*.db
+**/*.db-journal
